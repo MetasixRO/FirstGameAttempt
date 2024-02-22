@@ -62,6 +62,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Dash"",
+                    ""type"": ""Button"",
+                    ""id"": ""72a20801-9877-45c4-b7e1-b072a07ecdfa"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -146,7 +155,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""e0154e3c-643c-4a89-a5b2-7fbb78f964b1"",
                     ""path"": ""<Keyboard>/leftShift"",
-                    ""interactions"": """",
+                    ""interactions"": ""Press(behavior=2)"",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
                     ""action"": ""Run"",
@@ -194,6 +203,17 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Use"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""94c3f3b6-5c16-4a24-b7eb-a2eceb729dcf"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": ""Press(behavior=2)"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Dash"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -317,6 +337,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_CharacterControls_Run = m_CharacterControls.FindAction("Run", throwIfNotFound: true);
         m_CharacterControls_Shoot = m_CharacterControls.FindAction("Shoot", throwIfNotFound: true);
         m_CharacterControls_Use = m_CharacterControls.FindAction("Use", throwIfNotFound: true);
+        m_CharacterControls_Dash = m_CharacterControls.FindAction("Dash", throwIfNotFound: true);
         // KeyboardCharacterControls
         m_KeyboardCharacterControls = asset.FindActionMap("KeyboardCharacterControls", throwIfNotFound: true);
         m_KeyboardCharacterControls_KeyboardMovement = m_KeyboardCharacterControls.FindAction("KeyboardMovement", throwIfNotFound: true);
@@ -386,6 +407,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_CharacterControls_Run;
     private readonly InputAction m_CharacterControls_Shoot;
     private readonly InputAction m_CharacterControls_Use;
+    private readonly InputAction m_CharacterControls_Dash;
     public struct CharacterControlsActions
     {
         private @PlayerInput m_Wrapper;
@@ -394,6 +416,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         public InputAction @Run => m_Wrapper.m_CharacterControls_Run;
         public InputAction @Shoot => m_Wrapper.m_CharacterControls_Shoot;
         public InputAction @Use => m_Wrapper.m_CharacterControls_Use;
+        public InputAction @Dash => m_Wrapper.m_CharacterControls_Dash;
         public InputActionMap Get() { return m_Wrapper.m_CharacterControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -415,6 +438,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Use.started += instance.OnUse;
             @Use.performed += instance.OnUse;
             @Use.canceled += instance.OnUse;
+            @Dash.started += instance.OnDash;
+            @Dash.performed += instance.OnDash;
+            @Dash.canceled += instance.OnDash;
         }
 
         private void UnregisterCallbacks(ICharacterControlsActions instance)
@@ -431,6 +457,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Use.started -= instance.OnUse;
             @Use.performed -= instance.OnUse;
             @Use.canceled -= instance.OnUse;
+            @Dash.started -= instance.OnDash;
+            @Dash.performed -= instance.OnDash;
+            @Dash.canceled -= instance.OnDash;
         }
 
         public void RemoveCallbacks(ICharacterControlsActions instance)
@@ -517,6 +546,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         void OnRun(InputAction.CallbackContext context);
         void OnShoot(InputAction.CallbackContext context);
         void OnUse(InputAction.CallbackContext context);
+        void OnDash(InputAction.CallbackContext context);
     }
     public interface IKeyboardCharacterControlsActions
     {
