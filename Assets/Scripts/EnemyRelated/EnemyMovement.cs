@@ -20,12 +20,26 @@ public class EnemyMovement : MonoBehaviour
 
     private void Update()
     {
+        HandleRotation();
+        HandleCombat(); 
+    }
+
+    private void HandleCombat() {
         float distance = Vector3.Distance(target.position, transform.position);
-        if (distance <= radius && canAttack) {
+        if (distance <= radius && canAttack)
+        {
             canAttack = false;
             animator.SetTrigger("Punch");
             StartCoroutine(AttackCooldown());
         }
+    }
+
+    private void HandleRotation() {
+        float rotationSpeed = 5f;
+        Vector3 newDirection = target.position - transform.position;
+        newDirection.y = 0f;
+        Quaternion targetRotation = Quaternion.LookRotation(newDirection);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
     }
 
     private void OnDrawGizmosSelected()
@@ -36,6 +50,7 @@ public class EnemyMovement : MonoBehaviour
 
     IEnumerator AttackCooldown() {
         yield return new WaitForSeconds(cooldown);
+        animator.ResetTrigger("Punch");
         canAttack = true;
     }
 }
