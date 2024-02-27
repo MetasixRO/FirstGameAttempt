@@ -12,6 +12,7 @@ interface IInteractable
 
 public class InteractorScript : MonoBehaviour
 {
+    private bool canInteract;
 
     public delegate void PromptManager(bool isActive, string prompText = "default");
     public static event PromptManager Manage;
@@ -36,6 +37,7 @@ public class InteractorScript : MonoBehaviour
 
     private void Awake()
     {
+        canInteract = true;
         input = new PlayerInput();
         input.CharacterControls.Use.performed += ctx => interactPressed = ctx.ReadValueAsButton();
     }
@@ -60,9 +62,13 @@ public class InteractorScript : MonoBehaviour
                 Manage(true, interactable.InteractionPrompt());
             }
 
-            if (interactable != null && interactPressed)
+            if (interactable != null && interactPressed && canInteract)
             {
                 interactable.Interact();
+                if (colliders[0].tag == "FriendlyNPC") {
+                    canInteract = false;
+                    StartCoroutine(Delay(1.0f));
+                }
             }
         }
         else {
@@ -70,6 +76,11 @@ public class InteractorScript : MonoBehaviour
                 Manage(false);
             }
         }
+    }
+
+    private IEnumerator Delay(float timeToDelay) {
+        yield return new WaitForSeconds(timeToDelay);
+        canInteract = true;
     }
 
     void OnEnable()
