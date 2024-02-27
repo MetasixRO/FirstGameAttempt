@@ -9,6 +9,7 @@ public class EnemyMovement : MonoBehaviour
     private bool canAttack;
     private float cooldown;
     private Animator animator;
+    int isRunningHash;
 
     private void Start()
     {
@@ -16,12 +17,20 @@ public class EnemyMovement : MonoBehaviour
         animator = GetComponent<Animator>();
         cooldown = 1f;
         canAttack = true;
+        isRunningHash = Animator.StringToHash("Running");
     }
 
     private void Update()
     {
+        HandleMovement();
         HandleRotation();
         HandleCombat(); 
+    }
+
+    private void HandleMovement() {
+        if (!animator.GetBool(isRunningHash)) { 
+            animator.SetBool(isRunningHash, true);
+        }
     }
 
     private void HandleCombat() {
