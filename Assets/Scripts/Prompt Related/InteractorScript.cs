@@ -65,10 +65,8 @@ public class InteractorScript : MonoBehaviour
             if (interactable != null && interactPressed && canInteract)
             {
                 interactable.Interact();
-                if (colliders[0].tag == "FriendlyNPC") {
-                    canInteract = false;
-                    StartCoroutine(Delay(1.0f));
-                }
+                canInteract = false;
+                StartCoroutine(Delay(1.0f));
             }
         }
         else {

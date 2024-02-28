@@ -8,6 +8,7 @@ public class CharacterMovement : MonoBehaviour
     Animator animator;
     int isWalkingHash;
     int isRunningHash;
+    private bool freeze;
    
 
     PlayerInput input;
@@ -18,7 +19,11 @@ public class CharacterMovement : MonoBehaviour
 
     private void Awake()
     {
-        input = new PlayerInput();
+        freeze = false;
+        ManageDialogueBox.dialogueTriggered += ManageFreeze;
+        DialogueManager.dialogueEnded += ManageFreeze;
+
+       input = new PlayerInput();
 
         //ctx :  current context
         input.CharacterControls.Movement.performed += ctx =>
@@ -38,8 +43,11 @@ public class CharacterMovement : MonoBehaviour
 
     void Update()
     {
-        handleMovement();
-        handleRotation();
+        if (!freeze)
+        {
+            handleMovement();
+            handleRotation();
+        }
     }
 
     void handleRotation() { 
@@ -79,7 +87,20 @@ public class CharacterMovement : MonoBehaviour
         }
     }
 
-    
+    private void ManageFreeze() {
+        if (freeze)
+        {
+            freeze = false;
+        }
+        else { 
+            freeze = true;
+            animator.SetBool(isWalkingHash, false);
+            animator.SetBool(isRunningHash, false);
+        }
+    }
+
+
+
 
     void OnEnable()
     {

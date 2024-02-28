@@ -5,14 +5,16 @@ using UnityEngine.UI;
 
 public class ManageDialogueBox : MonoBehaviour,IInteractable
 {
-    private DialogueTrigger trigger;
+    public delegate void DialogueEvent();
+    public static event DialogueEvent dialogueTriggered;
+
     private DialogueManager manager;
     private bool firstInteract;
+    public Dialogue dialogue;
     public Image continueButton;
 
     private void Start()
     {
-        trigger = GetComponent<DialogueTrigger>();
         manager = ManagerTracker.instance.dialogueManager;
         firstInteract = true;
         continueButton.enabled = false;
@@ -28,7 +30,10 @@ public class ManageDialogueBox : MonoBehaviour,IInteractable
     {
         if (firstInteract)
         {
-            trigger.TriggerDialogue();
+            if (dialogueTriggered != null) {
+                dialogueTriggered();
+            }
+            manager.StartDialogue(dialogue);
             firstInteract = false;
         }
         else {
