@@ -7,19 +7,14 @@ public class EnemyHealthBar : MonoBehaviour
 {
     public Slider slider;
 
-    public void Start()
-    {
-        Enemy.SetEnemyHealth += SetHealth;
-    }
-
-    public void SetMaxHealth(float health)
+    public void SetMaxHealth(int enemyID, float health)
     {
         slider.maxValue = health;
         slider.value = health;
     }
 
-    public void SetHealth(float health)
+    public void SetHealth( float health)
     {
-        slider.value = health;
+            slider.value = health;
     }
 }

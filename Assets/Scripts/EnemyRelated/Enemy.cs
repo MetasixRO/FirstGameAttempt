@@ -4,21 +4,25 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-
-    public delegate void ModifyEnemyHealthbar(float health);
-    public static event ModifyEnemyHealthbar SetEnemyHealth;
-
+    private int enemyID;
     private Animator animator;
-    public float maxHealth = 100;
+    public float maxHealth;
     float currentHealth;
+    private EnemyHealthBar healthBar;
 
-    // Start is called before the first frame update
     void Start()
     {
+        EnemyStats stats = GetComponent<EnemyStats>();
+        enemyID = stats.GetId();
+        maxHealth = stats.GetHealth();
+
+        healthBar = GetComponentInChildren<EnemyHealthBar>();
+
         currentHealth = maxHealth;
-        if (SetEnemyHealth != null) {
-            SetEnemyHealth(maxHealth);
+        if (healthBar != null) {
+            healthBar.SetHealth(currentHealth);
         }
+
         animator = GetComponent<Animator>();
     }
 
@@ -26,9 +30,10 @@ public class Enemy : MonoBehaviour
     //declar o functie publica TakeDamage (pentru a putea fi apelata din script-ul Combat)
     public void TakeDamage(float damage) { 
         currentHealth -= damage;
-       
-        if (SetEnemyHealth != null) {
-            SetEnemyHealth(currentHealth);
+
+        if (healthBar != null)
+        {
+            healthBar.SetHealth(currentHealth);
         }
 
         animator.SetTrigger("Hurt");

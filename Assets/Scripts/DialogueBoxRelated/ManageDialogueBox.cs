@@ -10,7 +10,6 @@ public class ManageDialogueBox : MonoBehaviour,IInteractable
 
     private DialogueManager manager;
     private bool firstInteract;
-    public Dialogue dialogue;
     public Image continueButton;
 
     private void Start()
@@ -33,7 +32,7 @@ public class ManageDialogueBox : MonoBehaviour,IInteractable
             if (dialogueTriggered != null) {
                 dialogueTriggered();
             }
-            manager.StartDialogue(dialogue);
+            GetComponent<DialogueTrigger>().BeginDialogue();
             firstInteract = false;
         }
         else {

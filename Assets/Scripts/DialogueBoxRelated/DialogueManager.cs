@@ -20,6 +20,7 @@ public class DialogueManager : MonoBehaviour
     private void Start()
     {
         sentences = new Queue<string>();
+        DialogueTrigger.startDialogue += StartDialogue;
     }
 
     public void StartDialogue(Dialogue dialogue) {
