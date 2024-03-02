@@ -311,15 +311,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3908186071195390161, guid: 99522760dea2fad49830d37037ed51e6, type: 3}
       propertyPath: m_Name
-      value: HealthKit (1)
+      value: LargeHealthKit
       objectReference: {fileID: 0}
     - target: {fileID: 3908186071195390161, guid: 99522760dea2fad49830d37037ed51e6, type: 3}
       propertyPath: m_Layer
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4429143083158555243, guid: 99522760dea2fad49830d37037ed51e6, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.5038
+      objectReference: {fileID: 0}
+    - target: {fileID: 4429143083158555243, guid: 99522760dea2fad49830d37037ed51e6, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.5038
+      objectReference: {fileID: 0}
+    - target: {fileID: 4429143083158555243, guid: 99522760dea2fad49830d37037ed51e6, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.5038
+      objectReference: {fileID: 0}
+    - target: {fileID: 4429143083158555243, guid: 99522760dea2fad49830d37037ed51e6, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -10.295221
+      value: -9.67
       objectReference: {fileID: 0}
     - target: {fileID: 4429143083158555243, guid: 99522760dea2fad49830d37037ed51e6, type: 3}
       propertyPath: m_LocalPosition.y
@@ -868,7 +880,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7c4900c08a397c44a806c92f9530f88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prompt: Use Medkit
+  healValue: 50
+  prompt: Use Large Medkit
 --- !u!4 &235759393 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4429143083158555243, guid: 99522760dea2fad49830d37037ed51e6, type: 3}
@@ -1078,7 +1091,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4429143083158555243, guid: 99522760dea2fad49830d37037ed51e6, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -8.035222
+      value: -6.83
       objectReference: {fileID: 0}
     - target: {fileID: 4429143083158555243, guid: 99522760dea2fad49830d37037ed51e6, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2397,6 +2410,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7c4900c08a397c44a806c92f9530f88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  healValue: 15
   prompt: Use Medkit
 --- !u!65 &556143071
 BoxCollider:
@@ -4831,9 +4845,6 @@ PrefabInstance:
       addedObject: {fileID: 1004609521}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 6fc660d8d83f30b4aa00bbdc203090c5, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1004609520}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 6fc660d8d83f30b4aa00bbdc203090c5, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 1004609519}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 6fc660d8d83f30b4aa00bbdc203090c5, type: 3}
       insertIndex: -1
@@ -4934,18 +4945,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d87fe13ee69b2ba44a922380e34715d4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1004609520
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1004609514}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1fa4a67eb091d0b479d9d4842f972884, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
@@ -5949,9 +5948,6 @@ PrefabInstance:
       addedObject: {fileID: 1985872010}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 6c7c4f533cbb4d542badfbda97cd952a, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1985872012}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 6c7c4f533cbb4d542badfbda97cd952a, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 1985872014}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 6c7c4f533cbb4d542badfbda97cd952a, type: 3}
       insertIndex: -1
@@ -6860,9 +6856,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 6fc660d8d83f30b4aa00bbdc203090c5, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2141299602}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 6fc660d8d83f30b4aa00bbdc203090c5, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2141299604}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 6fc660d8d83f30b4aa00bbdc203090c5, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2141299605}
@@ -8986,24 +8979,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be53b0e190ecc51419300ce0588bc8b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHealth: 100
   attackPoint: {fileID: 1925273229}
   attackRange: 5
   enemyLayers:
     serializedVersion: 2
     m_Bits: 128
---- !u!114 &1985872012
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1985872004}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c406bb8d4f3a13343abb15c9232ab0a0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHealth: 100
 --- !u!114 &1985872014
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9308,19 +9289,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 6fc660d8d83f30b4aa00bbdc203090c5, type: 3}
   m_PrefabInstance: {fileID: 1402141648}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2141299604
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2141299599}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1fa4a67eb091d0b479d9d4842f972884, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHealth: 100
 --- !u!114 &2141299605
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9333,6 +9301,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d87fe13ee69b2ba44a922380e34715d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHealth: 0
 --- !u!136 &2141299606
 CapsuleCollider:
   m_ObjectHideFlags: 0

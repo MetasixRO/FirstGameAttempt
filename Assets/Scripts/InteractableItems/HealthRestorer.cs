@@ -8,6 +8,7 @@ public class HealthRestorer : MonoBehaviour, IInteractable
     public delegate void HealPlayer(int amountRestored);
     public static event HealPlayer MedpackHeal;
 
+    public int healValue = 15;
     public string prompt;
     public string InteractionPrompt() {
         return prompt;
@@ -15,7 +16,7 @@ public class HealthRestorer : MonoBehaviour, IInteractable
 
     public void Interact() {
         if (MedpackHeal != null) {
-            MedpackHeal(15);
+            MedpackHeal(healValue);
         }
         gameObject.SetActive(false);
     }

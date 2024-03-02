@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-
     public delegate void ModifyHealthbar(float health);
     public static event ModifyHealthbar SetHealth;
 
@@ -51,16 +50,19 @@ public class Player : MonoBehaviour
         this.enabled = false;
     }
 
-    public void RestoreHealth(int amount) {
+    public void RestoreHealth(int amount)
+    {
         if (currentHealth + amount > maxHealth)
         {
             currentHealth = maxHealth;
         }
-        else {
+        else
+        {
             currentHealth += amount;
         }
 
-        if (SetHealth != null) {
+        if (SetHealth != null)
+        {
             SetHealth(currentHealth);
         }
     }

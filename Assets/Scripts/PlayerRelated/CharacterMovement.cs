@@ -22,6 +22,7 @@ public class CharacterMovement : MonoBehaviour
         freeze = false;
         ManageDialogueBox.dialogueTriggered += ManageFreeze;
         DialogueManager.dialogueEnded += ManageFreeze;
+        WeaponPrompt.ChangeWeapon += ChangeStance;
 
        input = new PlayerInput();
 
@@ -99,8 +100,19 @@ public class CharacterMovement : MonoBehaviour
         }
     }
 
+    private void ChangeStance(int weaponID)
+    {
+        switch (weaponID)
+        {
+            case 0:
+                animator.SetBool("isGreatSword", true);
+                break;
+            case 1:
+                animator.SetBool("isGreatSword", false);
+                break;
+        }
 
-
+    }
 
     void OnEnable()
     {

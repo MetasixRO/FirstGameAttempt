@@ -10,7 +10,7 @@ public class HealthBar : MonoBehaviour
 
     public void Start()
     {
-        Player.SetHealth += SetHealth;
+        Combat.SetHealth += SetHealth;
     }
 
     public void SetMaxHealth(float health) {

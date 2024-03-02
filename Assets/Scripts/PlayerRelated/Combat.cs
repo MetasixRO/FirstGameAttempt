@@ -4,9 +4,18 @@ using UnityEngine;
 
 public class Combat : MonoBehaviour
 {
-    private float attackDamage = 40;
-    private bool canAttack = true;
-    private float attackCooldown = 1.0f;
+
+    public delegate void ModifyHealthbar(float health);
+    public static event ModifyHealthbar SetHealth;
+
+
+    [SerializeField] private float maxHealth = 100;
+    private float currentHealth;
+
+    private float attackDamage;
+    private bool canAttack;
+    private float attackCooldown;
+    private bool attackPressed;
 
     Animator animator;
     int isAttackingHash;
@@ -17,7 +26,6 @@ public class Combat : MonoBehaviour
 
     PlayerInput input;
 
-    bool attackPressed;
 
     private void Awake()
     {
@@ -27,16 +35,22 @@ public class Combat : MonoBehaviour
     }
 
 
-    // Start is called before the first frame update
     void Start()
     {
+        HealthRestorer.MedpackHeal += RestoreHealth;
         WeaponPrompt.ChangeWeaponStats += ChangeStatsForWeapon;
-        WeaponPrompt.ChangeWeapon += ChangeStance;
+
         animator = GetComponent<Animator>();
         isAttackingHash = Animator.StringToHash("isAttacking");
+
+        currentHealth = maxHealth;
+        if (SetHealth != null)
+        {
+            SetHealth(currentHealth);
+        }
     }
 
-    // Update is called once per frame
+
     void Update()
     {
         bool isAttacking = animator.GetBool(isAttackingHash);
@@ -76,23 +90,10 @@ public class Combat : MonoBehaviour
         canAttack = true;
     }
 
-    private void ChangeStance(int weaponID) {
-        switch (weaponID)
-        {
-            case 0:
-                animator.SetBool("isGreatSword", true);
-                break;
-            case 1:
-                animator.SetBool("isGreatSword", false);
-                break;
-        }
-            
-    }
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("EnemyWeapon")) {
-            GetComponent<Player>().TakeDamage(15);
+            TakeDamage(15);
         }
     }
 
@@ -112,6 +113,50 @@ public class Combat : MonoBehaviour
         foreach (Collider enemy in hitEnemies)
         {
             enemy.GetComponent<EnemyCombat>().ClearCanReceiveDamage();
+        }
+    }
+
+
+    public void TakeDamage(int damage)
+    {
+        currentHealth -= damage;
+        if (SetHealth != null)
+        {
+            SetHealth(currentHealth);
+        }
+
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
+    }
+
+    void Die()
+    {
+        //Animation + Disable enemy
+        animator.SetBool("isDead", true);
+
+
+        GetComponent<Collider>().enabled = false;
+        GetComponent<CharacterController>().enabled = false;
+
+        this.enabled = false;
+    }
+
+    public void RestoreHealth(int amount)
+    {
+        if (currentHealth + amount > maxHealth)
+        {
+            currentHealth = maxHealth;
+        }
+        else
+        {
+            currentHealth += amount;
+        }
+
+        if (SetHealth != null)
+        {
+            SetHealth(currentHealth);
         }
     }
 
