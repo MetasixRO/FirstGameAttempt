@@ -8,6 +8,9 @@ public class Combat : MonoBehaviour
     public delegate void ModifyHealthbar(float health);
     public static event ModifyHealthbar SetHealth;
 
+    public delegate void ManageDealDamage(float cooldown, float damage = 0);
+    public static event ManageDealDamage ManageWeapon;
+
 
     [SerializeField] private float maxHealth = 100;
     private float currentHealth;
@@ -39,6 +42,7 @@ public class Combat : MonoBehaviour
     {
         HealthRestorer.MedpackHeal += RestoreHealth;
         WeaponPrompt.ChangeWeaponStats += ChangeStatsForWeapon;
+        EnemyDealDamage.PlayerReceiveDamage += TakeDamage;
 
         animator = GetComponent<Animator>();
         isAttackingHash = Animator.StringToHash("isAttacking");
@@ -58,6 +62,9 @@ public class Combat : MonoBehaviour
         
         if (attackPressed && canAttack)
         {
+            if (ManageWeapon != null) {
+                ManageWeapon(attackCooldown, attackDamage);
+            }
             handleAttack();
         }
 
@@ -75,12 +82,8 @@ public class Combat : MonoBehaviour
 
         Collider[] hitEnemies = Physics.OverlapSphere(attackPoint.position, attackRange, enemyLayers);
 
-        foreach (Collider enemy in hitEnemies) {
-            enemy.GetComponent<EnemyCombat>().SetCanReceiveDamage(attackDamage);
-        }
-
         //Incepe o rutina separata (in acelasi Thread) pentru a reseta cooldown
-        StartCoroutine(resetAttackCooldown(hitEnemies));
+        StartCoroutine(resetAttackCooldown());
     }
 
 
@@ -90,12 +93,14 @@ public class Combat : MonoBehaviour
         canAttack = true;
     }
 
+    /*
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("EnemyWeapon")) {
             TakeDamage(15);
         }
     }
+    */
 
     private void OnDrawGizmosSelected()
     {
@@ -106,18 +111,18 @@ public class Combat : MonoBehaviour
     }
 
 
-    IEnumerator resetAttackCooldown(Collider[] hitEnemies)
+    IEnumerator resetAttackCooldown()
     {
         yield return new WaitForSeconds(attackCooldown);
-        canAttack = true;
-        foreach (Collider enemy in hitEnemies)
+        if (ManageWeapon != null)
         {
-            enemy.GetComponent<EnemyCombat>().ClearCanReceiveDamage();
+            ManageWeapon(attackCooldown);
         }
+        canAttack = true;
     }
 
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
         currentHealth -= damage;
         if (SetHealth != null)

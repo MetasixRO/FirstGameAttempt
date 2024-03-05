@@ -1,12 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemyCombat : MonoBehaviour
 {
-
-    private bool canReceiveDamage;
-    private float damageReceived;
 
     private Animator animator;
     public float maxHealth;
@@ -15,11 +13,11 @@ public class EnemyCombat : MonoBehaviour
 
     void Start()
     {
-        canReceiveDamage = false;
-        damageReceived = 0;
-
         EnemyStats stats = GetComponent<EnemyStats>();
+        
         maxHealth = stats.GetHealth();
+
+        GetComponentInChildren<EnemyDealDamage>().SetDamage(stats.GetDamage());
 
         healthBar = GetComponentInChildren<EnemyHealthBar>();
 
@@ -30,24 +28,6 @@ public class EnemyCombat : MonoBehaviour
         }
 
         animator = GetComponent<Animator>();
-    }
-
-    public void SetCanReceiveDamage(float damageAmount) { 
-        canReceiveDamage=true;
-        if (damageReceived == 0) { 
-            damageReceived = damageAmount;
-        }
-    }
-
-    public void ClearCanReceiveDamage() {
-        canReceiveDamage = false;
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("PlayerWeapon") && canReceiveDamage) {
-            TakeDamage(damageReceived);
-        }
     }
 
     public void TakeDamage(float damage)

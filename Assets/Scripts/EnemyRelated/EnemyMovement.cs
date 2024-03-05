@@ -11,6 +11,8 @@ public class EnemyMovement : MonoBehaviour
     private Animator animator;
     int isRunningHash;
 
+    private EnemyDealDamage damageDealerManager;
+
     private void Start()
     {
         target = PlayerTracker.instance.player.transform;
@@ -18,6 +20,8 @@ public class EnemyMovement : MonoBehaviour
         cooldown = 1f;
         canAttack = true;
         isRunningHash = Animator.StringToHash("Running");
+
+        damageDealerManager = GetComponentInChildren<EnemyDealDamage>();
     }
 
     private void Update()
@@ -38,6 +42,12 @@ public class EnemyMovement : MonoBehaviour
         if (distance <= radius && canAttack)
         {
             canAttack = false;
+
+            if (damageDealerManager != null)
+            {
+                damageDealerManager.ManageWeaponDamageDealing();
+            }
+
             animator.SetTrigger("Punch");
             StartCoroutine(AttackCooldown());
         }
@@ -60,6 +70,12 @@ public class EnemyMovement : MonoBehaviour
     IEnumerator AttackCooldown() {
         yield return new WaitForSeconds(cooldown);
         animator.ResetTrigger("Punch");
+
+        if (damageDealerManager != null)
+        {
+            damageDealerManager.ManageWeaponDamageDealing();
+        }
+
         canAttack = true;
     }
 }
