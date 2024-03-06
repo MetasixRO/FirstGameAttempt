@@ -15,4 +15,4 @@ MonoBehaviour:
   weaponName: Knife
   ID: 1
   cooldown: 1
-  damage: 25
+  damage: 10

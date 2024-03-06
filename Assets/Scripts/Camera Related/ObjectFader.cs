@@ -7,10 +7,12 @@ public class ObjectFader : MonoBehaviour
     public bool doFade;
     private Material material;
     float originalOpacity;
-    public float fadeSpeed,fadeAmount;
+    private float fadeSpeed,fadeAmount;
 
     private void Start()
     {
+        fadeSpeed = 10f;
+        fadeAmount = 0.5f;
         doFade = false;
         material = GetComponent<Renderer>().material;
         originalOpacity = material.color.a;

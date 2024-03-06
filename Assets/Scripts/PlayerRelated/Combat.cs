@@ -23,10 +23,6 @@ public class Combat : MonoBehaviour
     Animator animator;
     int isAttackingHash;
 
-    public Transform attackPoint;
-    public float attackRange = 1.0f;
-    public LayerMask enemyLayers;
-
     PlayerInput input;
 
 
@@ -68,7 +64,7 @@ public class Combat : MonoBehaviour
             handleAttack();
         }
 
-        if (!attackPressed && isAttacking)
+        if (isAttacking)
         {
             animator.SetBool(isAttackingHash, false);
         }
@@ -80,9 +76,6 @@ public class Combat : MonoBehaviour
         animator.SetBool(isAttackingHash, true);
 
 
-        Collider[] hitEnemies = Physics.OverlapSphere(attackPoint.position, attackRange, enemyLayers);
-
-        //Incepe o rutina separata (in acelasi Thread) pentru a reseta cooldown
         StartCoroutine(resetAttackCooldown());
     }
 
@@ -91,23 +84,6 @@ public class Combat : MonoBehaviour
         attackDamage = damage;
         attackCooldown = cooldown;
         canAttack = true;
-    }
-
-    /*
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("EnemyWeapon")) {
-            TakeDamage(15);
-        }
-    }
-    */
-
-    private void OnDrawGizmosSelected()
-    {
-        if (attackPoint == null)
-            return;
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(attackPoint.position, attackRange);
     }
 
 
@@ -119,6 +95,7 @@ public class Combat : MonoBehaviour
             ManageWeapon(attackCooldown);
         }
         canAttack = true;
+        //animator.SetBool(isAttackingHash, false);
     }
 
 

@@ -15,4 +15,4 @@ MonoBehaviour:
   weaponName: Long Sword
   ID: 0
   cooldown: 1.2
-  damage: 50
+  damage: 15

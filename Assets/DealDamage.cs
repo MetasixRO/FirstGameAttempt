@@ -22,6 +22,7 @@ public class DealDamage : MonoBehaviour
         if (!canDealDamage)
         {
             canDealDamage = true;
+            Debug.Log(attackDamage);
         }
         else {
             canDealDamage = false;

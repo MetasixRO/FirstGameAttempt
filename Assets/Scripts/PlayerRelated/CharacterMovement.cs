@@ -51,7 +51,7 @@ public class CharacterMovement : MonoBehaviour
         }
     }
 
-    void handleRotation() { 
+    public void handleRotation() { 
         Vector3 currentPosition = transform.position;
 
         Vector3 newPosition = new Vector3(currentMovement.x, 0, currentMovement.y);
@@ -61,7 +61,7 @@ public class CharacterMovement : MonoBehaviour
         transform.LookAt(positionToLootAt);
     }
 
-    void handleMovement()
+    public void handleMovement()
     {
         bool isRunning = animator.GetBool(isRunningHash);
         bool isWalking = animator.GetBool(isWalkingHash);

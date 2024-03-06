@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Base
   m_EditorClassIdentifier: 
   id: 1
-  damage: 15
+  damage: 7
   health: 100
