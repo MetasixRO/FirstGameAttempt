@@ -12,7 +12,7 @@ interface IInteractable
 
 public class InteractorScript : MonoBehaviour
 {
-    private bool canInteract;
+    private bool canInteract = true;
 
     public delegate void PromptManager(bool isActive, string prompText = "default");
     public static event PromptManager Manage;
@@ -29,18 +29,9 @@ public class InteractorScript : MonoBehaviour
     //Numarul de obiecte gasite
     private int numFound;
 
-    PlayerInput input;
-
     bool interactPressed;
 
     private IInteractable interactable;
-
-    private void Awake()
-    {
-        canInteract = true;
-        input = new PlayerInput();
-        input.CharacterControls.Use.performed += ctx => interactPressed = ctx.ReadValueAsButton();
-    }
 
     private void OnDrawGizmosSelected()
     {
@@ -50,7 +41,6 @@ public class InteractorScript : MonoBehaviour
         Gizmos.DrawWireSphere(interactorSource.position, interactRange);
     }
 
-    // Update is called once per frame
     void Update()
     {
         numFound = Physics.OverlapSphereNonAlloc(interactorSource.position, interactRange, colliders, interactLayerMask);
@@ -76,18 +66,16 @@ public class InteractorScript : MonoBehaviour
         }
     }
 
+    public void ReceiveInteractButtonStatus(bool receivedInteractPressed) { 
+        interactPressed = receivedInteractPressed;
+    }
+
     private IEnumerator Delay(float timeToDelay) {
         yield return new WaitForSeconds(timeToDelay);
         canInteract = true;
     }
 
-    void OnEnable()
-    {
-        input.CharacterControls.Enable();
-    }
-
-    void OnDisable()
-    {
-        input.CharacterControls.Disable();
+    public void StopAllInteractions() {
+        interactPressed = false;
     }
 }

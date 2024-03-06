@@ -8,43 +8,13 @@ public class ManageDialogueBox : MonoBehaviour,IInteractable
     public delegate void DialogueEvent();
     public static event DialogueEvent dialogueTriggered;
 
-    private DialogueManager manager;
-    private bool firstInteract;
-    public Image continueButton;
-
-    private void Start()
-    {
-        manager = ManagerTracker.instance.dialogueManager;
-        firstInteract = true;
-        continueButton.enabled = false;
-        StartCoroutine(ShowContinueButton(1.0f));
-        DialogueManager.dialogueEnded += resetFirstInteract;
-    }
-
-    private void resetFirstInteract() {
-        firstInteract = true;
-    }
-
     public void Interact()
     {
-        if (firstInteract)
+        if (dialogueTriggered != null)
         {
-            if (dialogueTriggered != null) {
-                dialogueTriggered();
-            }
-            GetComponent<DialogueTrigger>().BeginDialogue();
-            firstInteract = false;
+            dialogueTriggered();
         }
-        else {
-            manager.DisplayNextSentence();
-            continueButton.enabled = false;
-            StartCoroutine(ShowContinueButton(1.0f));
-        }
-    }
-
-    private IEnumerator ShowContinueButton(float timer) {
-        yield return new WaitForSeconds(timer);
-        continueButton.enabled = true;
+        GetComponent<DialogueTrigger>().BeginDialogue();
     }
 
     public string InteractionPrompt()

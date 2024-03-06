@@ -4,7 +4,11 @@ using UnityEngine;
 
 public class LobbyState : BaseState
 {
+    private static LobbyState instance;
+
+
     private StateManager stateMachine;
+
 
     private int arenaStateID = -1;
     private bool arenaNextState = false;
@@ -14,16 +18,27 @@ public class LobbyState : BaseState
     private bool runPressed;
     private bool interactPressed;
 
-    private int isWalkingHash;
-    private int isRunningHash;
 
+    private LobbyState() { }
+
+    public static LobbyState Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = new LobbyState();
+            }
+            return instance;
+        }
+    }
 
 
     public override void EnterState(StateManager manager)
     {
         stateMachine = manager;
         WeaponPrompt.ChangeWeapon += SetArenaNextState;
-        DialogueTrigger.startDialogue += SetDialogueNextState;
+        ManageDialogueBox.dialogueTriggered += SetDialogueNextState;
 
         stateMachine.input.CharacterControls.Movement.performed += ctx =>
         {
@@ -33,9 +48,6 @@ public class LobbyState : BaseState
 
         stateMachine.input.CharacterControls.Run.performed += ctx => runPressed = ctx.ReadValueAsButton();
         stateMachine.input.CharacterControls.Use.performed += ctx => interactPressed = ctx.ReadValueAsButton();
-
-        isWalkingHash = Animator.StringToHash("isWalking");
-        isRunningHash = Animator.StringToHash("isRunning");
     }
 
     private void SetArenaNextState(int weaponID) { 
@@ -44,77 +56,40 @@ public class LobbyState : BaseState
         TransitionState();
     }
 
-    private void SetDialogueNextState(Dialogue dialogue) {
+    private void SetDialogueNextState() {
         arenaNextState = false;
         TransitionState();
     }
 
     public override void TransitionState()
     {
+        stateMachine.StartCoroutine(DelayTransition(0.2f));
+    }
+
+    IEnumerator DelayTransition(float delay)
+    {
+        yield return new WaitForSeconds(delay);
         if (arenaNextState)
         {
             switch (arenaStateID)
             {
-                case 0: stateMachine.SwitchState(new ArenaLongSword()); break;
-                case 1: stateMachine.SwitchState(new ArenaKnife()); break;
+                case 0: stateMachine.SwitchState(ArenaLongSword.Instance); break;
+                case 1: stateMachine.SwitchState(ArenaKnife.Instance); break;
             }
         }
-        else 
+        else
         {
-            stateMachine.SwitchState(new DialogueState());
+            stateMachine.movementHandler.StopAllMovement();
+            stateMachine.interactHandler.StopAllInteractions();
+            stateMachine.SwitchState(DialogueState.Instance);
         }
+
     }
 
     public override void UpdateState()
     {
-        HandleRotation();
-        HandleMovement();
-        HandleInteract();
-    }
-
-    private void HandleRotation() {
-        Vector3 currentPosition = PlayerTracker.instance.player.transform.position;
-
-        Vector3 newPosition = new Vector3(currentMovement.x, 0, currentMovement.y);
-
-        Vector3 positionToLootAt = currentPosition + newPosition;
-
-        PlayerTracker.instance.player.transform.LookAt(positionToLootAt);
-    }
-
-    private void HandleMovement() {
-        bool isRunning = stateMachine.animator.GetBool(isRunningHash);
-        bool isWalking = stateMachine.animator.GetBool(isWalkingHash);
-
-
-        if (movementPressed && !isWalking)
-        {
-            stateMachine.animator.SetBool(isWalkingHash, true);
-        }
-
-        if (!movementPressed && isWalking)
-        {
-            stateMachine.animator.SetBool(isWalkingHash, false);
-        }
-
-        if (movementPressed && runPressed && !isRunning)
-        {
-            stateMachine.animator.SetBool(isRunningHash, true);
-        }
-
-        if ((!movementPressed || !runPressed) && isRunning)
-        {
-            stateMachine.animator.SetBool(isRunningHash, false);
-        }
-
-        if (!runPressed && isRunning)
-        {
-            stateMachine.animator.SetBool(isRunningHash, false);
-        }
-    }
-
-    private void HandleInteract() { 
-        
+        stateMachine.movementHandler.ReceiveMovementData(currentMovement, movementPressed, runPressed);
+        stateMachine.interactHandler.ReceiveInteractButtonStatus(interactPressed);
     }
 
 }

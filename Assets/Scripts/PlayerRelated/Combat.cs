@@ -23,14 +23,10 @@ public class Combat : MonoBehaviour
     Animator animator;
     int isAttackingHash;
 
-    PlayerInput input;
-
 
     private void Awake()
     {
         canAttack = false;
-        input = new PlayerInput();
-        input.CharacterControls.Shoot.performed += ctx => attackPressed = ctx.ReadValueAsButton();
     }
 
 
@@ -142,13 +138,7 @@ public class Combat : MonoBehaviour
         }
     }
 
-    void OnEnable()
-    {
-        input.CharacterControls.Enable();
-    }
-
-    void OnDisable()
-    {
-        input.CharacterControls.Disable();
+    public void ReceiveAttackButtonStatus(bool receivedAttackPressed) { 
+        attackPressed = receivedAttackPressed;
     }
 }

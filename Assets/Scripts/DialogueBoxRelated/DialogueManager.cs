@@ -14,13 +14,17 @@ public class DialogueManager : MonoBehaviour
 
     public TextMeshProUGUI characterName;
     public TextMeshProUGUI dialogueText;
+    public Image continueButton;
 
     public Animator animator;
 
     private void Start()
     {
         sentences = new Queue<string>();
+        continueButton.enabled = false;
+        StartCoroutine(ShowContinueButton(1.0f));
         DialogueTrigger.startDialogue += StartDialogue;
+        DialogueState.AdvanceDialogue += DisplayNextSentence;
     }
 
     public void StartDialogue(Dialogue dialogue) {
@@ -39,14 +43,15 @@ public class DialogueManager : MonoBehaviour
     }
 
     public void DisplayNextSentence() {
-
         if (sentences.Count == 0) {
             EndDialogue();
             return;
         }
+        continueButton.enabled = false;
 
         string sentence = sentences.Dequeue();
         dialogueText.text = sentence;
+        StartCoroutine(ShowContinueButton(1.0f));
     }
 
     private void EndDialogue() {
@@ -54,5 +59,11 @@ public class DialogueManager : MonoBehaviour
         if (dialogueEnded != null) {
             dialogueEnded();
         }
+    }
+
+    private IEnumerator ShowContinueButton(float timer)
+    {
+        yield return new WaitForSeconds(timer);
+        continueButton.enabled = true;
     }
 }

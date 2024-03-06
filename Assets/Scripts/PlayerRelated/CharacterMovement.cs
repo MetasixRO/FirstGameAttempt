@@ -8,10 +8,6 @@ public class CharacterMovement : MonoBehaviour
     Animator animator;
     int isWalkingHash;
     int isRunningHash;
-    private bool freeze;
-   
-
-    PlayerInput input;
 
     Vector2 currentMovement;
     bool movementPressed;
@@ -19,20 +15,7 @@ public class CharacterMovement : MonoBehaviour
 
     private void Awake()
     {
-        freeze = false;
-        ManageDialogueBox.dialogueTriggered += ManageFreeze;
-        DialogueManager.dialogueEnded += ManageFreeze;
         WeaponPrompt.ChangeWeapon += ChangeStance;
-
-       input = new PlayerInput();
-
-        //ctx :  current context
-        input.CharacterControls.Movement.performed += ctx =>
-        {
-            currentMovement = ctx.ReadValue<Vector2>();
-            movementPressed = currentMovement.magnitude > 0;
-        };
-        input.CharacterControls.Run.performed += ctx => runPressed = ctx.ReadValueAsButton();
     }
     void Start()
     {
@@ -42,13 +25,16 @@ public class CharacterMovement : MonoBehaviour
         isRunningHash = Animator.StringToHash("isRunning");
     }
 
+    public void ReceiveMovementData(Vector2 receivedCurrentMovement, bool receivedMovementPressed, bool receivedRunPressed) {
+        currentMovement = receivedCurrentMovement;
+        movementPressed = receivedMovementPressed;
+        runPressed = receivedRunPressed;
+    }
+
     void Update()
     {
-        if (!freeze)
-        {
             handleMovement();
             handleRotation();
-        }
     }
 
     public void handleRotation() { 
@@ -88,16 +74,11 @@ public class CharacterMovement : MonoBehaviour
         }
     }
 
-    private void ManageFreeze() {
-        if (freeze)
-        {
-            freeze = false;
-        }
-        else { 
-            freeze = true;
-            animator.SetBool(isWalkingHash, false);
-            animator.SetBool(isRunningHash, false);
-        }
+    public void StopAllMovement() {
+        movementPressed = false;
+        runPressed = false;
+        animator.SetBool(isWalkingHash, false);
+        animator.SetBool(isRunningHash, false);
     }
 
     private void ChangeStance(int weaponID)
@@ -112,15 +93,5 @@ public class CharacterMovement : MonoBehaviour
                 break;
         }
 
-    }
-
-    void OnEnable()
-    {
-        input.CharacterControls.Enable();
-    }
-
-    void OnDisable()
-    {
-        input.CharacterControls.Disable();
     }
 }

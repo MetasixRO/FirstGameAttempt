@@ -5,8 +5,12 @@ using UnityEngine;
 public class StateManager : MonoBehaviour
 {
     private BaseState currentState;
-    public Animator animator;
     public PlayerInput input;
+    public GameObject player;
+    public InteractorScript interactHandler;
+    public CharacterMovement movementHandler;
+    public Combat attackHandler;
+
 
     private void Awake()
     {
@@ -15,8 +19,14 @@ public class StateManager : MonoBehaviour
 
     private void Start()
     {
-        currentState = new LobbyState();
-        animator = GetComponent<Animator>();
+        player = PlayerTracker.instance.player;
+
+        interactHandler = player.GetComponent<InteractorScript>();
+        movementHandler = player.GetComponent<CharacterMovement>();
+        attackHandler = player.GetComponent<Combat>();
+
+
+        currentState = LobbyState.Instance;
 
         currentState.EnterState(this);
     }
