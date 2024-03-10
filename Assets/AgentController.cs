@@ -11,7 +11,7 @@ public class AgentController : MonoBehaviour
     private void Start()
     {
         gameObject.SetActive(false);
-        DoorOpener.OpenDoor += ManageAgent;
+        CloseArenaDoor.CloseDoor += ManageAgent;
         agent = GetComponent<NavMeshAgent>();
     }
 

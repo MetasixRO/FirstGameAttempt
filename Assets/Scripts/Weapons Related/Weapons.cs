@@ -11,17 +11,10 @@ public class Weapons : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        for (int i = 0; i < weapons.Length; i++)
-        {
-            weapons[i].SetActive(false);
-        }
-        activeWeaponIndex = -1;
+        ResetActiveWeapons();
+        Combat.PlayerDead += ResetActiveWeapons;
+        ReturnToLobby.BackToLobby += ResetActiveWeapons;
         WeaponPrompt.ChangeWeapon += SwitchWeapon;
-    }
-
-    void Update()
-    {
-        
     }
 
     public void SwitchWeapon(int weaponID) {
@@ -31,5 +24,13 @@ public class Weapons : MonoBehaviour
         }
         activeWeaponIndex = weaponID;
         weapons[activeWeaponIndex].SetActive(true);
+    }
+
+    private void ResetActiveWeapons() {
+        for (int i = 0; i < weapons.Length; i++)
+        {
+            weapons[i].SetActive(false);
+        }
+        activeWeaponIndex = -1;
     }
 }

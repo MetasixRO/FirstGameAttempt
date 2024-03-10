@@ -34,7 +34,9 @@ public class DialogueState : BaseState
     {
         stateMachine = manager;
 
-        canAdvance = true;
+        canAdvance = false;
+
+        stateMachine.StartCoroutine(Delay(1.0f));
 
         stateMachine.input.CharacterControls.Use.performed += ctx => interactPressed = ctx.ReadValueAsButton();
 
@@ -56,7 +58,7 @@ public class DialogueState : BaseState
         {
             AdvanceDialogue();
             canAdvance = false;
-            stateMachine.StartCoroutine(Delay(0.2f));
+            stateMachine.StartCoroutine(Delay(1.0f));
         }
     }
 
@@ -68,6 +70,6 @@ public class DialogueState : BaseState
 
     IEnumerator DelayTransition(float delay) {
         yield return new WaitForSeconds(delay);
-        stateMachine.SwitchState(LobbyState.Instance);
+        stateMachine.SwitchState(stateMachine.GetPreviousState());
     }
 }

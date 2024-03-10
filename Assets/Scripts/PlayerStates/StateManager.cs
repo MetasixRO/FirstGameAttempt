@@ -5,6 +5,7 @@ using UnityEngine;
 public class StateManager : MonoBehaviour
 {
     private BaseState currentState;
+    private BaseState previousState;
     public PlayerInput input;
     public GameObject player;
     public InteractorScript interactHandler;
@@ -27,18 +28,35 @@ public class StateManager : MonoBehaviour
 
 
         currentState = LobbyState.Instance;
+        previousState = null;
 
         currentState.EnterState(this);
     }
 
     private void Update()
     {
+        //Debug.Log(currentState);
         currentState.UpdateState();
     }
 
     public void SwitchState(BaseState state) {
         currentState = state;
         currentState.EnterState(this);
+    }
+
+    public BaseState GetCurrentState() {
+        return currentState;
+    }
+
+    public BaseState GetPreviousState() {
+        return previousState;
+    }
+
+    public void SetPreviousState(BaseState state) { 
+        if(state != null)
+        {
+            previousState = state;
+        }
     }
 
     void OnEnable()

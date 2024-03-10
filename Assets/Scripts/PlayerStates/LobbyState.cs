@@ -9,8 +9,6 @@ public class LobbyState : BaseState
 
     private StateManager stateMachine;
 
-
-    private int arenaStateID = -1;
     private bool arenaNextState = false;
 
     private Vector2 currentMovement;
@@ -51,18 +49,21 @@ public class LobbyState : BaseState
     }
 
     private void SetArenaNextState(int weaponID) { 
-        arenaStateID = weaponID;
         arenaNextState = true;
         TransitionState();
     }
 
     private void SetDialogueNextState() {
-        arenaNextState = false;
-        TransitionState();
+        if (stateMachine.GetCurrentState() == this)
+        {
+            arenaNextState = false;
+            TransitionState();
+        }
     }
 
     public override void TransitionState()
     {
+        stateMachine.SetPreviousState(this);
         stateMachine.StartCoroutine(DelayTransition(0.2f));
     }
 
@@ -71,11 +72,7 @@ public class LobbyState : BaseState
         yield return new WaitForSeconds(delay);
         if (arenaNextState)
         {
-            switch (arenaStateID)
-            {
-                case 0: stateMachine.SwitchState(ArenaLongSword.Instance); break;
-                case 1: stateMachine.SwitchState(ArenaKnife.Instance); break;
-            }
+            stateMachine.SwitchState(ArenaState.Instance);
         }
         else
         {

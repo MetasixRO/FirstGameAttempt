@@ -10,11 +10,13 @@ public class WeaponSelectorDoor : MonoBehaviour, IInteractable
     private void Start()
     {
         animator = GetComponent<Animator>();
+        ReturnToLobby.BackToLobby += CloseDoor;
+        DeadState.RespawnPlayer += CloseDoor;
     }
 
     public void Interact()
     {
-        animator.Play("WeaponSelectorDoorOpen");
+        animator.SetTrigger("Open");
     }
 
     public string InteractionPrompt()
@@ -25,5 +27,9 @@ public class WeaponSelectorDoor : MonoBehaviour, IInteractable
         }
         else
             return "DefaultText";
+    }
+
+    private void CloseDoor() {
+        animator.SetTrigger("Close");
     }
 }

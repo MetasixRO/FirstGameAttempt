@@ -11,6 +11,9 @@ public class Combat : MonoBehaviour
     public delegate void ManageDealDamage(float cooldown, float damage = 0);
     public static event ManageDealDamage ManageWeapon;
 
+    public delegate void EnterDeathState();
+    public static event EnterDeathState PlayerDead;
+
 
     [SerializeField] private float maxHealth = 100;
     private float currentHealth;
@@ -64,6 +67,10 @@ public class Combat : MonoBehaviour
         {
             animator.SetBool(isAttackingHash, false);
         }
+
+        if (Input.GetKeyDown("p")) {
+            TakeDamage(90);
+        }
     }
 
     void handleAttack()
@@ -111,14 +118,14 @@ public class Combat : MonoBehaviour
 
     void Die()
     {
+        if (PlayerDead != null) {
+            PlayerDead();
+        }
         //Animation + Disable enemy
-        animator.SetBool("isDead", true);
+        animator.SetTrigger("isDead");
 
 
         GetComponent<Collider>().enabled = false;
-        GetComponent<CharacterController>().enabled = false;
-
-        this.enabled = false;
     }
 
     public void RestoreHealth(int amount)

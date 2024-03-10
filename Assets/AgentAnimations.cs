@@ -14,7 +14,7 @@ public class AgentAnimations : MonoBehaviour
 
     private EnemyDealDamage damageDealerManager;
 
-    private bool canAttack;
+    private bool canAttack,isLookingAtPlayer;
 
     private Transform player;
 
@@ -28,6 +28,7 @@ public class AgentAnimations : MonoBehaviour
         player = PlayerTracker.instance.player.transform;
         damageDealerManager = GetComponentInChildren<EnemyDealDamage>();
         canAttack = true;
+        isLookingAtPlayer = false;
     }
 
     void Update()
@@ -45,7 +46,7 @@ public class AgentAnimations : MonoBehaviour
 
     private void HandleCombat() {
         float distance = Vector3.Distance(player.position, gameObject.transform.position);
-        if (distance < 1.5f && canAttack) { 
+        if (distance < 1.5f && canAttack && isLookingAtPlayer) { 
             canAttack = false;
             if (damageDealerManager != null) {
                 damageDealerManager.ManageWeaponDamageDealing();
@@ -71,6 +72,10 @@ public class AgentAnimations : MonoBehaviour
             damageDealerManager.ManageWeaponDamageDealing();
         }
         canAttack = true;
+    }
+
+    public void SetLookingAtPlayer(bool value) {
+        isLookingAtPlayer = value;
     }
 
 }

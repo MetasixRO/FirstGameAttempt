@@ -5,6 +5,10 @@ using UnityEngine.InputSystem;
 
 public class CharacterMovement : MonoBehaviour
 {
+
+    public delegate void InitiateDash();
+    public static event InitiateDash Dash;
+
     Animator animator;
     int isWalkingHash;
     int isRunningHash;
@@ -12,10 +16,13 @@ public class CharacterMovement : MonoBehaviour
     Vector2 currentMovement;
     bool movementPressed;
     bool runPressed;
+    bool dashPressed;
 
     private void Awake()
     {
         WeaponPrompt.ChangeWeapon += ChangeStance;
+        Combat.PlayerDead += ResetStance;
+        ReturnToLobby.BackToLobby += ResetStance;
     }
     void Start()
     {
@@ -31,10 +38,15 @@ public class CharacterMovement : MonoBehaviour
         runPressed = receivedRunPressed;
     }
 
+    public void ReceiveDashStatus(bool receivedDashPressed) {
+        dashPressed = receivedDashPressed;
+    }
+
     void Update()
     {
             handleMovement();
             handleRotation();
+            handleDash();
     }
 
     public void handleRotation() { 
@@ -74,6 +86,12 @@ public class CharacterMovement : MonoBehaviour
         }
     }
 
+    public void handleDash() {
+        if (dashPressed && Dash != null) {
+            Dash();
+        }
+    }
+
     public void StopAllMovement() {
         movementPressed = false;
         runPressed = false;
@@ -93,5 +111,9 @@ public class CharacterMovement : MonoBehaviour
                 break;
         }
 
+    }
+
+    private void ResetStance() {
+        animator.SetBool("isGreatSword", false);
     }
 }
