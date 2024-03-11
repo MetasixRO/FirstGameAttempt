@@ -8,6 +8,7 @@ TagManager:
   - PlayerWeapon
   - EnemyWeapon
   - FriendlyNPC
+  - WorldLimit
   layers:
   - Default
   - TransparentFX

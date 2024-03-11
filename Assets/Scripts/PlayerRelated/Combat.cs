@@ -67,10 +67,11 @@ public class Combat : MonoBehaviour
         {
             animator.SetBool(isAttackingHash, false);
         }
-
+        //DEBUG***************************
         if (Input.GetKeyDown("p")) {
             TakeDamage(90);
         }
+        //DEBUG***************************
     }
 
     void handleAttack()

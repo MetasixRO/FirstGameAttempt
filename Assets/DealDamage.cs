@@ -5,13 +5,17 @@ using UnityEngine;
 public class DealDamage : MonoBehaviour
 {
     private bool canDealDamage;
+    private bool isDashing;
     private float attackDamage;
 
     private void Start()
     {
         attackDamage = 0;
         canDealDamage = false;
+        isDashing = false;
         Combat.ManageWeapon += ManageWeaponDamageDealing;
+        CharacterMovement.Dash += SetIsDashing;
+        NewDash.DashDone += ResetIsDashing;
     }
 
     private void ManageWeaponDamageDealing(float cooldown, float damage) {
@@ -21,7 +25,10 @@ public class DealDamage : MonoBehaviour
 
         if (!canDealDamage)
         {
-            canDealDamage = true;
+            if (!isDashing)
+            {
+                canDealDamage = true;
+            }
         }
         else {
             canDealDamage = false;
@@ -33,6 +40,16 @@ public class DealDamage : MonoBehaviour
         if (canDealDamage && other.CompareTag("Enemy")) {
             other.GetComponent<EnemyCombat>().TakeDamage(attackDamage);
         }
+    }
+
+    private void SetIsDashing()
+    {
+        isDashing = true;
+        canDealDamage = false;
+    }
+
+    private void ResetIsDashing() {
+        isDashing = false;
     }
 
 

@@ -9,9 +9,12 @@ public class CharacterMovement : MonoBehaviour
     public delegate void InitiateDash();
     public static event InitiateDash Dash;
 
+    private bool canDash;
+
     Animator animator;
     int isWalkingHash;
     int isRunningHash;
+    int isDashingHash;
 
     Vector2 currentMovement;
     bool movementPressed;
@@ -23,13 +26,17 @@ public class CharacterMovement : MonoBehaviour
         WeaponPrompt.ChangeWeapon += ChangeStance;
         Combat.PlayerDead += ResetStance;
         ReturnToLobby.BackToLobby += ResetStance;
+        NewDash.DashDone += EnableRootMotion;
     }
     void Start()
     {
+        canDash = true;
+
         animator = GetComponent<Animator>();
 
         isWalkingHash = Animator.StringToHash("isWalking");
         isRunningHash = Animator.StringToHash("isRunning");
+        isDashingHash = Animator.StringToHash("isDashing");
     }
 
     public void ReceiveMovementData(Vector2 receivedCurrentMovement, bool receivedMovementPressed, bool receivedRunPressed) {
@@ -87,8 +94,12 @@ public class CharacterMovement : MonoBehaviour
     }
 
     public void handleDash() {
-        if (dashPressed && Dash != null) {
+        if (dashPressed && Dash != null && canDash) {
+            canDash = false;
+            animator.SetBool(isDashingHash, true);
+            DisableRootMotion();
             Dash();
+            StartCoroutine(DashDelay(0.5f));
         }
     }
 
@@ -115,5 +126,19 @@ public class CharacterMovement : MonoBehaviour
 
     private void ResetStance() {
         animator.SetBool("isGreatSword", false);
+    }
+
+    private void DisableRootMotion() {
+        animator.applyRootMotion = false;
+    }
+
+    private void EnableRootMotion() {
+        animator.SetBool(isDashingHash, false);
+        animator.applyRootMotion = true;
+    }
+
+    private IEnumerator DashDelay(float delay) {
+        yield return new WaitForSeconds(delay);
+        canDash = true;
     }
 }

@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class NewDash : MonoBehaviour
 {
-    Animator animator;
+    public delegate void DashDoneEvent();
+    public static event DashDoneEvent DashDone;
 
     public float dashSpeed;
     public float dashTime;
@@ -17,8 +18,6 @@ public class NewDash : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        animator = GetComponent<Animator>();
-
         CharacterMovement.Dash += InitiateDash;
     }
 
@@ -26,13 +25,11 @@ public class NewDash : MonoBehaviour
     {
         if (isDashPressed && canDash)
         {
-            animator.applyRootMotion = false;
             StartCoroutine(PerformDash());
         }
     }
 
     private void InitiateDash() {
-        animator.applyRootMotion = false;
         StartCoroutine(PerformDash());
     }
 
@@ -44,15 +41,19 @@ public class NewDash : MonoBehaviour
             Vector3 startPosition = transform.position;
             Vector3 endPosition = startPosition + transform.forward * dashSpeed;
 
+            endPosition = CheckEndPosition(endPosition);
+
             float startTime = Time.time;
-            while (Time.time < startTime + dashTime)
+            while (Time.time < startTime + dashTime && transform.position != endPosition)
             {
                 float elapsedTime = (Time.time - startTime) / dashTime;
                 transform.position = Vector3.Lerp(startPosition, endPosition, elapsedTime);
                 yield return null;
             }
-
-            animator.applyRootMotion = true;
+            transform.position = endPosition;
+            if (DashDone != null) {
+                DashDone();
+            }
             yield return new WaitForSeconds(0.5f);
             canDash = true;
         }
@@ -60,5 +61,25 @@ public class NewDash : MonoBehaviour
 
     public void ReceiveDashButtonStatus(bool isPressed) { 
         isDashPressed = isPressed;
+    }
+
+    private Vector3 CheckEndPosition(Vector3 endPosition) {
+        Vector3 newEndPosition = endPosition;
+
+        Ray ray = new Ray(transform.position, transform.forward);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit, dashSpeed)) {
+            if (hit.collider != null)
+            {
+                if (hit.collider.gameObject.CompareTag("WorldLimit"))
+                {
+                    float distance = Vector3.Distance(transform.position, hit.point);
+                    float newDashSpeed = Mathf.Min(dashSpeed, distance);
+                    newEndPosition = transform.position + transform.forward * newDashSpeed;
+                }
+            }
+        }
+        return newEndPosition;
     }
 }
