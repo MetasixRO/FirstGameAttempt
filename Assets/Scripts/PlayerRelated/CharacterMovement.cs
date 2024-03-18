@@ -10,6 +10,7 @@ public class CharacterMovement : MonoBehaviour
     public static event InitiateDash Dash;
 
     private bool canDash;
+    private bool canRotate;
 
     Animator animator;
     int isWalkingHash;
@@ -27,10 +28,13 @@ public class CharacterMovement : MonoBehaviour
         Combat.PlayerDead += ResetStance;
         ReturnToLobby.BackToLobby += ResetStance;
         NewDash.DashDone += EnableRootMotion;
+        Combat.ManageWeapon += ManageRotation;
+        NewDash.DelayPassed += EnableDash;
     }
     void Start()
     {
         canDash = true;
+        canRotate = true;
 
         animator = GetComponent<Animator>();
 
@@ -56,14 +60,17 @@ public class CharacterMovement : MonoBehaviour
             handleDash();
     }
 
-    public void handleRotation() { 
-        Vector3 currentPosition = transform.position;
+    public void handleRotation() {
+        if (canRotate)
+        {
+            Vector3 currentPosition = transform.position;
 
-        Vector3 newPosition = new Vector3(currentMovement.x, 0, currentMovement.y);
+            Vector3 newPosition = new Vector3(currentMovement.x, 0, currentMovement.y);
 
-        Vector3 positionToLootAt = currentPosition + newPosition;
+            Vector3 positionToLootAt = currentPosition + newPosition;
 
-        transform.LookAt(positionToLootAt);
+            transform.LookAt(positionToLootAt);
+        }
     }
 
     public void handleMovement()
@@ -96,11 +103,15 @@ public class CharacterMovement : MonoBehaviour
     public void handleDash() {
         if (dashPressed && Dash != null && canDash) {
             canDash = false;
+            canRotate = false;
             animator.SetBool(isDashingHash, true);
             DisableRootMotion();
             Dash();
-            StartCoroutine(DashDelay(0.5f));
         }
+    }
+
+    private void EnableDash() {
+        canDash = true;
     }
 
     public void StopAllMovement() {
@@ -133,12 +144,17 @@ public class CharacterMovement : MonoBehaviour
     }
 
     private void EnableRootMotion() {
+        canRotate = true;
         animator.SetBool(isDashingHash, false);
         animator.applyRootMotion = true;
     }
 
-    private IEnumerator DashDelay(float delay) {
-        yield return new WaitForSeconds(delay);
-        canDash = true;
+    private void ManageRotation(float damage) {
+        if (canRotate) {
+            canRotate = false;
+        } else
+        {
+            canRotate = true;
+        }
     }
 }

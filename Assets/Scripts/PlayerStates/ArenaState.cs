@@ -37,18 +37,9 @@ public class ArenaState : BaseState
         ReturnToLobby.BackToLobby += SetLobbyNextState;
 
         stateMachine = manager;
-        stateMachine.input.CharacterControls.Movement.performed += ctx =>
-        {
-            currentMovement = ctx.ReadValue<Vector2>();
-            movementPressed = currentMovement.magnitude > 0;
-        };
-        stateMachine.input.CharacterControls.Use.performed += ctx => interactPressed = ctx.ReadValueAsButton();
-        stateMachine.input.CharacterControls.Shoot.performed += ctx => attackPressed = ctx.ReadValueAsButton();
-        stateMachine.input.CharacterControls.Dash.performed += ctx => dashPressed = ctx.ReadValueAsButton();
 
-        dialogueNextState = false;
-        deadNextState = false;
-        lobbyNextState = false;
+        SubscribeToInputs();
+        InitializeNextState();
     }
 
     public override void TransitionState()
@@ -68,7 +59,8 @@ public class ArenaState : BaseState
         {
             stateMachine.SwitchState(DeadState.Instance);
         }
-        else if (lobbyNextState) { 
+        else if (lobbyNextState)
+        {
             stateMachine.SwitchState(LobbyState.Instance);
         }
 
@@ -105,5 +97,22 @@ public class ArenaState : BaseState
             lobbyNextState = true;
             TransitionState();
         }
+    }
+
+    private void InitializeNextState() {
+        dialogueNextState = false;
+        deadNextState = false;
+        lobbyNextState = false;
+    }
+
+    private void SubscribeToInputs() {
+        stateMachine.input.CharacterControls.Movement.performed += ctx =>
+        {
+            currentMovement = ctx.ReadValue<Vector2>();
+            movementPressed = currentMovement.magnitude > 0;
+        };
+        stateMachine.input.CharacterControls.Use.performed += ctx => interactPressed = ctx.ReadValueAsButton();
+        stateMachine.input.CharacterControls.Shoot.performed += ctx => attackPressed = ctx.ReadValueAsButton();
+        stateMachine.input.CharacterControls.Dash.performed += ctx => dashPressed = ctx.ReadValueAsButton();
     }
 }

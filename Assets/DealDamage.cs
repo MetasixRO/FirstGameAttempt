@@ -18,7 +18,7 @@ public class DealDamage : MonoBehaviour
         NewDash.DashDone += ResetIsDashing;
     }
 
-    private void ManageWeaponDamageDealing(float cooldown, float damage) {
+    private void ManageWeaponDamageDealing(float damage) {
         if (attackDamage == 0) {
             attackDamage = damage;
         }

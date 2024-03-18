@@ -6,6 +6,9 @@ using UnityEngine.AI;
 public class EnemyCombat : MonoBehaviour
 {
 
+    public delegate void EnemyDie();
+    public static event EnemyDie EnemyDead;
+
     private Animator animator;
     public float maxHealth;
     float currentHealth;
@@ -28,6 +31,15 @@ public class EnemyCombat : MonoBehaviour
         }
 
         animator = GetComponent<Animator>();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown("i"))
+        {
+            maxHealth = 9999;
+            currentHealth = 9999;
+        }
     }
 
     public void TakeDamage(float damage)
@@ -53,6 +65,12 @@ public class EnemyCombat : MonoBehaviour
         animator.SetBool("isDead", true);
 
         GetComponent<Collider>().enabled = false;
+        GetComponent<AgentController>().enabled = false;
+        GetComponent<LookAtPlayer>().enabled = false;
+
+        if (EnemyDead != null) {
+            EnemyDead();
+        }
 
         this.enabled = false;
         StartCoroutine(despawnEnemy());

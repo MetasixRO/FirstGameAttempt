@@ -6,27 +6,25 @@ public class NewDash : MonoBehaviour
 {
     public delegate void DashDoneEvent();
     public static event DashDoneEvent DashDone;
+    public static event DashDoneEvent DelayPassed;
 
     public float dashSpeed;
     public float dashTime;
+    public float dashDelay;
 
-    private bool isDashPressed = false;
+    private int dashReducer = 0;
+    private bool inCycle = false;
 
-    private bool canDash = true;
-
+    private float originalDelay;
+    private int counter = 0;
 
     // Start is called before the first frame update
     void Awake()
     {
+        originalDelay = dashDelay;
         CharacterMovement.Dash += InitiateDash;
-    }
-
-    void Update()
-    {
-        if (isDashPressed && canDash)
-        {
-            StartCoroutine(PerformDash());
-        }
+        DoubleDashAbility.ReduceTime += SetDoubleReducer;
+        DoubleDashAbility.ResetTime += ResetReducer;
     }
 
     private void InitiateDash() {
@@ -35,9 +33,6 @@ public class NewDash : MonoBehaviour
 
     private IEnumerator PerformDash()
     {
-        if (canDash)
-        {
-            canDash = false;
             Vector3 startPosition = transform.position;
             Vector3 endPosition = startPosition + transform.forward * dashSpeed;
 
@@ -54,13 +49,54 @@ public class NewDash : MonoBehaviour
             if (DashDone != null) {
                 DashDone();
             }
-            yield return new WaitForSeconds(0.5f);
-            canDash = true;
+
+        ManageDelay();
+        
+        StartCoroutine(DelayDash(dashDelay));
+
+    }
+
+    private IEnumerator DelayDash(float delay) {
+        yield return new WaitForSeconds(delay);
+        if (DelayPassed != null) {
+            DelayPassed();
         }
     }
 
-    public void ReceiveDashButtonStatus(bool isPressed) { 
-        isDashPressed = isPressed;
+    private void ManageDelay() {
+        switch (dashReducer)
+        {
+            case 0:
+                break;
+            case 2:
+                counter++;
+                if (counter == 1)
+                {
+                    ReduceDelay();
+                    inCycle = true;
+                    StartCoroutine(TimerToResetDelay(0.75f));
+                }
+                else if (counter == 2)
+                {
+                    ResetDelay();
+                    inCycle = false;
+                    counter = 0;
+                }
+                break;
+            case 3:
+                counter++;
+                break;
+        }
+    }
+
+    private IEnumerator TimerToResetDelay(float timer) {
+        yield return new WaitForSeconds(timer);
+        if (inCycle) {
+            inCycle = false;
+            counter = 0;
+            ResetDelay();
+        }
+
     }
 
     private Vector3 CheckEndPosition(Vector3 endPosition) {
@@ -81,5 +117,24 @@ public class NewDash : MonoBehaviour
             }
         }
         return newEndPosition;
+    }
+
+    private void ReduceDelay() {
+        dashDelay = 0.25f;
+    }
+
+    private void ResetDelay() {
+        dashDelay = originalDelay;
+    }
+
+    private void ResetReducer() {
+        DoubleDashAbility.ResetTime -= ResetReducer;
+        DoubleDashAbility.ReduceTime -= SetDoubleReducer;
+        dashDelay = originalDelay;
+        dashReducer = 0;
+    }
+
+    private void SetDoubleReducer() {
+        dashReducer = 2;
     }
 }

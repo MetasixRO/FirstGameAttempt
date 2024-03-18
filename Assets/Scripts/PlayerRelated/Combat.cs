@@ -8,7 +8,7 @@ public class Combat : MonoBehaviour
     public delegate void ModifyHealthbar(float health);
     public static event ModifyHealthbar SetHealth;
 
-    public delegate void ManageDealDamage(float cooldown, float damage = 0);
+    public delegate void ManageDealDamage(float damage = 0);
     public static event ManageDealDamage ManageWeapon;
 
     public delegate void EnterDeathState();
@@ -52,26 +52,28 @@ public class Combat : MonoBehaviour
 
     void Update()
     {
-        bool isAttacking = animator.GetBool(isAttackingHash);
-
-        
         if (attackPressed && canAttack)
         {
-            if (ManageWeapon != null) {
-                ManageWeapon(attackCooldown, attackDamage);
-            }
             handleAttack();
         }
 
-        if (isAttacking)
-        {
-            animator.SetBool(isAttackingHash, false);
-        }
         //DEBUG***************************
         if (Input.GetKeyDown("p")) {
             TakeDamage(90);
         }
+
+        if (Input.GetKeyDown("i")) {
+            maxHealth = 9999;
+            currentHealth = 9999;
+        }
         //DEBUG***************************
+    }
+
+    private void ManageWeaponDamageAbility() {
+        if (ManageWeapon != null)
+        {
+            ManageWeapon(attackDamage);
+        }
     }
 
     void handleAttack()
@@ -79,7 +81,7 @@ public class Combat : MonoBehaviour
         canAttack = false;
         animator.SetBool(isAttackingHash, true);
 
-
+        StartCoroutine(ResetParameter());
         StartCoroutine(resetAttackCooldown());
     }
 
@@ -90,16 +92,19 @@ public class Combat : MonoBehaviour
         canAttack = true;
     }
 
+    IEnumerator ResetParameter() {
+        yield return new WaitForSeconds(0.2f);
+        if (animator.GetBool(isAttackingHash))
+        {
+            animator.SetBool(isAttackingHash, false);
+        }
+    }
+
 
     IEnumerator resetAttackCooldown()
     {
         yield return new WaitForSeconds(attackCooldown);
-        if (ManageWeapon != null)
-        {
-            ManageWeapon(attackCooldown);
-        }
         canAttack = true;
-        //animator.SetBool(isAttackingHash, false);
     }
 
 

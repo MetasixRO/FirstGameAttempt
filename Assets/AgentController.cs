@@ -7,9 +7,14 @@ public class AgentController : MonoBehaviour
 {
     [SerializeField] private float stoppingDistance = 1.5f;
     private NavMeshAgent agent;
+    private bool destinationIsCurrentPosition;
 
     private void Start()
     {
+        destinationIsCurrentPosition = false;
+
+        AgentAnimations.ManageDestination += ManageDestination;
+
         gameObject.SetActive(false);
         CloseArenaDoor.CloseDoor += ManageAgent;
         agent = GetComponent<NavMeshAgent>();
@@ -20,7 +25,7 @@ public class AgentController : MonoBehaviour
     }
 
     private void Update() {
-        if (gameObject.activeSelf && PlayerTracker.instance != null && PlayerTracker.instance.player != null)
+        if (gameObject.activeSelf && PlayerTracker.instance.player != null && !destinationIsCurrentPosition)
         {
             Vector3 targetPosition = PlayerTracker.instance.player.transform.position;
             float distanceToTarget = Vector3.Distance(targetPosition, transform.position);
@@ -29,9 +34,25 @@ public class AgentController : MonoBehaviour
             {
                 agent.ResetPath();
             }
-            else {
+            else
+            {
                 agent.SetDestination(targetPosition);
             }
+        }
+        else {
+            if (agent.hasPath) {
+                agent.ResetPath();
+            }
+        }
+    }
+
+    private void ManageDestination() {
+        if (!destinationIsCurrentPosition)
+        {
+            destinationIsCurrentPosition = true;
+        }
+        else {
+            destinationIsCurrentPosition = false;
         }
     }
 }

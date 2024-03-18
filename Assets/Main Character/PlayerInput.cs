@@ -71,6 +71,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Ability Menu"",
+                    ""type"": ""Button"",
+                    ""id"": ""4e602c85-7a52-48b9-9705-f5cbcd67e036"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -216,6 +225,17 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""action"": ""Dash"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cbec8878-a2a6-4d74-be35-5248f7982a65"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": ""Press(behavior=2)"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Ability Menu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -338,6 +358,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_CharacterControls_Shoot = m_CharacterControls.FindAction("Shoot", throwIfNotFound: true);
         m_CharacterControls_Use = m_CharacterControls.FindAction("Use", throwIfNotFound: true);
         m_CharacterControls_Dash = m_CharacterControls.FindAction("Dash", throwIfNotFound: true);
+        m_CharacterControls_AbilityMenu = m_CharacterControls.FindAction("Ability Menu", throwIfNotFound: true);
         // KeyboardCharacterControls
         m_KeyboardCharacterControls = asset.FindActionMap("KeyboardCharacterControls", throwIfNotFound: true);
         m_KeyboardCharacterControls_KeyboardMovement = m_KeyboardCharacterControls.FindAction("KeyboardMovement", throwIfNotFound: true);
@@ -408,6 +429,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_CharacterControls_Shoot;
     private readonly InputAction m_CharacterControls_Use;
     private readonly InputAction m_CharacterControls_Dash;
+    private readonly InputAction m_CharacterControls_AbilityMenu;
     public struct CharacterControlsActions
     {
         private @PlayerInput m_Wrapper;
@@ -417,6 +439,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         public InputAction @Shoot => m_Wrapper.m_CharacterControls_Shoot;
         public InputAction @Use => m_Wrapper.m_CharacterControls_Use;
         public InputAction @Dash => m_Wrapper.m_CharacterControls_Dash;
+        public InputAction @AbilityMenu => m_Wrapper.m_CharacterControls_AbilityMenu;
         public InputActionMap Get() { return m_Wrapper.m_CharacterControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -441,6 +464,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Dash.started += instance.OnDash;
             @Dash.performed += instance.OnDash;
             @Dash.canceled += instance.OnDash;
+            @AbilityMenu.started += instance.OnAbilityMenu;
+            @AbilityMenu.performed += instance.OnAbilityMenu;
+            @AbilityMenu.canceled += instance.OnAbilityMenu;
         }
 
         private void UnregisterCallbacks(ICharacterControlsActions instance)
@@ -460,6 +486,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Dash.started -= instance.OnDash;
             @Dash.performed -= instance.OnDash;
             @Dash.canceled -= instance.OnDash;
+            @AbilityMenu.started -= instance.OnAbilityMenu;
+            @AbilityMenu.performed -= instance.OnAbilityMenu;
+            @AbilityMenu.canceled -= instance.OnAbilityMenu;
         }
 
         public void RemoveCallbacks(ICharacterControlsActions instance)
@@ -547,6 +576,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         void OnShoot(InputAction.CallbackContext context);
         void OnUse(InputAction.CallbackContext context);
         void OnDash(InputAction.CallbackContext context);
+        void OnAbilityMenu(InputAction.CallbackContext context);
     }
     public interface IKeyboardCharacterControlsActions
     {
