@@ -8,11 +8,11 @@ public class AbilitiesManager : MonoBehaviour
 
     private void Start()
     {
+        Combat.PlayerDead += ResetAbilities;
+
         foreach (AbilityScriptableObject ability in abilities) {
             ability.Activate();
         }
-
-        AddAbility(ScriptableObject.CreateInstance<DoubleDashAbility>());
     }
 
     public void ActivateAbility() {
@@ -38,6 +38,41 @@ public class AbilitiesManager : MonoBehaviour
                 break;
             }
         }
+    }
+
+    public List<AbilityScriptableObject> GetCurrentAbilities() {
+        return abilities;
+    }
+
+    public string GetDescriptionByName(string name) {
+        foreach (AbilityScriptableObject ability in abilities) {
+            if (ability.name == name) {
+                return ability.description;
+            }
+        }
+        return "None";
+    }
+
+    public List<string> GetAllNames() { 
+        List<string> names = new List<string> ();
+
+        foreach (AbilityScriptableObject ability in abilities) { 
+            names.Add (ability.name);
+        }
+
+        return names;
+    }
+
+    public int GetAbilityCount() {
+        return abilities.Count;
+    }
+
+    public string GetDescriptionByIndex(int index) { 
+        return abilities[index].description;
+    }
+
+    public string GetNameByIndex(int index) {
+        return abilities[index].name;    
     }
 
     private void OnDisable()

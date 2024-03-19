@@ -34,21 +34,25 @@ public class BoonInteractable : MonoBehaviour, IInteractable
         return "Interact";
     }
 
-    private void CalculateSpawnPosition() {
+    private void CalculateSpawnPosition()
+    {
         Vector3 randomPosition;
         while (true)
         {
             randomPosition = player.transform.position + Random.insideUnitSphere * closeAreaRadius;
 
+            randomPosition.y = Mathf.Max(randomPosition.y, 0);
+
             RaycastHit hit;
             Vector3 direction = (player.transform.position - randomPosition).normalized;
             if (Physics.Raycast(randomPosition, direction, out hit, closeAreaRadius))
             {
-                continue;
+                if (hit.point.y < randomPosition.y)
+                {
+                    continue;
+                }
             }
-            else { 
-                break;
-            }
+            break;
         }
 
         gameObject.transform.position = randomPosition;

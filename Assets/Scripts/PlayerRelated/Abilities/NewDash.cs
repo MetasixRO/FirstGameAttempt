@@ -14,6 +14,7 @@ public class NewDash : MonoBehaviour
 
     private int dashReducer = 0;
     private bool inCycle = false;
+    private bool inCycle1=false,inCycle2=false;
 
     private float originalDelay;
     private int counter = 0;
@@ -25,6 +26,8 @@ public class NewDash : MonoBehaviour
         CharacterMovement.Dash += InitiateDash;
         DoubleDashAbility.ReduceTime += SetDoubleReducer;
         DoubleDashAbility.ResetTime += ResetReducer;
+        TripleDashAbility.ReduceTime += SetTripleReducer;
+        TripleDashAbility.ResetTime += ResetReducer;
     }
 
     private void InitiateDash() {
@@ -85,14 +88,46 @@ public class NewDash : MonoBehaviour
                 break;
             case 3:
                 counter++;
+                if (counter == 1)
+                {
+                    ReduceDelay();
+                    inCycle1 = true;
+                    StartCoroutine(TimerToResetDelay(0.75f));
+                }
+                else if (counter == 2) 
+                {
+                    inCycle1 = false;
+                    inCycle2 = true;
+                    ReduceDelay();
+                    StartCoroutine(TimerForSecondDelay(0.75f));
+                }
+                else if (counter == 3)
+                {
+                    ResetDelay();
+                    inCycle2 = false;
+                    counter = 0;
+                }
                 break;
         }
     }
 
+    private IEnumerator TimerForSecondDelay(float timer)
+    {
+        yield return new WaitForSeconds(timer);
+        if (inCycle2)
+        {
+            inCycle2 = false;
+            counter = 0;
+            ResetDelay();
+        }
+
+    }
+
     private IEnumerator TimerToResetDelay(float timer) {
         yield return new WaitForSeconds(timer);
-        if (inCycle) {
+        if (inCycle || inCycle1) {
             inCycle = false;
+            inCycle1 = false;
             counter = 0;
             ResetDelay();
         }
@@ -136,5 +171,9 @@ public class NewDash : MonoBehaviour
 
     private void SetDoubleReducer() {
         dashReducer = 2;
+    }
+
+    private void SetTripleReducer() {
+        dashReducer = 3;
     }
 }

@@ -8,13 +8,10 @@ public class ArenaState : BaseState
 
     private StateManager stateMachine;
 
-    private bool movementPressed;
-    private bool interactPressed;
+    private bool movementPressed, interactPressed, attackPressed, dashPressed, menuPressed;
     private Vector2 currentMovement;
-    private bool attackPressed;
-    private bool dashPressed;
 
-    private bool dialogueNextState, deadNextState, lobbyNextState;
+    private bool dialogueNextState, deadNextState, lobbyNextState, abilityMenuNextState;
 
     private ArenaState() { }
 
@@ -63,6 +60,9 @@ public class ArenaState : BaseState
         {
             stateMachine.SwitchState(LobbyState.Instance);
         }
+        else if (abilityMenuNextState) {
+            stateMachine.SwitchState(AbilityMenuState.Instance);
+        }
 
     }
 
@@ -72,6 +72,17 @@ public class ArenaState : BaseState
         stateMachine.interactHandler.ReceiveInteractButtonStatus(interactPressed);
         stateMachine.attackHandler.ReceiveAttackButtonStatus(attackPressed);
         stateMachine.movementHandler.ReceiveDashStatus(dashPressed);
+        if (menuPressed && stateMachine.GetCurrentState() == this) {
+            SetAbilityMenuNextState();
+        }
+    }
+
+    private void SetAbilityMenuNextState() { 
+        if(stateMachine.GetCurrentState() == this)
+        {
+            abilityMenuNextState = true;
+            TransitionState();
+        }
     }
 
     private void SetDialogueNextState()
@@ -103,6 +114,7 @@ public class ArenaState : BaseState
         dialogueNextState = false;
         deadNextState = false;
         lobbyNextState = false;
+        abilityMenuNextState = false;
     }
 
     private void SubscribeToInputs() {
@@ -114,5 +126,6 @@ public class ArenaState : BaseState
         stateMachine.input.CharacterControls.Use.performed += ctx => interactPressed = ctx.ReadValueAsButton();
         stateMachine.input.CharacterControls.Shoot.performed += ctx => attackPressed = ctx.ReadValueAsButton();
         stateMachine.input.CharacterControls.Dash.performed += ctx => dashPressed = ctx.ReadValueAsButton();
+        stateMachine.input.CharacterControls.AbilityMenu.performed += ctx => menuPressed = ctx.ReadValueAsButton();
     }
 }
