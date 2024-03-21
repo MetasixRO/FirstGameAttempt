@@ -9,6 +9,7 @@ public class AbilitiesManager : MonoBehaviour
     private void Start()
     {
         Combat.PlayerDead += ResetAbilities;
+        BoonMenuManager.AbilitySelected += AddAbility;
 
         foreach (AbilityScriptableObject ability in abilities) {
             ability.Activate();

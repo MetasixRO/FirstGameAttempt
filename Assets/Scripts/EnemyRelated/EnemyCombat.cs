@@ -37,8 +37,9 @@ public class EnemyCombat : MonoBehaviour
     {
         if (Input.GetKeyDown("i"))
         {
-            maxHealth = 9999;
-            currentHealth = 9999;
+            maxHealth = 1;
+            currentHealth = 0;
+            Die();
         }
     }
 

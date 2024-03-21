@@ -39,6 +39,9 @@ public class Combat : MonoBehaviour
         WeaponPrompt.ChangeWeaponStats += ChangeStatsForWeapon;
         EnemyDealDamage.PlayerReceiveDamage += TakeDamage;
 
+        DoubleMaxHealth.DoubleHealth += ModifyMaxHealth;
+        DoubleMaxHealth.ResetHealth += ResetMaxHealth; 
+
         animator = GetComponent<Animator>();
         isAttackingHash = Animator.StringToHash("isAttacking");
 
@@ -127,7 +130,6 @@ public class Combat : MonoBehaviour
         if (PlayerDead != null) {
             PlayerDead();
         }
-        //Animation + Disable enemy
         animator.SetTrigger("isDead");
 
 
@@ -153,5 +155,15 @@ public class Combat : MonoBehaviour
 
     public void ReceiveAttackButtonStatus(bool receivedAttackPressed) { 
         attackPressed = receivedAttackPressed;
+    }
+
+    private void ModifyMaxHealth() {
+        maxHealth *= 2;
+        currentHealth *= 2;
+    }
+
+    private void ResetMaxHealth() {
+        maxHealth /= 2;
+        currentHealth /= 2;
     }
 }

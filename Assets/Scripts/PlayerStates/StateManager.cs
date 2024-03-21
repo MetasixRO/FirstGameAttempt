@@ -6,8 +6,10 @@ public class StateManager : MonoBehaviour
 {
     private BaseState currentState;
     private BaseState previousState;
+
     public PlayerInput input;
     public GameObject player;
+
     public InteractorScript interactHandler;
     public CharacterMovement movementHandler;
     public Combat attackHandler;
@@ -40,6 +42,7 @@ public class StateManager : MonoBehaviour
     }
 
     public void SwitchState(BaseState state) {
+        Debug.Log("Swtiching to : " + state);
         currentState = state;
         currentState.EnterState(this);
     }

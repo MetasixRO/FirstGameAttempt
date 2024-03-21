@@ -7,9 +7,10 @@ public enum AbilityType
     DashEffect,
     DashTimeReducer,
     DamageBoost,
+    HealthBoost
 }
 
-public class AbilityScriptableObject : ScriptableObject
+public abstract class AbilityScriptableObject : ScriptableObject
 {
     public new string name;
     public float cooldown;
@@ -19,9 +20,9 @@ public class AbilityScriptableObject : ScriptableObject
 
     public bool isActive;
 
-    public virtual void Activate() { }
+    public abstract void Activate();
 
-    public virtual void Disable() { }
+    public abstract void Disable();
 
     public bool GetAbilityStatus() {
         return isActive;

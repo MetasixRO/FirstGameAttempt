@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class BoonInteractable : MonoBehaviour, IInteractable
 {
+    public delegate void OnBoonInteract(List<AbilityScriptableObject> abilities);
+    public static event OnBoonInteract Interacted;
+
     private BoonAbilitiesContainer container;
     private GameObject player;
     [SerializeField] private float closeAreaRadius = 5f;
@@ -24,8 +27,9 @@ public class BoonInteractable : MonoBehaviour, IInteractable
     public void Interact()
     {
         gameObject.SetActive(false);
-        if (container != null && PlayerTracker.instance.player != null) {
-            player.GetComponent<AbilitiesManager>().AddAbility(container.RetrieveAbility());
+        if (container != null && PlayerTracker.instance.player != null && Interacted != null) {
+            List<AbilityScriptableObject> abilityObjects = container.RetrieveAbility();
+            Interacted(abilityObjects);
         }
     }
 

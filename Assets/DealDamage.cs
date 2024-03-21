@@ -16,6 +16,9 @@ public class DealDamage : MonoBehaviour
         Combat.ManageWeapon += ManageWeaponDamageDealing;
         CharacterMovement.Dash += SetIsDashing;
         NewDash.DashDone += ResetIsDashing;
+
+        DoubleDamage.DamageDouble += DoubleCurrentDamage;
+        DoubleDamage.DamageReset += ResetCurrentDamage;
     }
 
     private void ManageWeaponDamageDealing(float damage) {
@@ -53,6 +56,12 @@ public class DealDamage : MonoBehaviour
     }
 
 
+    private void DoubleCurrentDamage() {
+        attackDamage *= 2;
+    }
 
+    private void ResetCurrentDamage() { 
+        attackDamage /= 2;
+    }
 
 }
