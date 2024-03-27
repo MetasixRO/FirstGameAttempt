@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class StateManager : MonoBehaviour
 {
+
+    private bool DEBUG_VARIABLE = false;
     private BaseState currentState;
     private BaseState previousState;
 
@@ -42,9 +44,12 @@ public class StateManager : MonoBehaviour
     }
 
     public void SwitchState(BaseState state) {
-        Debug.Log("Swtiching to : " + state);
-        currentState = state;
-        currentState.EnterState(this);
+        if (currentState != state && DEBUG_VARIABLE)
+        {
+            Debug.Log("Switching to " + state);
+            currentState = state;
+            currentState.EnterState(this);
+        }
     }
 
     public BaseState GetCurrentState() {
@@ -60,6 +65,14 @@ public class StateManager : MonoBehaviour
         {
             previousState = state;
         }
+    }
+
+    public void TriggerTransition() {
+        SwitchState(AttackState.Instance);
+    }
+
+    public void ResetTransition() {
+        SwitchState(ArenaState.Instance);
     }
 
     void OnEnable()

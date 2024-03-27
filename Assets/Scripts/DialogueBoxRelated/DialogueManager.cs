@@ -9,6 +9,7 @@ public class DialogueManager : MonoBehaviour
 
     public delegate void DialogueCallback();
     public static event DialogueCallback dialogueEnded;
+    public static event DialogueCallback ContinueDialogue;
 
     private Queue<string> sentences;
 
@@ -25,6 +26,7 @@ public class DialogueManager : MonoBehaviour
         StartCoroutine(ShowContinueButton(1.0f));
         DialogueTrigger.startDialogue += StartDialogue;
         DialogueState.AdvanceDialogue += DisplayNextSentence;
+        newDialogueState.DialogueAdvance += DisplayNextSentence;
     }
 
     public void StartDialogue(Dialogue dialogue) {
@@ -65,5 +67,8 @@ public class DialogueManager : MonoBehaviour
     {
         yield return new WaitForSeconds(timer);
         continueButton.enabled = true;
+        if (ContinueDialogue != null) {
+            ContinueDialogue();
+        }
     }
 }

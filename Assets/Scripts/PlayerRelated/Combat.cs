@@ -82,10 +82,7 @@ public class Combat : MonoBehaviour
     void handleAttack()
     {
         canAttack = false;
-        animator.SetBool(isAttackingHash, true);
-
-        StartCoroutine(ResetParameter());
-        StartCoroutine(resetAttackCooldown());
+        animator.SetTrigger("isAttackingDeprecated");
     }
 
 
@@ -93,14 +90,6 @@ public class Combat : MonoBehaviour
         attackDamage = damage;
         attackCooldown = cooldown;
         canAttack = true;
-    }
-
-    IEnumerator ResetParameter() {
-        yield return new WaitForSeconds(0.2f);
-        if (animator.GetBool(isAttackingHash))
-        {
-            animator.SetBool(isAttackingHash, false);
-        }
     }
 
 

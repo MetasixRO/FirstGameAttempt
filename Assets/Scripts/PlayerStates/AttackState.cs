@@ -40,13 +40,11 @@ public class AttackState : BaseState
         stateMachine.SwitchState(ArenaState.Instance);
     }
 
-    public override void UpdateState()
-    {
+    public void ReturnState() {
+        TransitionState();
     }
 
-    private void SetArenaNextState() {
-        if (stateMachine.GetCurrentState() == this) {
-            TransitionState();
-        }
+    public override void UpdateState()
+    {
     }
 }
