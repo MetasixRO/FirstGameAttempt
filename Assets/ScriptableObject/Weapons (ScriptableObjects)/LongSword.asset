@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: Long Sword
   ID: 0
-  cooldown: 1.2
+  cooldown: 0.8
   damage: 15

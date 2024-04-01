@@ -13,7 +13,8 @@ public class ManageMenuText : MonoBehaviour
 
     private void Start()
     {
-        AbilityMenuState.OpenMenu += SetAbilities;
+        //AbilityMenuState.OpenMenu += SetAbilities;
+        ManageAbilityMenu.Launched += SetAbilities;
 
         player = PlayerTracker.instance.player.GetComponent<AbilitiesManager>();
 

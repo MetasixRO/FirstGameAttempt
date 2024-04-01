@@ -6,6 +6,7 @@ public class UpdatedStateManager : MonoBehaviour
 {
     private newBaseState currentState;
     private newBaseState previousState;
+    private newBaseState nextState;
 
     private PlayerInput input;
 
@@ -32,14 +33,6 @@ public class UpdatedStateManager : MonoBehaviour
         previousState = null;
 
         currentState.EnterState(this);
-
-        ManageDialogueBox.dialogueTriggered += TransitionToDialogue;
-        DialogueManager.dialogueEnded += TransitionToPrevious;
-        Combat.PlayerDead += TransitionToDead;
-        ReturnToLobby.BackToLobby += TransitionToLobby;
-        WeaponPrompt.ChangeWeapon += TransitionToArena;
-        ManageAbilityMenu.Launched += TransitionToMenu;
-        ManageAbilityMenu.Ended += TransitionToPrevious;
     }
 
     private void Update() {
@@ -73,8 +66,15 @@ public class UpdatedStateManager : MonoBehaviour
         interactHandler = GetComponent<InteractorScript>();
     }
 
-    private void SubscribeToEvents() { 
-        
+    private void SubscribeToEvents() {
+        ManageDialogueBox.dialogueTriggered += TransitionToDialogue;
+        DialogueManager.dialogueEnded += TransitionToPrevious;
+        Combat.PlayerDead += TransitionToDead;
+        ReturnToLobby.BackToLobby += TransitionToLobby;
+        WeaponPrompt.ChangeWeapon += TransitionToArena;
+        ManageAbilityMenu.Launched += TransitionToMenu;
+        ManageAbilityMenu.Ended += TransitionToPrevious;
+        newDeadState.RespawnPlayer += TransitionToLobby;
     }
 
     public void SendMovementData(bool autoRun = false)
@@ -169,42 +169,47 @@ public class UpdatedStateManager : MonoBehaviour
     }
 
     private IEnumerator DelayTransition(float delay) {
-        Debug.Log("Current : " + currentState);
         yield return new WaitForSeconds(delay);
-        newBaseState auxiliary;
-        auxiliary = currentState;
-        currentState.ExitState();
 
         if (toDialogue)
         {
             toDialogue = false;
-            currentState = newDialogueState.Instance;
+            nextState = newDialogueState.Instance;
             movementHandler.StopAllMovement();
         }
         if (toPrevious) {
             toPrevious = false;
-            currentState = previousState;
+            nextState = previousState;
         }
         if (toLobby) {
             toLobby = false;
-            currentState = NewLobbyState.Instance;
+            nextState = NewLobbyState.Instance;
         }
         if (toArena) {
             toArena = false;
-            currentState = newArenaState.Instance;
+            nextState = newArenaState.Instance;
         }
         if (toAttack) {
             toAttack = false;
-            currentState = newAttackState.Instance;
+            nextState = newAttackState.Instance;
         }
         if (toMenu) {
             toMenu = false;
-            currentState = newAbilityMenuState.Instance;
+            nextState = newAbilityMenuState.Instance;
             movementHandler.StopAllMovement();
         }
+        if (toDead) {
+            toDead = false;
+            nextState = newDeadState.Instance;
+        }
 
-        Debug.Log("Going to : " + currentState);
-        previousState = auxiliary;
-        currentState.EnterState(this);
+        if (nextState != currentState)
+        {
+            //Debug.Log("Switching to" + nextState);
+            currentState.ExitState();
+            previousState = currentState;
+            currentState = nextState;
+            currentState.EnterState(this);
+        }
     }
 }

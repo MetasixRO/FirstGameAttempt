@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: Knife
   ID: 1
-  cooldown: 1
+  cooldown: 0.4
   damage: 10

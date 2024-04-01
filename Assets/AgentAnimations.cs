@@ -64,6 +64,7 @@ public class AgentAnimations : MonoBehaviour
     private void HandleCombat() {
         float distance = Vector3.Distance(player.position, gameObject.transform.position);
 
+        //Debug.Log(distance + " " + canAttack + " " + isLookingAtPlayer);
         if (distance <= 1.5f && canAttack && isLookingAtPlayer) {
             canAttack = false;
 

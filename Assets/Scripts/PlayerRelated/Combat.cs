@@ -7,6 +7,7 @@ public class Combat : MonoBehaviour
 
     public delegate void ModifyHealthbar(float health);
     public static event ModifyHealthbar SetHealth;
+    public static event ModifyHealthbar SetMaxHealth;
 
     public delegate void ManageDealDamage(float damage = 0);
     public static event ManageDealDamage ManageWeapon;
@@ -35,6 +36,7 @@ public class Combat : MonoBehaviour
 
     void Start()
     {
+        newDeadState.RespawnPlayer += FillHealth;
         HealthRestorer.MedpackHeal += RestoreHealth;
         WeaponPrompt.ChangeWeaponStats += ChangeStatsForWeapon;
         EnemyDealDamage.PlayerReceiveDamage += TakeDamage;
@@ -148,11 +150,18 @@ public class Combat : MonoBehaviour
 
     private void ModifyMaxHealth() {
         maxHealth *= 2;
-        currentHealth *= 2;
+        if (SetMaxHealth != null) { 
+            SetMaxHealth(maxHealth);
+        }
+        RestoreHealth((int)currentHealth);
     }
 
     private void ResetMaxHealth() {
         maxHealth /= 2;
-        currentHealth /= 2;
+        TakeDamage(currentHealth / 2);
+    }
+
+    private void FillHealth() {
+        RestoreHealth((int)(maxHealth - currentHealth));
     }
 }

@@ -6,13 +6,16 @@ using UnityEngine.AI;
 public class EnemyCombat : MonoBehaviour
 {
 
-    public delegate void EnemyDie();
-    public static event EnemyDie EnemyDead;
+
+    public delegate void EnemyEvent();
+    public static event EnemyEvent EnemyDead;
 
     private Animator animator;
     public float maxHealth;
     float currentHealth;
     private EnemyHealthBar healthBar;
+    private ParticleSystem particles;
+    private Knockback knockbackObject;
 
     void Start()
     {
@@ -23,6 +26,10 @@ public class EnemyCombat : MonoBehaviour
         GetComponentInChildren<EnemyDealDamage>().SetDamage(stats.GetDamage());
 
         healthBar = GetComponentInChildren<EnemyHealthBar>();
+
+        particles = GetComponentInChildren<ParticleSystem>();
+
+        knockbackObject = GetComponent<Knockback>();
 
         currentHealth = maxHealth;
         if (healthBar != null)
@@ -47,11 +54,19 @@ public class EnemyCombat : MonoBehaviour
     {
         currentHealth -= damage;
 
+        if (particles != null) {
+            particles.Play();
+        }
+
         if (healthBar != null)
         {
             healthBar.SetHealth(currentHealth);
         }
 
+        if(knockbackObject != null)
+        {
+            knockbackObject.ApplyKnockback();
+        }
         animator.SetTrigger("Hurt");
 
         if (currentHealth <= 0)

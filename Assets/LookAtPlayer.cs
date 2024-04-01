@@ -32,7 +32,7 @@ public class LookAtPlayer : MonoBehaviour
             {
                 animations.SetLookingAtPlayer(true);
             }
-            else { 
+            else {
                 animations.SetLookingAtPlayer(false);
 
                 Vector3 directionToPlayer = (player.transform.position - transform.position).normalized;

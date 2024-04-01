@@ -6,8 +6,6 @@ public class NewLobbyState : newBaseState
 {
     private UpdatedStateManager stateManager;
 
-    public static event BaseStateEvent LobbyInteract;
-
     private static NewLobbyState instance;
 
     private NewLobbyState() { }

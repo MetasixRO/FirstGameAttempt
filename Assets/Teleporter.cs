@@ -9,7 +9,8 @@ public class Teleporter : MonoBehaviour
     private void Start()
     {
         player = PlayerTracker.instance.player;
-        DeadState.RespawnPlayer += RespawnPlayer;
+        //DeadState.RespawnPlayer += RespawnPlayer;
+        newDeadState.RespawnPlayer += RespawnPlayer;
     }
 
     private void RespawnPlayer() { 
