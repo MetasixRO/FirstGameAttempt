@@ -1,21 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 
-public class EnemyArenaState : EnemyBaseState
+public class EnemyAttackState : EnemyBaseState
 {
+
     private EnemyStateManager stateManager;
 
-    private static EnemyArenaState instance;
+    private static EnemyAttackState instance;
 
-    private EnemyArenaState() { }
+    private EnemyAttackState() { }
 
-    public static EnemyArenaState Instance {
+    public static EnemyAttackState Instance
+    {
         get
         {
-            if (instance == null) { 
-                instance = new EnemyArenaState();
+            if (instance == null)
+            {
+                instance = new EnemyAttackState();
             }
             return instance;
         }
@@ -32,10 +34,10 @@ public class EnemyArenaState : EnemyBaseState
 
     public override void HandleAttack()
     {
-        bool result = stateManager.CombatChecks();
-        if (result)
-        {
-            stateManager.TransitionToAttack();
+        stateManager.AllowRotation();
+        stateManager.AllowCombat();
+        if (!stateManager.CombatChecks()) {
+            stateManager.TransitionToArena();
         }
     }
 
@@ -46,13 +48,11 @@ public class EnemyArenaState : EnemyBaseState
 
     public override void HandleMovement()
     {
-        stateManager.AllowMovement();
-        stateManager.AllowRotation();
+        throw new System.NotImplementedException();
     }
 
     public override void UpdateState()
     {
-        HandleMovement();
         HandleAttack();
     }
 }

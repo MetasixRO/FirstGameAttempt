@@ -19,6 +19,7 @@ public class GreatSwordSpecial : SpecialAttack
             {
                 for (int i = 0; i < numFound; i+=2) {
                     colliders[i].gameObject.GetComponent<EnemyCombat>().TakeDamage(damage);
+                    colliders[i].gameObject.GetComponent<EnemyStateManager>().TransitionToFreeze();
                     Vector3 knockbackDirection = colliders[i].gameObject.transform.position - PlayerTracker.instance.player.transform.position;
                     knockbackDirection.Normalize();
 
@@ -39,4 +40,11 @@ public class GreatSwordSpecial : SpecialAttack
     {
         layer = LayerMask.GetMask("Enemy");
     }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(PlayerTracker.instance.player.transform.position, range);
+    }
+
 }

@@ -10623,6 +10623,7 @@ GameObject:
   - component: {fileID: 796404252}
   - component: {fileID: 796404253}
   - component: {fileID: 796404254}
+  - component: {fileID: 796404255}
   m_Layer: 7
   m_Name: Agent
   m_TagString: Enemy
@@ -10810,6 +10811,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0632fc8619207ae44a902fade736b564, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &796404255
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 796404236}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eebe9f03ca008c3418905d9e91709deb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &797317106

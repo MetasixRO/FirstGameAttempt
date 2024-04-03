@@ -5,9 +5,6 @@ using UnityEngine.AI;
 
 public class AgentAnimations : MonoBehaviour
 {
-    public delegate void ManageAgentDestination();
-    public static event ManageAgentDestination ManageDestination;
-
     private NavMeshAgent agent;
     private Animator animator;
 
@@ -18,7 +15,7 @@ public class AgentAnimations : MonoBehaviour
 
     private bool canAttack,isLookingAtPlayer;
 
-    private Transform player;
+    private GameObject player;
 
     void Start()
     {
@@ -26,19 +23,13 @@ public class AgentAnimations : MonoBehaviour
         animator = GetComponent<Animator>();
         damageDealerManager = GetComponentInChildren<EnemyDealDamage>();
         GetHashes();
-        player = PlayerTracker.instance.player.transform;
+        player = PlayerTracker.instance.player;
         
         canAttack = true;
         isLookingAtPlayer = false;
     }
 
-    void Update()
-    {
-        HandleMovement();
-        HandleCombat();
-    }
-
-    private void HandleMovement() {
+    public void HandleMovement() {
         if (agent.velocity.magnitude > 0.1f)
         {
             if (!animator.GetBool(isRunningHash))
@@ -61,29 +52,27 @@ public class AgentAnimations : MonoBehaviour
         }
     }
 
-    private void HandleCombat() {
-        float distance = Vector3.Distance(player.position, gameObject.transform.position);
+    public bool CheckForCombat() {
+        float distance = Vector3.Distance(player.transform.position, gameObject.transform.position);
 
-        //Debug.Log(distance + " " + canAttack + " " + isLookingAtPlayer);
-        if (distance <= 1.5f && canAttack && isLookingAtPlayer) {
+        if (distance <= 1.5f && canAttack && isLookingAtPlayer){
+            return true;
+        }
+        return false;
+        
+    }
+
+    public void HandleCombat() {
             canAttack = false;
-
-            if (ManageDestination != null) {
-                ManageDestination();
-            }
 
             animator.SetTrigger(isAttackingHash);
             StartCoroutine(ResetAttackCooldown(2.0f));
-        }
     }
 
     private IEnumerator ResetAttackCooldown(float cooldown) { 
         yield return new WaitForSeconds(cooldown);
         animator.ResetTrigger(isAttackingHash);
 
-        if (ManageDestination != null) {
-            ManageDestination();
-        }
         canAttack = true;
     }
 
@@ -94,5 +83,38 @@ public class AgentAnimations : MonoBehaviour
     private void GetHashes() {
         isRunningHash = Animator.StringToHash("Running");
         isAttackingHash = Animator.StringToHash("Punch");
+    }
+
+    public void Freeze() {
+        animator.SetBool(isRunningHash, false);
+    }
+
+    public void Rotate() {
+        Vector3 rayDirection = transform.forward;
+        Ray ray = new Ray(transform.position, rayDirection);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit))
+        {
+            if (hit.collider == null)
+            {
+                return;
+            }
+
+            if (hit.collider.gameObject == player)
+            {
+                SetLookingAtPlayer(true);
+            }
+            else
+            {
+                SetLookingAtPlayer(false);
+
+                Vector3 directionToPlayer = (player.transform.position - transform.position).normalized;
+
+                Quaternion lookLocation = Quaternion.LookRotation(new Vector3(directionToPlayer.x, 0, directionToPlayer.z));
+
+                transform.rotation = Quaternion.Lerp(transform.rotation, lookLocation, 2.5f * Time.deltaTime);
+            }
+        }
     }
 }

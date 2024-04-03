@@ -9,22 +9,21 @@ public class LookAtPlayer : MonoBehaviour
     private AgentAnimations animations;
 
 
-    // Start is called before the first frame update
     void Start()
     {
         player = PlayerTracker.instance.player;
         animations = GetComponent<AgentAnimations>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
+    public void RotateToLookAtPlayer() {
         Vector3 rayDirection = transform.forward;
         Ray ray = new Ray(transform.position, rayDirection);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit)) {
-            if (hit.collider == null) {
+        if (Physics.Raycast(ray, out hit))
+        {
+            if (hit.collider == null)
+            {
                 return;
             }
 
@@ -32,7 +31,8 @@ public class LookAtPlayer : MonoBehaviour
             {
                 animations.SetLookingAtPlayer(true);
             }
-            else {
+            else
+            {
                 animations.SetLookingAtPlayer(false);
 
                 Vector3 directionToPlayer = (player.transform.position - transform.position).normalized;
