@@ -6,7 +6,7 @@ using UnityEngine.AI;
 public class EnemyArenaState : EnemyBaseState
 {
 
-    [SerializeField] private float stoppingDistance = 1.5f;
+    //[SerializeField] private float stoppingDistance = 1.5f;
     private NavMeshAgent agent;
     private bool destinationIsCurrentPosition;
 
@@ -29,6 +29,8 @@ public class EnemyArenaState : EnemyBaseState
     public override void EnterState(EnemyStateManager manager)
     {
         stateManager = manager;
+
+
     }
 
     public override void ExitState()

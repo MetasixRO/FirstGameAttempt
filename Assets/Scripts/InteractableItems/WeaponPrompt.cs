@@ -8,8 +8,11 @@ public class WeaponPrompt : MonoBehaviour, IInteractable
     public delegate void SelectWeapon(int weaponID);
     public static event SelectWeapon ChangeWeapon;
 
-    public delegate void UpdateStats(float damage, float cooldown);
+    public delegate void UpdateStats(float damage, float cooldown, float specialDamage, float specialCooldown);
     public static event UpdateStats ChangeWeaponStats;
+
+    public delegate void ChangeSpecial(SpecialAttack special);
+    public static event ChangeSpecial SpecialAttackInside;
 
     private string prompt;
     private int weaponNumber;
@@ -32,9 +35,10 @@ public class WeaponPrompt : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        if (ChangeWeapon != null && ChangeWeaponStats != null) {
+        if (ChangeWeapon != null && ChangeWeaponStats != null && SpecialAttackInside != null) {
             ChangeWeapon(weaponNumber);
-            ChangeWeaponStats(weaponStatsComponent.GetWeaponDamage(), weaponStatsComponent.GetWeaponCooldown());
+            ChangeWeaponStats(weaponStatsComponent.GetWeaponDamage(), weaponStatsComponent.GetWeaponCooldown(), weaponStatsComponent.GetWeaponSpecialDamage(), weaponStatsComponent.GetWeaponSpecialCooldown());
+            SpecialAttackInside(weaponStatsComponent.GetSpecialAttack());
         }
     }
 }

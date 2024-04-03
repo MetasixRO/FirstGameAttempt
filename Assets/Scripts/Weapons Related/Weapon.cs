@@ -9,4 +9,7 @@ public class Weapon : ScriptableObject
     public int ID;
     public float cooldown;
     public float damage;
+    public float specialDamage;
+    public float specialCooldown;
+    public SpecialAttack special;
 }

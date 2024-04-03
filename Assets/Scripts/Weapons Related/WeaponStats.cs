@@ -11,6 +11,9 @@ public class WeaponStats : MonoBehaviour
     private int weaponID;
     private float weaponCooldown;
     private float weaponDamage;
+    private float weaponSpecialDamage;
+    private float weaponSpecialCooldown;
+    private SpecialAttack weaponSpecial;
 
     void Start()
     {
@@ -18,6 +21,9 @@ public class WeaponStats : MonoBehaviour
         weaponName = weapon.weaponName;
         weaponCooldown = weapon.cooldown;
         weaponDamage = weapon.damage;
+        weaponSpecialDamage = weapon.specialDamage;
+        weaponSpecialCooldown = weapon.specialCooldown;
+        weaponSpecial = weapon.special;
     }
 
     public int GetWeaponID() { 
@@ -34,5 +40,17 @@ public class WeaponStats : MonoBehaviour
 
     public string GetWeaponName() {
         return weaponName;
+    }
+
+    public SpecialAttack GetSpecialAttack() {
+        return weaponSpecial;
+    }
+
+    public float GetWeaponSpecialDamage() {
+        return weaponSpecialDamage;
+    }
+
+    public float GetWeaponSpecialCooldown() {
+        return weaponSpecialCooldown;
     }
 }

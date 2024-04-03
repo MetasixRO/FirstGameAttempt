@@ -9,13 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a595ba6b1f2331b489aaee4dda5d138f, type: 3}
-  m_Name: Knife
+  m_Script: {fileID: 11500000, guid: 42ce62318eb923b4c8e8417fa49fa419, type: 3}
+  m_Name: Great Sword Special
   m_EditorClassIdentifier: 
-  weaponName: Knife
-  ID: 1
-  cooldown: 0.4
-  damage: 10
-  specialDamage: 20
-  specialCooldown: 1
-  special: {fileID: 11400000, guid: 5fdfa14bed895d44b8fb9d3bd3a8ebda, type: 2}

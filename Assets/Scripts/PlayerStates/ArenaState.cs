@@ -73,7 +73,7 @@ public class ArenaState : BaseState
     {
         stateMachine.movementHandler.ReceiveMovementData(currentMovement, movementPressed, true);
         stateMachine.interactHandler.ReceiveInteractButtonStatus(interactPressed);
-        stateMachine.attackHandler.ReceiveAttackButtonStatus(attackPressed);
+        //stateMachine.attackHandler.ReceiveAttackButtonStatus(attackPressed);
         stateMachine.movementHandler.ReceiveDashStatus(dashPressed);
         if (menuPressed && stateMachine.GetCurrentState() == this && !isAlreadySwitching) {
             isAlreadySwitching = true;

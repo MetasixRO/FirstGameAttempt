@@ -11,6 +11,7 @@ public class Combat : MonoBehaviour
 
     public delegate void ManageDealDamage(float damage = 0);
     public static event ManageDealDamage ManageWeapon;
+    public static event ManageDealDamage ManageSpecial;
 
     public delegate void EnterDeathState();
     public static event EnterDeathState PlayerDead;
@@ -19,10 +20,10 @@ public class Combat : MonoBehaviour
     [SerializeField] private float maxHealth = 100;
     private float currentHealth;
 
-    private float attackDamage;
-    private bool canAttack;
-    private float attackCooldown;
-    private bool attackPressed;
+    private float attackDamage, specialAttackDamage;
+    private bool canAttack, canSpecial;
+    private float attackCooldown, specialAttackCooldown;
+    private bool attackPressed, specialPressed;
 
     Animator animator;
     int isAttackingHash;
@@ -31,6 +32,7 @@ public class Combat : MonoBehaviour
     private void Awake()
     {
         canAttack = false;
+        canSpecial = false;
     }
 
 
@@ -62,6 +64,10 @@ public class Combat : MonoBehaviour
             handleAttack();
         }
 
+        if (specialPressed && canSpecial) {
+            handleSpecial();
+        }
+
         //DEBUG***************************
         if (Input.GetKeyDown("p")) {
             TakeDamage(90);
@@ -81,17 +87,33 @@ public class Combat : MonoBehaviour
         }
     }
 
+    private void ManageWeaponSpecialDamage() {
+        if (ManageSpecial != null)
+        {
+            ManageSpecial(specialAttackDamage);
+        }
+    }
+
     void handleAttack()
     {
         canAttack = false;
-        animator.SetTrigger("isAttackingDeprecated");
+        animator.SetTrigger("isAttacking");
+    }
+
+    void handleSpecial()
+    {
+        canSpecial = false;
+        animator.SetTrigger("Special");
     }
 
 
-    private void ChangeStatsForWeapon(float damage, float cooldown) {
+    private void ChangeStatsForWeapon(float damage, float cooldown, float specialDamage, float specialCooldown) {
         attackDamage = damage;
         attackCooldown = cooldown;
+        specialAttackDamage = specialDamage;
+        specialAttackCooldown = specialCooldown;
         canAttack = true;
+        canSpecial = true;
     }
 
 
@@ -99,6 +121,12 @@ public class Combat : MonoBehaviour
     {
         yield return new WaitForSeconds(attackCooldown);
         canAttack = true;
+    }
+
+    IEnumerator resetSpecialCooldown()
+    {
+        yield return new WaitForSeconds(specialAttackCooldown);
+        canSpecial = true;
     }
 
 
@@ -144,8 +172,9 @@ public class Combat : MonoBehaviour
         }
     }
 
-    public void ReceiveAttackButtonStatus(bool receivedAttackPressed) { 
+    public void ReceiveAttackButtonStatus(bool receivedAttackPressed, bool receivedSpecialPressed) { 
         attackPressed = receivedAttackPressed;
+        specialPressed = receivedSpecialPressed;
     }
 
     private void ModifyMaxHealth() {

@@ -80,6 +80,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Special"",
+                    ""type"": ""Button"",
+                    ""id"": ""7e6131c9-a1b7-4b6d-bbd5-bdaaa1795f2a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -236,6 +245,17 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""action"": ""Ability Menu"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0907a47e-6f90-4c38-8e9a-715f8058e133"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": ""Press(behavior=2)"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Special"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -359,6 +379,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_CharacterControls_Use = m_CharacterControls.FindAction("Use", throwIfNotFound: true);
         m_CharacterControls_Dash = m_CharacterControls.FindAction("Dash", throwIfNotFound: true);
         m_CharacterControls_AbilityMenu = m_CharacterControls.FindAction("Ability Menu", throwIfNotFound: true);
+        m_CharacterControls_Special = m_CharacterControls.FindAction("Special", throwIfNotFound: true);
         // KeyboardCharacterControls
         m_KeyboardCharacterControls = asset.FindActionMap("KeyboardCharacterControls", throwIfNotFound: true);
         m_KeyboardCharacterControls_KeyboardMovement = m_KeyboardCharacterControls.FindAction("KeyboardMovement", throwIfNotFound: true);
@@ -430,6 +451,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_CharacterControls_Use;
     private readonly InputAction m_CharacterControls_Dash;
     private readonly InputAction m_CharacterControls_AbilityMenu;
+    private readonly InputAction m_CharacterControls_Special;
     public struct CharacterControlsActions
     {
         private @PlayerInput m_Wrapper;
@@ -440,6 +462,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         public InputAction @Use => m_Wrapper.m_CharacterControls_Use;
         public InputAction @Dash => m_Wrapper.m_CharacterControls_Dash;
         public InputAction @AbilityMenu => m_Wrapper.m_CharacterControls_AbilityMenu;
+        public InputAction @Special => m_Wrapper.m_CharacterControls_Special;
         public InputActionMap Get() { return m_Wrapper.m_CharacterControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -467,6 +490,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @AbilityMenu.started += instance.OnAbilityMenu;
             @AbilityMenu.performed += instance.OnAbilityMenu;
             @AbilityMenu.canceled += instance.OnAbilityMenu;
+            @Special.started += instance.OnSpecial;
+            @Special.performed += instance.OnSpecial;
+            @Special.canceled += instance.OnSpecial;
         }
 
         private void UnregisterCallbacks(ICharacterControlsActions instance)
@@ -489,6 +515,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @AbilityMenu.started -= instance.OnAbilityMenu;
             @AbilityMenu.performed -= instance.OnAbilityMenu;
             @AbilityMenu.canceled -= instance.OnAbilityMenu;
+            @Special.started -= instance.OnSpecial;
+            @Special.performed -= instance.OnSpecial;
+            @Special.canceled -= instance.OnSpecial;
         }
 
         public void RemoveCallbacks(ICharacterControlsActions instance)
@@ -577,6 +606,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         void OnUse(InputAction.CallbackContext context);
         void OnDash(InputAction.CallbackContext context);
         void OnAbilityMenu(InputAction.CallbackContext context);
+        void OnSpecial(InputAction.CallbackContext context);
     }
     public interface IKeyboardCharacterControlsActions
     {

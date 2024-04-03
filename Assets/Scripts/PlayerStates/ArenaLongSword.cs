@@ -64,7 +64,7 @@ public class ArenaLongSword : BaseState
     {
         stateMachine.movementHandler.ReceiveMovementData(currentMovement, movementPressed, true);
         stateMachine.interactHandler.ReceiveInteractButtonStatus(interactPressed);
-        stateMachine.attackHandler.ReceiveAttackButtonStatus(attackPressed);
+       // stateMachine.attackHandler.ReceiveAttackButtonStatus(attackPressed);
     }
 
     private void SetDialogueNextState()

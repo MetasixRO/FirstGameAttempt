@@ -15,7 +15,7 @@ public class UpdatedStateManager : MonoBehaviour
     private InteractorScript interactHandler;
 
     private Vector2 currentDirection;
-    private bool movement, run, interact, attack, dash, menu;
+    private bool movement, run, interact, attack, dash, menu, special;
     private bool toDialogue, toArena, toAttack, toMenu, toLobby, toPrevious, toDead;
 
     private void Awake()
@@ -58,6 +58,7 @@ public class UpdatedStateManager : MonoBehaviour
         input.CharacterControls.Shoot.performed += ctx => attack = ctx.ReadValueAsButton();
         input.CharacterControls.Dash.performed += ctx => dash = ctx.ReadValueAsButton();
         input.CharacterControls.AbilityMenu.performed += ctx => menu = ctx.ReadValueAsButton();
+        input.CharacterControls.Special.performed += ctx => special = ctx.ReadValueAsButton();
     }
 
     private void ObtainComponents() {
@@ -94,7 +95,7 @@ public class UpdatedStateManager : MonoBehaviour
     }
 
     public void SendAttackData() {
-        attackHandler.ReceiveAttackButtonStatus(attack);
+        attackHandler.ReceiveAttackButtonStatus(attack, special);
     }
 
     public bool GetInteractData() {
@@ -205,7 +206,7 @@ public class UpdatedStateManager : MonoBehaviour
 
         if (nextState != currentState)
         {
-            //Debug.Log("Switching to" + nextState);
+           //Debug.Log("Switching to" + nextState);
             currentState.ExitState();
             previousState = currentState;
             currentState = nextState;
