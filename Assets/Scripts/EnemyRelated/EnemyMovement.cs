@@ -45,7 +45,7 @@ public class EnemyMovement : MonoBehaviour
 
             if (damageDealerManager != null)
             {
-                damageDealerManager.ManageWeaponDamageDealing();
+                //damageDealerManager.ManageWeaponDamageDealing();
             }
 
             animator.SetTrigger("Punch");
@@ -73,7 +73,7 @@ public class EnemyMovement : MonoBehaviour
 
         if (damageDealerManager != null)
         {
-            damageDealerManager.ManageWeaponDamageDealing();
+            //damageDealerManager.ManageWeaponDamageDealing();
         }
 
         canAttack = true;

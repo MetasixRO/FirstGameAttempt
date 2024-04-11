@@ -26734,14 +26734,14 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0.16666667
-    functionName: ManageWeaponDamageAbility
+    functionName: ActivateWeaponDamageAbility
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 0.4
-    functionName: ManageWeaponDamageAbility
+    functionName: DisableWeaponDamageAbility
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

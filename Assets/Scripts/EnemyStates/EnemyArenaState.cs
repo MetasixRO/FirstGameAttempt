@@ -23,6 +23,7 @@ public class EnemyArenaState : EnemyBaseState
 
     public override void EnterState(EnemyStateManager manager)
     {
+        Debug.Log("Entered here");
         stateManager = manager;
     }
 

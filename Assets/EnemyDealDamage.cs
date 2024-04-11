@@ -22,9 +22,9 @@ public class EnemyDealDamage : MonoBehaviour
         }
     }
 
-    public void ManageWeaponDamageDealing() {
+    public void ManageWeaponDamageDealing(bool activate) {
 
-        if (!canDealDamage)
+        if (activate)
         {
             canDealDamage = true;
         }
@@ -32,6 +32,10 @@ public class EnemyDealDamage : MonoBehaviour
         {
             canDealDamage = false;
         }
+    }
+
+    public void DisableWeapon() {
+        gameObject.GetComponent<Collider>().enabled = false;
     }
 
 

@@ -45,10 +45,17 @@ public class AgentAnimations : MonoBehaviour
         }
     }
 
-    private void ManageWeaponDamageAbility() {
+    private void DisableWeaponDamageAbility() {
         if (damageDealerManager != null)
         {
-            damageDealerManager.ManageWeaponDamageDealing();
+            damageDealerManager.ManageWeaponDamageDealing(false);
+        }
+    }
+
+    private void ActivateWeaponDamageAbility() {
+        if (damageDealerManager != null)
+        {
+            damageDealerManager.ManageWeaponDamageDealing(true);
         }
     }
 
@@ -90,30 +97,33 @@ public class AgentAnimations : MonoBehaviour
     }
 
     public void Rotate() {
-        Vector3 rayDirection = transform.forward;
-        Ray ray = new Ray(transform.position, rayDirection);
-        RaycastHit hit;
-
-        if (Physics.Raycast(ray, out hit))
+        if (agent.velocity.magnitude == 0.0)
         {
-            if (hit.collider == null)
+            Vector3 rayDirection = transform.forward;
+            Ray ray = new Ray(transform.position, rayDirection);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit))
             {
-                return;
-            }
+                if (hit.collider == null)
+                {
+                    return;
+                }
 
-            if (hit.collider.gameObject == player)
-            {
-                SetLookingAtPlayer(true);
-            }
-            else
-            {
-                SetLookingAtPlayer(false);
+                if (hit.collider.gameObject == player)
+                {
+                    SetLookingAtPlayer(true);
+                }
+                else
+                {
+                    SetLookingAtPlayer(false);
 
-                Vector3 directionToPlayer = (player.transform.position - transform.position).normalized;
+                    Vector3 directionToPlayer = (player.transform.position - transform.position).normalized;
 
-                Quaternion lookLocation = Quaternion.LookRotation(new Vector3(directionToPlayer.x, 0, directionToPlayer.z));
+                    Quaternion lookLocation = Quaternion.LookRotation(new Vector3(directionToPlayer.x, 0, directionToPlayer.z));
 
-                transform.rotation = Quaternion.Lerp(transform.rotation, lookLocation, 2.5f * Time.deltaTime);
+                    transform.rotation = Quaternion.Lerp(transform.rotation, lookLocation, 2.5f * Time.deltaTime);
+                }
             }
         }
     }

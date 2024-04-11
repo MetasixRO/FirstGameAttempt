@@ -8,14 +8,14 @@ public class EnemyStateManager : MonoBehaviour
     private EnemyBaseState previousState;
     private EnemyBaseState nextState;
 
-    private AgentController controller;
     private AgentAnimations animations;
+    private Controller controller;
 
     private bool toAttack, toArena, toFreeze, toUnfreeze, toDead, toPrevious;
 
     private void Start()
     {
-        controller = GetComponent<AgentController>();
+        controller = GetComponent<AgentController>() ? GetComponent<AgentController>() : GetComponent<RangedController>();
         animations = GetComponent<AgentAnimations>();
 
         InitializeTransitions();
@@ -31,11 +31,13 @@ public class EnemyStateManager : MonoBehaviour
         toFreeze = false;
         toUnfreeze = false;
         toDead = false;
-    //    toPrevious = false;
     }
 
     private void Update()
     {
+        if (controller is RangedController) {
+            Debug.Log(currentState);
+        }
         currentState.UpdateState();
     }
 
@@ -90,7 +92,7 @@ public class EnemyStateManager : MonoBehaviour
         }
 
         if (nextState != currentState) {
-            //Debug.Log("Enemy Entering: " + nextState);
+            // Debug.Log("Enemy Entering: " + nextState);
             previousState = currentState;
             currentState = nextState;
             currentState.EnterState(this);
@@ -107,6 +109,10 @@ public class EnemyStateManager : MonoBehaviour
     }
 
     public void AllowMovement() {
+        if(controller is RangedController)
+        {
+            Debug.Log("I am allowing movement");
+        }
         controller.Movement();
         animations.HandleMovement();
     }

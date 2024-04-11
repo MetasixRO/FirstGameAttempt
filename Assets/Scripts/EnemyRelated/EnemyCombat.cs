@@ -75,14 +75,18 @@ public class EnemyCombat : MonoBehaviour
         }
     }
 
+    private void SetDead() {
+        animator.SetBool("isDead", true);
+    }
+
 
     void Die()
     {
-        animator.SetBool("isDead", true);
+        animator.SetTrigger("Die");
 
         GetComponent<Collider>().enabled = false;
         GetComponent<AgentController>().enabled = false;
-        GetComponent<LookAtPlayer>().enabled = false;
+        GetComponent<CharacterController>().enabled = false;
 
         if (EnemyDead != null) {
             EnemyDead();
