@@ -7,23 +7,8 @@ public class EnemyArenaState : EnemyBaseState
 {
     private EnemyStateManager stateManager;
 
-    private static EnemyArenaState instance;
-
-    private EnemyArenaState() { }
-
-    public static EnemyArenaState Instance {
-        get
-        {
-            if (instance == null) { 
-                instance = new EnemyArenaState();
-            }
-            return instance;
-        }
-    }
-
     public override void EnterState(EnemyStateManager manager)
     {
-        Debug.Log("Entered here");
         stateManager = manager;
     }
 

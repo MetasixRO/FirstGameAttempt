@@ -19,28 +19,37 @@ public class DealDamage : MonoBehaviour
 
         DoubleDamage.DamageDouble += DoubleCurrentDamage;
         DoubleDamage.DamageReset += ResetCurrentDamage;
+
+        KnifeSpecial.BoostStats += DoubleCurrentDamage;
+        KnifeSpecial.ResetStats += ResetCurrentDamage;
     }
 
     private void ManageWeaponDamageDealing(float damage) {
-        if (attackDamage == 0) {
-            attackDamage = damage;
-        }
-
-        if (!canDealDamage)
+        if (gameObject.activeSelf)
         {
-            if (!isDashing)
+            if (attackDamage == 0)
             {
-                canDealDamage = true;
+                attackDamage = damage;
             }
-        }
-        else {
-            canDealDamage = false;
+            Debug.Log(attackDamage);
+
+            if (!canDealDamage)
+            {
+                if (!isDashing)
+                {
+                    canDealDamage = true;
+                }
+            }
+            else
+            {
+                canDealDamage = false;
+            }
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (canDealDamage && other.CompareTag("Enemy")) {
+        if (canDealDamage && other.CompareTag("Enemy") && gameObject.activeSelf) {
             other.GetComponent<EnemyCombat>().TakeDamage(attackDamage);
         }
     }
@@ -58,6 +67,7 @@ public class DealDamage : MonoBehaviour
 
     private void DoubleCurrentDamage() {
         attackDamage *= 2;
+        //Debug.Log("" + attackDamage);
     }
 
     private void ResetCurrentDamage() { 

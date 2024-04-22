@@ -16,13 +16,13 @@ public class EnemyDealDamage : MonoBehaviour
         canDealDamage = false;
     }
 
-    public void SetDamage(float damage) {
+    public virtual void SetDamage(float damage) {
         if (attackDamage == 0) {
             attackDamage = damage;
         }
     }
 
-    public void ManageWeaponDamageDealing(bool activate) {
+    public virtual void ManageWeaponDamageDealing(bool activate) {
 
         if (activate)
         {
@@ -34,7 +34,7 @@ public class EnemyDealDamage : MonoBehaviour
         }
     }
 
-    public void DisableWeapon() {
+    public virtual void DisableWeapon() {
         gameObject.GetComponent<Collider>().enabled = false;
     }
 

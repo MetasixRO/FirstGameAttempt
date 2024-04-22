@@ -7,4 +7,8 @@ public abstract class Controller : MonoBehaviour
     public abstract void Freeze();
 
     public abstract void Movement();
+
+    public void ManageAgent() {
+        gameObject.SetActive(true);
+    }
 }

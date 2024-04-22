@@ -14,6 +14,7 @@ public class AgentAnimations : MonoBehaviour
     private EnemyDealDamage damageDealerManager;
 
     private bool canAttack,isLookingAtPlayer;
+    private float attackDelay = 0.0f;
 
     private GameObject player;
 
@@ -27,6 +28,14 @@ public class AgentAnimations : MonoBehaviour
         
         canAttack = true;
         isLookingAtPlayer = false;
+    }
+
+    public void SetDelay(float delay) {
+        attackDelay = delay;
+    }
+
+    public float GetDelay() { 
+        return attackDelay;
     }
 
     public void HandleMovement() {
@@ -59,7 +68,7 @@ public class AgentAnimations : MonoBehaviour
         }
     }
 
-    public bool CheckForCombat() {
+    public virtual bool CheckForCombat() {
         float distance = Vector3.Distance(player.transform.position, gameObject.transform.position);
 
         if (distance <= 1.5f && canAttack && isLookingAtPlayer){
@@ -69,14 +78,14 @@ public class AgentAnimations : MonoBehaviour
         
     }
 
-    public void HandleCombat() {
+    public virtual void HandleCombat() {
             canAttack = false;
 
             animator.SetTrigger(isAttackingHash);
-            StartCoroutine(ResetAttackCooldown(2.0f));
+            StartCoroutine(ResetAttackCooldown(attackDelay));
     }
 
-    private IEnumerator ResetAttackCooldown(float cooldown) { 
+    protected IEnumerator ResetAttackCooldown(float cooldown) { 
         yield return new WaitForSeconds(cooldown);
         animator.ResetTrigger(isAttackingHash);
 
@@ -126,5 +135,49 @@ public class AgentAnimations : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void HandlePunched()
+    {
+        animator.SetTrigger("Hurt");
+    }
+
+    private void SetDead()
+    {
+        animator.SetBool("isDead", true);
+    }
+
+    public void HandleDeath() {
+        animator.SetTrigger("Die");
+    }
+
+    protected Animator GetAnimator() {
+        return animator;
+    }
+
+    protected void SetAgent(NavMeshAgent agent) {
+        this.agent = agent;
+        player = PlayerTracker.instance.player;
+    }
+
+    protected void SetAnimator(Animator animator) {
+        this.animator = animator;
+        GetHashes();
+    }
+
+    protected GameObject GetPlayer() {
+        return player;
+    }
+
+    protected void SetAttackHash(int attackHash) {
+        this.isAttackingHash = attackHash;
+    }
+
+    protected bool CheckCanAttack() {
+        return canAttack;
+    }
+
+    protected void SetCanAttack(bool canAttack) {
+        this.canAttack = canAttack;
     }
 }

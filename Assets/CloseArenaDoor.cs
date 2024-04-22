@@ -9,7 +9,7 @@ public class CloseArenaDoor : MonoBehaviour
 
     private void Start()
     {
-        DeadState.RespawnPlayer += ResetPoint;
+        newDeadState.RespawnPlayer += ResetPoint;
     }
 
     private void OnTriggerEnter(Collider other)

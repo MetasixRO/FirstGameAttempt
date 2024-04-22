@@ -7,25 +7,12 @@ public class EnemyAttackState : EnemyBaseState
 
     private EnemyStateManager stateManager;
 
-    private static EnemyAttackState instance;
-
-    private EnemyAttackState() { }
-
-    public static EnemyAttackState Instance
-    {
-        get
-        {
-            if (instance == null)
-            {
-                instance = new EnemyAttackState();
-            }
-            return instance;
-        }
-    }
+    private bool alreadyAttacking;
 
     public override void EnterState(EnemyStateManager manager)
     {
         stateManager = manager;
+        alreadyAttacking = false;
     }
 
     public override void ExitState()
@@ -35,9 +22,22 @@ public class EnemyAttackState : EnemyBaseState
     public override void HandleAttack()
     {
         stateManager.AllowRotation();
-        stateManager.AllowCombat();
+        if (!alreadyAttacking)
+        {
+            stateManager.StartCoroutine(DelayAttack());
+            alreadyAttacking = true;
+        }
         if (!stateManager.CombatChecks()) {
             stateManager.TransitionToArena();
+        }
+    }
+
+    private IEnumerator DelayAttack() {
+        stateManager.Indicate();
+        yield return new WaitForSeconds(1.0f);
+        if (stateManager.GetCurrentState() is EnemyAttackState) {
+           // Debug.Log("Attacking");
+            stateManager.AllowCombat();
         }
     }
 

@@ -10,20 +10,18 @@ public class EnemyCombat : MonoBehaviour
     public delegate void EnemyEvent();
     public static event EnemyEvent EnemyDead;
 
-    private Animator animator;
+    private AgentAnimations animations;
     public float maxHealth;
     float currentHealth;
     private EnemyHealthBar healthBar;
     private ParticleSystem particles;
     private Knockback knockbackObject;
 
-    void Start()
+    private void Start()
     {
         EnemyStats stats = GetComponent<EnemyStats>();
-        
-        maxHealth = stats.GetHealth();
 
-        GetComponentInChildren<EnemyDealDamage>().SetDamage(stats.GetDamage());
+        maxHealth = stats.GetHealth();
 
         healthBar = GetComponentInChildren<EnemyHealthBar>();
 
@@ -31,13 +29,17 @@ public class EnemyCombat : MonoBehaviour
 
         knockbackObject = GetComponent<Knockback>();
 
+        animations = GetComponent<AgentAnimations>();
+        animations.SetDelay(stats.GetDelay());
+
         currentHealth = maxHealth;
         if (healthBar != null)
         {
+            healthBar.SetMaxHealth(currentHealth);
             healthBar.SetHealth(currentHealth);
         }
 
-        animator = GetComponent<Animator>();
+        GetComponentInChildren<EnemyDealDamage>().SetDamage(stats.GetDamage());
     }
 
     private void Update()
@@ -67,7 +69,10 @@ public class EnemyCombat : MonoBehaviour
         {
             knockbackObject.ApplyKnockback();
         }
-        animator.SetTrigger("Hurt");
+
+        if (animations != null) {
+            animations.HandlePunched();
+        }
 
         if (currentHealth <= 0)
         {
@@ -75,17 +80,13 @@ public class EnemyCombat : MonoBehaviour
         }
     }
 
-    private void SetDead() {
-        animator.SetBool("isDead", true);
-    }
-
-
     void Die()
     {
-        animator.SetTrigger("Die");
+        if (animations != null) {
+            animations.HandleDeath();
+        }
 
         GetComponent<Collider>().enabled = false;
-        GetComponent<AgentController>().enabled = false;
         GetComponent<CharacterController>().enabled = false;
 
         if (EnemyDead != null) {

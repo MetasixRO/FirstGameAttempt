@@ -6,15 +6,14 @@ public class SpawnBoon : MonoBehaviour
 {
     public delegate void AllEnemiesDied();
     public static event AllEnemiesDied SpawnAbilityBoon;
-
-    //FOR DEBUG FOR NOW, WILL BE UPDATED DEPDENDING ON THE NUMBER OF ENEMIES
     private int aliveEnemiesCounter;
 
     private void Start()
     {
         //FOR DEBBUG FOR NOW
-        aliveEnemiesCounter = 1;
+        aliveEnemiesCounter = 0;
         EnemyCombat.EnemyDead += CheckAllDead;
+        EnemySpawner.EnemyCounter += SetTotalEnemies;
     }
 
     private void CheckAllDead() {
@@ -22,5 +21,9 @@ public class SpawnBoon : MonoBehaviour
         if (aliveEnemiesCounter == 0 && SpawnAbilityBoon != null) {
             SpawnAbilityBoon();
         }
+    }
+
+    private void SetTotalEnemies(int counter) {
+        aliveEnemiesCounter += counter;
     }
 }

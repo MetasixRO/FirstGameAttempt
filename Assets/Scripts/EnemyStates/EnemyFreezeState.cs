@@ -6,22 +6,6 @@ public class EnemyFreezeState : EnemyBaseState
 {
     private EnemyStateManager stateManager;
 
-    private static EnemyFreezeState instance;
-
-    private EnemyFreezeState() { }
-
-    public static EnemyFreezeState Instance
-    {
-        get
-        {
-            if (instance == null)
-            {
-                instance = new EnemyFreezeState();
-            }
-            return instance;
-        }
-    }
-
     public override void EnterState(EnemyStateManager manager)
     {
         stateManager = manager;

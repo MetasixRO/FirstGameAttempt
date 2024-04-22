@@ -7,6 +7,10 @@ public class WeaponPrompt : MonoBehaviour, IInteractable
 
     public delegate void SelectWeapon(int weaponID);
     public static event SelectWeapon ChangeWeapon;
+    public static event SelectWeapon CheckOwnedWeapon;
+    public static event SelectWeapon PurchaseWeapon;
+
+    public static event SelectWeapon CheckEnoughCredits;
 
     public delegate void UpdateStats(float damage, float cooldown, float specialDamage, float specialCooldown);
     public static event UpdateStats ChangeWeaponStats;
@@ -15,30 +19,82 @@ public class WeaponPrompt : MonoBehaviour, IInteractable
     public static event ChangeSpecial SpecialAttackInside;
 
     private string prompt;
+    private string lockPrompt;
+    private bool isPurchased = false;
+    private bool purchaseReult = false;
     private int weaponNumber;
+    Canvas lockCanvas;
     private WeaponStats weaponStatsComponent;
 
     private void Start()
     {
+        lockCanvas = GetComponentInChildren<Canvas>();
+        Weapons.ResultForPurchaseCheck += UpdateIsPurchased;
+        ResourceManager.CheckKeysResult += GetPurchaseStatus;
         weaponStatsComponent = GetComponent<WeaponStats>();
         if (weaponStatsComponent != null)
         {
             weaponNumber = weaponStatsComponent.GetWeaponID();
             prompt = weaponStatsComponent.GetWeaponName();
+            lockPrompt = "Buy " + prompt + " for 5 keys";
         }
+    }
+
+    private void UpdateIsPurchased(bool status) {
+        isPurchased = status;
+    }
+
+    private void GetPurchaseStatus(bool status) {
+        purchaseReult = status;
     }
 
     public string InteractionPrompt()
     {
-        return prompt;
+        if (CheckOwnedWeapon != null) { 
+            CheckOwnedWeapon(weaponNumber);
+        }
+
+        if (isPurchased)
+        {
+            return prompt;
+        }
+        else
+        {
+            return lockPrompt;
+        }
     }
 
     public void Interact()
     {
-        if (ChangeWeapon != null && ChangeWeaponStats != null && SpecialAttackInside != null) {
-            ChangeWeapon(weaponNumber);
-            ChangeWeaponStats(weaponStatsComponent.GetWeaponDamage(), weaponStatsComponent.GetWeaponCooldown(), weaponStatsComponent.GetWeaponSpecialDamage(), weaponStatsComponent.GetWeaponSpecialCooldown());
-            SpecialAttackInside(weaponStatsComponent.GetSpecialAttack());
+        if (!isPurchased)
+        {
+            if (CheckEnoughCredits != null) {
+                CheckEnoughCredits(5);
+            }
+
+            if (purchaseReult)
+            {
+                if (PurchaseWeapon != null)
+                {
+                    PurchaseWeapon(weaponNumber);
+                    lockCanvas.enabled = false;
+                }
+
+                UpdateIsPurchased(purchaseReult);
+            }
+            else {
+                lockCanvas.GetComponent<Animator>().SetTrigger("Fail");
+            }
+        }
+        else
+        {
+
+            if (ChangeWeapon != null && ChangeWeaponStats != null && SpecialAttackInside != null)
+            {
+                ChangeWeapon(weaponNumber);
+                ChangeWeaponStats(weaponStatsComponent.GetWeaponDamage(), weaponStatsComponent.GetWeaponCooldown(), weaponStatsComponent.GetWeaponSpecialDamage(), weaponStatsComponent.GetWeaponSpecialCooldown());
+                SpecialAttackInside(weaponStatsComponent.GetSpecialAttack());
+            }
         }
     }
 }

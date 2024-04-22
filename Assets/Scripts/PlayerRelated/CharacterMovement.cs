@@ -126,10 +126,12 @@ public class CharacterMovement : MonoBehaviour
         switch (weaponID)
         {
             case 0:
+                animator.SetBool("isKnife", false);
                 animator.SetBool("isGreatSword", true);
                 break;
             case 1:
                 animator.SetBool("isGreatSword", false);
+                animator.SetBool("isKnife", true);
                 break;
         }
 
@@ -137,6 +139,7 @@ public class CharacterMovement : MonoBehaviour
 
     private void ResetStance() {
         animator.SetBool("isGreatSword", false);
+        animator.SetBool("isKnife", false);
     }
 
     private void DisableRootMotion() {

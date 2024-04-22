@@ -76,6 +76,7 @@ public class AbilitiesManager : MonoBehaviour
         return abilities[index].name;    
     }
 
+    /*
     private void OnDisable()
     {
         foreach (AbilityScriptableObject ability in abilities)
@@ -83,4 +84,5 @@ public class AbilitiesManager : MonoBehaviour
             Destroy(ability);
         }
     }
+    */
 }

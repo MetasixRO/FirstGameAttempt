@@ -49391,13 +49391,6 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.06666667
-    functionName: TriggerTransition
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
   - time: 0.8
     functionName: ManageWeaponDamageAbility
     data: 
@@ -49407,13 +49400,6 @@ AnimationClip:
     messageOptions: 0
   - time: 1.1
     functionName: resetAttackCooldown
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 1.2
-    functionName: ResetTransition
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

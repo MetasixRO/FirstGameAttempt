@@ -24,7 +24,7 @@ public class DoorOpener : MonoBehaviour, IInteractable
 
         ReturnToLobby.BackToLobby += DeactivateDoor;
 
-        DeadState.RespawnPlayer += ResetDoor;
+        newDeadState.RespawnPlayer += ResetDoor;
     }
 
     public void Interact()

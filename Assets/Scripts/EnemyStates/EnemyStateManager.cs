@@ -5,24 +5,35 @@ using UnityEngine;
 public class EnemyStateManager : MonoBehaviour
 {
     private EnemyBaseState currentState;
+    private Dictionary<string, EnemyBaseState> allStates;
     private EnemyBaseState previousState;
     private EnemyBaseState nextState;
 
     private AgentAnimations animations;
     private Controller controller;
+    private AttackIndicator indicator;
 
     private bool toAttack, toArena, toFreeze, toUnfreeze, toDead, toPrevious;
 
     private void Start()
     {
-        controller = GetComponent<AgentController>() ? GetComponent<AgentController>() : GetComponent<RangedController>();
+        controller = GetComponent<Controller>();
         animations = GetComponent<AgentAnimations>();
+        indicator = GetComponent<AttackIndicator>();
 
+        InitializeStates();
         InitializeTransitions();
 
-        currentState = EnemyArenaState.Instance;
+        currentState = allStates["Arena"];
         currentState.EnterState(this);
-        //Debug.Log("Enemy is Now : " + currentState);
+    }
+
+    private void InitializeStates() {
+        allStates = new Dictionary<string, EnemyBaseState>();
+        allStates.Add("Arena", new EnemyArenaState());
+        allStates.Add("Attack", new EnemyAttackState());
+        allStates.Add("Freeze", new EnemyFreezeState());
+        allStates.Add("Dead", new EnemyDeadState());
     }
 
     private void InitializeTransitions() {
@@ -33,16 +44,18 @@ public class EnemyStateManager : MonoBehaviour
         toDead = false;
     }
 
+    public EnemyBaseState GetCurrentState() {
+        return currentState;
+    }
+
     private void Update()
     {
-        if (controller is RangedController) {
-            Debug.Log(currentState);
-        }
         currentState.UpdateState();
     }
 
     public void TransitionToAttack() {
         toAttack = true;
+        //indicator.Indicate();
         StartCoroutine(DelayTransition(0.0f));
     }
 
@@ -71,28 +84,30 @@ public class EnemyStateManager : MonoBehaviour
 
         if (toArena) {
             toArena = false;
-            nextState = EnemyArenaState.Instance;
+            nextState = allStates["Arena"];
         }
         if (toAttack) {
             toAttack = false;
-            nextState = EnemyAttackState.Instance;
+            nextState = allStates["Attack"];
         }
         if (toFreeze) {
             DenyMovement();
             toFreeze = false;
-            nextState = EnemyFreezeState.Instance;
+            nextState = allStates["Freeze"];
         }
         if (toUnfreeze) {
             toUnfreeze = false;
-            nextState = EnemyArenaState.Instance;
+            nextState = allStates["Arena"];
         }
         if (toDead) {
             toDead = false;
-            nextState = EnemyDeadState.Instance;
+            controller.enabled = false;
+            nextState = allStates["Dead"];
         }
 
         if (nextState != currentState) {
-            // Debug.Log("Enemy Entering: " + nextState);
+            //Debug.Log("Enemy Entering: " + nextState);
+            indicator.Reset();
             previousState = currentState;
             currentState = nextState;
             currentState.EnterState(this);
@@ -109,10 +124,6 @@ public class EnemyStateManager : MonoBehaviour
     }
 
     public void AllowMovement() {
-        if(controller is RangedController)
-        {
-            Debug.Log("I am allowing movement");
-        }
         controller.Movement();
         animations.HandleMovement();
     }
@@ -127,5 +138,9 @@ public class EnemyStateManager : MonoBehaviour
 
     public bool CombatChecks() {
         return animations.CheckForCombat();
+    }
+
+    public void Indicate() {
+        indicator.Indicate();
     }
 }

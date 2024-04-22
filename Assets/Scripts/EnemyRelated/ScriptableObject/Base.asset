@@ -15,3 +15,4 @@ MonoBehaviour:
   id: 1
   damage: 7
   health: 100
+  delay: 1

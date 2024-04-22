@@ -9,12 +9,14 @@ public class EnemyStats : MonoBehaviour
     private int id;
     private float damage;
     private float health;
+    private float delay;
 
     private void Start()
     {
         id = enemy.id;
         damage = enemy.damage;
         health = enemy.health;
+        delay = enemy.delay;
     }
 
     public int GetId() {
@@ -27,5 +29,9 @@ public class EnemyStats : MonoBehaviour
 
     public float GetHealth() { 
         return health;
+    }
+
+    public float GetDelay() {
+        return delay;
     }
 }

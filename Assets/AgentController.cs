@@ -11,21 +11,33 @@ public class AgentController : Controller
     private void Start()
     {
 
-        gameObject.SetActive(false);
-        CloseArenaDoor.CloseDoor += ManageAgent;
+        //gameObject.SetActive(false);
+        //CloseArenaDoor.CloseDoor += ManageAgent;
         agent = GetComponent<NavMeshAgent>();
+        newDeadState.RespawnPlayer += DestroyEnemy;
     }
 
-    private void ManageAgent() {
+    private void DestroyEnemy()
+    {
+        try
+        {
+            if (gameObject != null)
+            {
+                Destroy(gameObject);
+            }
+        }
+        catch (MissingReferenceException)
+        {
+            //Debug.Log("yes");
+        }
+    }
+
+    public new void ManageAgent() {
         gameObject.SetActive(true);
     }
 
     public override void Freeze() {
-        if (agent.hasPath)
-        {
-            agent.isStopped = true;
-            agent.ResetPath();
-        }
+        agent.isStopped = true;
     }
 
     public override void Movement() {
@@ -33,6 +45,10 @@ public class AgentController : Controller
         {
             Vector3 targetPosition = PlayerTracker.instance.player.transform.position;
             float distanceToTarget = Vector3.Distance(targetPosition, transform.position);
+
+            if (agent.isStopped) {
+                agent.isStopped = false;
+            }
 
             if (distanceToTarget <= stoppingDistance)
             {

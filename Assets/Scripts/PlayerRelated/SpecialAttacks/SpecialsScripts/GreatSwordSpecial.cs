@@ -12,8 +12,6 @@ public class GreatSwordSpecial : SpecialAttack
     private float knockbackForce = 250f;
 
     public override void Activate(float damage) {
-        if (layer != null)
-        {
             numFound = Physics.OverlapSphereNonAlloc(PlayerTracker.instance.player.transform.position, range, colliders, layer);
             if (numFound > 0)
             {
@@ -26,10 +24,6 @@ public class GreatSwordSpecial : SpecialAttack
                     colliders[i].gameObject.transform.position += knockbackDirection * knockbackForce * Time.deltaTime;
                 }
             }
-        }
-        else {
-            Debug.Log("Layer not set");
-        }
     }
 
     public override void Deactivate() {

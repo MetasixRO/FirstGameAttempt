@@ -40,11 +40,17 @@ public class Combat : MonoBehaviour
     {
         newDeadState.RespawnPlayer += FillHealth;
         HealthRestorer.MedpackHeal += RestoreHealth;
+        HealInteractable.InteractedHeal += RestoreHealth;
         WeaponPrompt.ChangeWeaponStats += ChangeStatsForWeapon;
         EnemyDealDamage.PlayerReceiveDamage += TakeDamage;
+        Bullet.Hit += TakeDamage;
+        DashDealDamage.PlayerReceiveDamage += TakeDamage;
 
         DoubleMaxHealth.DoubleHealth += ModifyMaxHealth;
-        DoubleMaxHealth.ResetHealth += ResetMaxHealth; 
+        DoubleMaxHealth.ResetHealth += ResetMaxHealth;
+
+        KnifeSpecial.BoostStats += ModifyMaxHealth;
+        KnifeSpecial.ResetStats += ResetMaxHealth;
 
         animator = GetComponent<Animator>();
         isAttackingHash = Animator.StringToHash("isAttacking");
@@ -74,8 +80,9 @@ public class Combat : MonoBehaviour
         }
 
         if (Input.GetKeyDown("i")) {
-            maxHealth = 9999;
-            currentHealth = 9999;
+            //maxHealth = 9999;
+            //currentHealth = 9999;
+            Debug.Log("I have removed godmode from this debug key.");
         }
         //DEBUG***************************
     }
@@ -132,7 +139,6 @@ public class Combat : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        Debug.Log("I took " + damage + " damage");
         currentHealth -= damage;
         if (SetHealth != null)
         {
@@ -188,6 +194,10 @@ public class Combat : MonoBehaviour
 
     private void ResetMaxHealth() {
         maxHealth /= 2;
+        if (SetMaxHealth != null)
+        {
+            SetMaxHealth(maxHealth);
+        }
         TakeDamage(currentHealth / 2);
     }
 

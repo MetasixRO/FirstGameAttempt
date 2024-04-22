@@ -6,22 +6,6 @@ public class EnemyDeadState : EnemyBaseState
 {
     private EnemyStateManager stateManager;
 
-    private static EnemyDeadState instance;
-
-    private EnemyDeadState() { }
-
-    public static EnemyDeadState Instance
-    {
-        get
-        {
-            if (instance == null)
-            {
-                instance = new EnemyDeadState();
-            }
-            return instance;
-        }
-    }
-
     public override void EnterState(EnemyStateManager manager)
     {
         stateManager = manager;
