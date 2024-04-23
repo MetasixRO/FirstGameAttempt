@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class WeaponSelectorDoor : MonoBehaviour, IInteractable
 {
+    public delegate void ArmoryRoomEvent();
+    public static event ArmoryRoomEvent EnteredArmory;
+
     public string prompt;
     private Animator animator;
 
@@ -17,6 +20,9 @@ public class WeaponSelectorDoor : MonoBehaviour, IInteractable
     public void Interact()
     {
         animator.SetTrigger("Open");
+        if (EnteredArmory != null) {
+            EnteredArmory();
+        }
     }
 
     public string InteractionPrompt()

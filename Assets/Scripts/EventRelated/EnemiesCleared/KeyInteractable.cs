@@ -19,7 +19,6 @@ public class KeyInteractable : BaseInteractable, IInteractable
 
     protected void Spawn()
     {
-        Debug.Log("I have entered");
         gameObject.SetActive(true);
         gameObject.transform.position = base.CalculateSpawnPosition();
     }

@@ -9,6 +9,7 @@ public class ResourceManager : MonoBehaviour
 
     public delegate void CheckResourcesResult(bool result);
     public static event CheckResourcesResult CheckKeysResult;
+    public static event CheckResourcesResult CheckCoinsResult;
 
 
     [SerializeField] private int amountOfCoins;
@@ -23,9 +24,12 @@ public class ResourceManager : MonoBehaviour
         DisplayEverything();
 
         CoinsInteractable.InteractedCoins += CollectCoins;
+        DeepPockets.AddCoins += CollectCoins;
         KeyInteractable.InteractedKeys += CollectKeys;
         Weapons.WeaponPurchase += UseKeys;
         WeaponPrompt.CheckEnoughCredits += CheckKeys;
+        MenuElementManager.CheckIfCanBuyMirrorAbility += CheckCoins;
+        MirrorInteractable.MirrorUsed += DisplayEverything;
     }
 
     private void Update()
@@ -75,6 +79,21 @@ public class ResourceManager : MonoBehaviour
         }
         else {
             CheckKeysResult(false);
+        }
+    }
+
+    private void CheckCoins(int amount) {
+        if (amount <= amountOfCoins)
+        {
+            if (CheckCoinsResult != null)
+            {
+                CheckCoinsResult(true);
+            }
+
+            UseCoins(amount);
+        }
+        else {
+            CheckCoinsResult(false);
         }
     }
 }

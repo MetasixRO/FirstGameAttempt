@@ -10,13 +10,20 @@ public class BoonMenuManager : MonoBehaviour
     public delegate void BoonButtonSelected(AbilityScriptableObject ability);
     public static event BoonButtonSelected AbilitySelected;
 
+    public delegate void BoonMenuStatus();
+    public static event BoonMenuStatus Activated;
+    public static event BoonMenuStatus Deactivated;
+
     private Button[] buttons;
     private Dictionary<Button, TextMeshProUGUI[]> components;
     private Dictionary<Button, AbilityScriptableObject> buttonAbilitiy;
 
+    private Animator animator;
+
     void Start()
     {
-        gameObject.SetActive(false);
+        animator = GetComponent<Animator>();
+        //gameObject.SetActive(false);
         BoonInteractable.Interacted += EnableAndManage;
 
         components = new Dictionary<Button,TextMeshProUGUI[]>();
@@ -28,8 +35,12 @@ public class BoonMenuManager : MonoBehaviour
         }
     }
 
-    private void EnableAndManage(List<AbilityScriptableObject> abilities) { 
-        gameObject.SetActive(true);
+    private void EnableAndManage(List<AbilityScriptableObject> abilities) {
+        if (Activated != null) {
+            Activated();
+        }
+        //gameObject.SetActive(true);
+        animator.SetTrigger("Open");
         buttonAbilitiy.Clear();
 
         for (int i = 0; i < buttons.Length && i < abilities.Count; i++) {
@@ -42,7 +53,13 @@ public class BoonMenuManager : MonoBehaviour
     public void ButtonClicked(Button button) {
         if (buttonAbilitiy.ContainsKey(button) && AbilitySelected != null) {
             AbilitySelected(buttonAbilitiy[button]);
-            gameObject.SetActive(false);
+
+            if (Deactivated != null) {
+                Deactivated();
+            }
+
+            //gameObject.SetActive(false);
+            animator.SetTrigger("Close");
         }
     }
 }

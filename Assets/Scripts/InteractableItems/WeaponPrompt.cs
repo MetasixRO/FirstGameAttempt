@@ -36,7 +36,7 @@ public class WeaponPrompt : MonoBehaviour, IInteractable
         {
             weaponNumber = weaponStatsComponent.GetWeaponID();
             prompt = weaponStatsComponent.GetWeaponName();
-            lockPrompt = "Buy " + prompt + " for 5 keys";
+            lockPrompt = "(E) Buy " + prompt;
         }
     }
 

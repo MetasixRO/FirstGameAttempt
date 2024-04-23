@@ -13,8 +13,11 @@ public class Combat : MonoBehaviour
     public static event ManageDealDamage ManageWeapon;
     public static event ManageDealDamage ManageSpecial;
 
-    public delegate void EnterDeathState();
-    public static event EnterDeathState PlayerDead;
+    public delegate void HealthRelatedEvent();
+    public static event HealthRelatedEvent PlayerDead;
+    public static event HealthRelatedEvent PlayerDefiedDeath;
+    public static event HealthRelatedEvent PlayerLowerThanPercentage;
+    public static event HealthRelatedEvent PlayerHigherThanPercentage;
 
 
     [SerializeField] private float maxHealth = 100;
@@ -28,6 +31,8 @@ public class Combat : MonoBehaviour
     Animator animator;
     int isAttackingHash;
 
+    private int timesCanDefyDeath = 0;
+
 
     private void Awake()
     {
@@ -38,8 +43,13 @@ public class Combat : MonoBehaviour
 
     void Start()
     {
+        DeathDefianceAbility.DefyDeath += SetDeathDefiance;
+        ThickSkinAbility.IncreaseMaxHealth += IncreaseMaxHealth;
+
+
         newDeadState.RespawnPlayer += FillHealth;
         HealthRestorer.MedpackHeal += RestoreHealth;
+        RegenerateAbility.AddVitality += RestoreHealth;
         HealInteractable.InteractedHeal += RestoreHealth;
         WeaponPrompt.ChangeWeaponStats += ChangeStatsForWeapon;
         EnemyDealDamage.PlayerReceiveDamage += TakeDamage;
@@ -139,15 +149,37 @@ public class Combat : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        currentHealth -= damage;
+        
+        if (currentHealth - damage < 0)
+        {
+            currentHealth = 0;
+        }
+        else {
+            currentHealth -= damage;
+        }
+
         if (SetHealth != null)
         {
             SetHealth(currentHealth);
         }
 
+        CheckPercentage();
+
         if (currentHealth <= 0)
         {
-            Die();
+            if (timesCanDefyDeath > 0)
+            {
+                timesCanDefyDeath--;
+                RestoreHealth(50);
+                if (PlayerDefiedDeath != null) {
+                    PlayerDefiedDeath();
+                }
+                //Debug.Log(timesCanDefyDeath);
+            }
+            else
+            {
+                Die();
+            }
         }
     }
 
@@ -177,11 +209,28 @@ public class Combat : MonoBehaviour
         {
             SetHealth(currentHealth);
         }
+        CheckPercentage();
     }
 
     public void ReceiveAttackButtonStatus(bool receivedAttackPressed, bool receivedSpecialPressed) { 
         attackPressed = receivedAttackPressed;
         specialPressed = receivedSpecialPressed;
+    }
+
+    private void IncreaseMaxHealth(int amount) {
+        maxHealth = maxHealth - (amount - 5);
+        maxHealth += amount;
+        currentHealth = maxHealth;
+
+        if (SetMaxHealth != null)
+        {
+            SetMaxHealth(maxHealth);
+        }
+
+        if (SetHealth != null)
+        {
+            SetHealth(currentHealth);
+        }
     }
 
     private void ModifyMaxHealth() {
@@ -203,5 +252,25 @@ public class Combat : MonoBehaviour
 
     private void FillHealth() {
         RestoreHealth((int)(maxHealth - currentHealth));
+    }
+
+    private void SetDeathDefiance(int numberOfTimes) {
+        timesCanDefyDeath = numberOfTimes;
+        //Debug.Log(timesCanDefyDeath);
+    }
+
+    private void CheckPercentage() {
+        if (currentHealth < 0.8f * maxHealth)
+        {
+            if (PlayerLowerThanPercentage != null)
+            {
+                PlayerLowerThanPercentage();
+            }
+        }
+        else {
+            if (PlayerHigherThanPercentage != null) {
+                PlayerHigherThanPercentage();
+            }
+        }
     }
 }

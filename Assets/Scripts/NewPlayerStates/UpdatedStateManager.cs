@@ -76,6 +76,8 @@ public class UpdatedStateManager : MonoBehaviour
         ManageAbilityMenu.Launched += TransitionToMenu;
         ManageAbilityMenu.Ended += TransitionToPrevious;
         newDeadState.RespawnPlayer += TransitionToLobby;
+        BoonMenuManager.Activated += TransitionToMenu;
+        BoonMenuManager.Deactivated += TransitionToPrevious;
     }
 
     public void SendMovementData(bool autoRun = false)
@@ -206,7 +208,7 @@ public class UpdatedStateManager : MonoBehaviour
 
         if (nextState != currentState)
         {
-           //Debug.Log("Switching to" + nextState);
+            //Debug.Log("Switching to" + nextState);
             currentState.ExitState();
             previousState = currentState;
             currentState = nextState;

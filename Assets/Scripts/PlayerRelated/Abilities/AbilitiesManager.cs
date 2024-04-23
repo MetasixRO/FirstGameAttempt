@@ -26,7 +26,12 @@ public class AbilitiesManager : MonoBehaviour
     }
 
     public void ResetAbilities() {
-        foreach (AbilityScriptableObject ability in abilities) {
+        StartCoroutine(DelayResetAbilities(1.0f));    }
+
+    private IEnumerator DelayResetAbilities(float delay) { 
+        yield return new WaitForSeconds(delay);
+        foreach (AbilityScriptableObject ability in abilities)
+        {
             ability.Disable();
         }
         abilities.Clear();

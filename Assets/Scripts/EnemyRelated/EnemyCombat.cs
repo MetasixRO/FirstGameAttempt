@@ -103,4 +103,8 @@ public class EnemyCombat : MonoBehaviour
         yield return new WaitForSeconds(5);
         gameObject.SetActive(false);
     }
+
+    public bool IsUntouched() {
+        return (currentHealth == maxHealth);
+    }
 }

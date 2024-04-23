@@ -24,6 +24,13 @@ public class HealthBar : MonoBehaviour
 
     public void SetHealth(float health) {
         slider.value = health;
-        text.text = health.ToString();
+        if (health != 0)
+        {
+            text.text = health.ToString();
+        }
+        else
+        {
+            text.text = "";
+        }
     }
 }

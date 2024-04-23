@@ -18,7 +18,7 @@ public class CoinsInteractable : BaseInteractable, IInteractable
     }
 
     protected  void Spawn() {
-        coinsGenerated = Random.Range(5, 25);
+        coinsGenerated = Random.Range(5, 20);
 
         gameObject.SetActive(true);
         gameObject.transform.position = base.CalculateSpawnPosition();
