@@ -119,6 +119,9 @@ public class AgentAnimations : MonoBehaviour
                     return;
                 }
 
+                //Debug.Log(hit.collider.gameObject);
+               // Debug.Log("Player: " + player);
+
                 if (hit.collider.gameObject == player)
                 {
                     SetLookingAtPlayer(true);
@@ -129,7 +132,9 @@ public class AgentAnimations : MonoBehaviour
 
                     Vector3 directionToPlayer = (player.transform.position - transform.position).normalized;
 
-                    Quaternion lookLocation = Quaternion.LookRotation(new Vector3(directionToPlayer.x, 0, directionToPlayer.z));
+                    directionToPlayer.y = 0;
+
+                    Quaternion lookLocation = Quaternion.LookRotation(directionToPlayer);
 
                     transform.rotation = Quaternion.Lerp(transform.rotation, lookLocation, 2.5f * Time.deltaTime);
                 }

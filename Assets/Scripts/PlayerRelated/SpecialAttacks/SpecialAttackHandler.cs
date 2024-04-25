@@ -25,6 +25,7 @@ public class SpecialAttackHandler : MonoBehaviour
     }
 
     private void ActivateSpecial(float damage) {
+        //Debug.Log("Activated");
         if (special != null)
         {
             special.Activate(damage);

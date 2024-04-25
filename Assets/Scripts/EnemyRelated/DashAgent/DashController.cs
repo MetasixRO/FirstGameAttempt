@@ -5,11 +5,17 @@ using UnityEngine.AI;
 
 public class DashController : Controller
 {
-    [SerializeField] private float totalDistance = 8.0f;
+    [SerializeField] private float totalDistance = 7.5f;
     private NavMeshAgent agent;
+
+    private LayerMask layerToIgnore;
+    private int layerMask;
 
     private void Start()
     {
+
+        layerToIgnore = LayerMask.GetMask("Enemy");
+        layerMask = Physics.DefaultRaycastLayers & ~layerToIgnore.value;
         //gameObject.SetActive(false);
         agent = GetComponent<NavMeshAgent>();
         //CloseArenaDoor.CloseDoor += ManageAgent;
@@ -47,7 +53,7 @@ public class DashController : Controller
         if (gameObject.activeSelf && PlayerTracker.instance.player != null) {
             float distance = Vector3.Distance(transform.position, PlayerTracker.instance.player.transform.position);
 
-            if (distance > totalDistance)
+            if (distance > totalDistance || !CheckCanSeePlayer(distance))
             {
                 agent.isStopped = false;
 
@@ -59,6 +65,27 @@ public class DashController : Controller
                 agent.isStopped = true;
             }
         }
+    }
+
+    private bool CheckCanSeePlayer(float maxDistance)
+    {
+        Vector3 direction = (PlayerTracker.instance.player.transform.position - gameObject.transform.position).normalized;
+
+        Ray ray = new Ray(gameObject.transform.position, direction);
+
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit, maxDistance, layerMask))
+        {
+            if (hit.collider.gameObject == PlayerTracker.instance.player)
+            {
+                return true;
+            }
+        }
+        else
+        {
+            return true;
+        }
+        return false;
     }
 
 

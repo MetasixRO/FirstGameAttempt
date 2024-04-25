@@ -12,7 +12,7 @@ public class EnemySpawner : MonoBehaviour
 
     private void Start()
     {
-        CloseArenaDoor.CloseDoor += ActivateSpawner;
+        
     }
 
     public void ActivateSpawner() {

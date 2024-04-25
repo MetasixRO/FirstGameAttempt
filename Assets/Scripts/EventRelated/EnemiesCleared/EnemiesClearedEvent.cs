@@ -9,15 +9,22 @@ public class EnemiesClearedEvent : MonoBehaviour
     public static event AllEnemiesDied SpawnCoins;
     public static event AllEnemiesDied SpawnKeys;
     public static event AllEnemiesDied SpawnHeal;
+    public static event AllEnemiesDied EnemiesCleared;
 
+    private bool chooseRandomly;
+    private int rewardNumber;
     private int aliveEnemiesCounter;
 
     private void Start()
     {
+        rewardNumber = 0;
+        chooseRandomly = true;
         aliveEnemiesCounter = 0;
         EnemyCombat.EnemyDead += CheckAllDead;
         EnemySpawner.EnemyCounter += SetTotalEnemies;
         newDeadState.RespawnPlayer += ClearTotalEnemies;
+
+        LevelManager.SelectNextReward += SetNextReward;
     }
 
     private void CheckAllDead()
@@ -25,12 +32,13 @@ public class EnemiesClearedEvent : MonoBehaviour
         aliveEnemiesCounter--;
         if (aliveEnemiesCounter == 0)
         {
-            ChoseReward();
+                ChoseReward();
         }
     }
 
     private void SetTotalEnemies(int counter)
     {
+        Debug.Log(counter);
         aliveEnemiesCounter += counter;
     }
 
@@ -39,31 +47,43 @@ public class EnemiesClearedEvent : MonoBehaviour
     }
 
     private void ChoseReward() {
-        int rewardNumber = Random.Range(1, 5);
+        if (chooseRandomly)
+        {
+            rewardNumber = Random.Range(1, 5);
+        }
         switch (rewardNumber) {
             case 1: 
                 if (SpawnAbilityBoon != null) {
                     SpawnAbilityBoon();
+                    EnemiesCleared();
                 }
                 break;
             case 2:
                 if (SpawnCoins != null) {
                     SpawnCoins();
+                    EnemiesCleared();
                 }
                 break;
             case 3:
                 if (SpawnKeys != null)
                 {
                     SpawnKeys();
+                    EnemiesCleared();
                 }
                 break;
             case 4:
                 if (SpawnHeal != null)
                 {
                     SpawnHeal();
+                    EnemiesCleared();
                 }
                 break;
 
         }
+    }
+
+    public void SetNextReward(int number) {
+        rewardNumber = number;
+        chooseRandomly = false;
     }
 }

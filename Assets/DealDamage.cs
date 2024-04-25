@@ -8,14 +8,13 @@ public class DealDamage : MonoBehaviour
     private bool isDashing;
     private float attackDamage;
 
-    private bool shouldIncrease, shouldDecrease;
+    private bool shouldIncrease;
     private float percentageToIncreaseBy;
     private float firstHitBoostPercentage = 0.0f;
 
     private void Start()
     {
         shouldIncrease = false;
-        shouldDecrease = false;
         attackDamage = 0;
         canDealDamage = false;
         isDashing = false;
@@ -38,6 +37,7 @@ public class DealDamage : MonoBehaviour
     private void ManageWeaponDamageDealing(float damage) {
         if (gameObject.activeSelf)
         {
+            //Debug.Log("Set");
             if (attackDamage == 0)
             {
                 attackDamage = damage;
@@ -72,9 +72,9 @@ public class DealDamage : MonoBehaviour
 
             if (firstHitBoostPercentage != 0.0 && combatComponent.IsUntouched())
             {
+                Debug.Log(attackDamage * firstHitBoostPercentage);
                 combatComponent.TakeDamage(attackDamage * firstHitBoostPercentage);
             }
-
             combatComponent.TakeDamage(attackDamage);
             
         }
@@ -92,7 +92,6 @@ public class DealDamage : MonoBehaviour
 
     private void ModifyDamage(int percentage) {
         shouldIncrease = true;
-        shouldDecrease = false;
         switch (percentage) {
             case 5: percentageToIncreaseBy = 1.05f; break;
             case 10: percentageToIncreaseBy = 1.10f; break;
@@ -104,7 +103,6 @@ public class DealDamage : MonoBehaviour
 
     private void ResetDamage(int percentage) {
         shouldIncrease = false;
-        shouldDecrease = true;
         attackDamage /= percentageToIncreaseBy;
     }
 
