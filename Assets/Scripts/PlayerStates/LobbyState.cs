@@ -86,7 +86,7 @@ public class LobbyState : BaseState
     public override void UpdateState()
     {
         stateMachine.movementHandler.ReceiveMovementData(currentMovement, movementPressed, runPressed);
-        stateMachine.interactHandler.ReceiveInteractButtonStatus(interactPressed);
+        //stateMachine.interactHandler.ReceiveInteractButtonStatus(interactPressed);
     }
 
 }

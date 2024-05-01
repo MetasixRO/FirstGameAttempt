@@ -6,6 +6,11 @@ public class BoonAbilitiesContainer : MonoBehaviour
 {
     public List<AbilityScriptableObject> abilities = new List<AbilityScriptableObject>();
 
+    private void Start()
+    {
+        PersonalAbilityHolder.LevelReached += AddAbilityToTheBoon;
+    }
+
     public List<AbilityScriptableObject> RetrieveAbility() {
         List<int> indexes = new List<int>();
 
@@ -23,5 +28,9 @@ public class BoonAbilitiesContainer : MonoBehaviour
         }
 
         return abilityList;
+    }
+
+    private void AddAbilityToTheBoon(AbilityScriptableObject newAbility) {
+        abilities.Add(newAbility);
     }
 }

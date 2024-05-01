@@ -13,9 +13,8 @@ public class DisplayCurrentCoins : MonoBehaviour
         ResourceManager.DisplayResources += DisplayResources;
     }
 
-    private void DisplayResources(int keys, int coins) {
+    private void DisplayResources(int keys, int coins, int ambrosia)
+    {
         this.coins.text = coins.ToString();
     }
-
-
 }

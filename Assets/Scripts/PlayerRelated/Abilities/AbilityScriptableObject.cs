@@ -7,7 +7,8 @@ public enum AbilityType
     DashEffect,
     DashTimeReducer,
     DamageBoost,
-    HealthBoost
+    HealthBoost,
+    NPCSpecial
 }
 
 public abstract class AbilityScriptableObject : ScriptableObject

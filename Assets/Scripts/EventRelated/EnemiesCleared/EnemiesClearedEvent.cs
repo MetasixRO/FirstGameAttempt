@@ -9,6 +9,7 @@ public class EnemiesClearedEvent : MonoBehaviour
     public static event AllEnemiesDied SpawnCoins;
     public static event AllEnemiesDied SpawnKeys;
     public static event AllEnemiesDied SpawnHeal;
+    public static event AllEnemiesDied SpawnAmbrosia;
     public static event AllEnemiesDied EnemiesCleared;
 
     private bool chooseRandomly;
@@ -49,7 +50,7 @@ public class EnemiesClearedEvent : MonoBehaviour
     private void ChoseReward() {
         if (chooseRandomly)
         {
-            rewardNumber = Random.Range(1, 5);
+            rewardNumber = Random.Range(1, 6);
         }
         switch (rewardNumber) {
             case 1: 
@@ -72,6 +73,11 @@ public class EnemiesClearedEvent : MonoBehaviour
                 }
                 break;
             case 4:
+                if (SpawnAmbrosia != null) {
+                    SpawnAmbrosia();
+                }
+                break;
+            case 5:
                 if (SpawnHeal != null)
                 {
                     SpawnHeal();

@@ -43,7 +43,7 @@ public class LevelManager : MonoBehaviour
     }
 
     private void PrepareNextRewards() {
-        nextReward = Random.Range(0, 4);
+        nextReward = Random.Range(1, 6);
         if (SelectNextReward != null) {
             SelectNextReward(nextReward);
         }

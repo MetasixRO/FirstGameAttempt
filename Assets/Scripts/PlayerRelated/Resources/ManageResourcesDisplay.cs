@@ -13,8 +13,8 @@ public class ManageResourcesDisplay : MonoBehaviour
         ResourceManager.DisplayResources += DisplayResources;
     }
 
-    private void DisplayResources(int keys, int coins) {
-        if (resourcesDisplay.Length != 2) {
+    private void DisplayResources(int keys, int coins, int ambrosia) {
+        if (resourcesDisplay.Length != 3) {
             Debug.Log("Error obtaining text.");
             return;
         }
@@ -25,6 +25,10 @@ public class ManageResourcesDisplay : MonoBehaviour
 
         if (resourcesDisplay[1] != null) {
             resourcesDisplay[1].text = coins.ToString();
+        }
+
+        if (resourcesDisplay[2] != null) {
+            resourcesDisplay[2].text = ambrosia.ToString();
         }
     }
 }

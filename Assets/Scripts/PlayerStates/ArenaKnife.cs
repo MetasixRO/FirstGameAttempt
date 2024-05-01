@@ -64,7 +64,7 @@ public class ArenaKnife : BaseState
     public override void UpdateState()
     {
         stateMachine.movementHandler.ReceiveMovementData(currentMovement, movementPressed, true);
-        stateMachine.interactHandler.ReceiveInteractButtonStatus(interactPressed);
+        //stateMachine.interactHandler.ReceiveInteractButtonStatus(interactPressed);
     }
 
     private void SetDialogueNextState()

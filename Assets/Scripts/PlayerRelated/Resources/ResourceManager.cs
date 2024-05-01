@@ -4,31 +4,38 @@ using UnityEngine;
 
 public class ResourceManager : MonoBehaviour
 {
-    public delegate void DisplayResource(int keysAmount, int coinsAmount);
+    public delegate void DisplayResource(int keysAmount, int coinsAmount, int ambrosiaAmount);
     public static event DisplayResource DisplayResources;
 
     public delegate void CheckResourcesResult(bool result);
     public static event CheckResourcesResult CheckKeysResult;
     public static event CheckResourcesResult CheckCoinsResult;
+    public static event CheckResourcesResult CheckAmbrosiaResult;
 
 
     [SerializeField] private int amountOfCoins;
     [SerializeField] private int amountOfKeys;
+    [SerializeField] private int amountOfAmbrosia;
 
     private void Start()
     {
 
         amountOfCoins = 0;
         amountOfKeys = 0;
+        amountOfAmbrosia = 0;
 
         DisplayEverything();
 
         CoinsInteractable.InteractedCoins += CollectCoins;
+        AmbrosiaInteractable.InteractedAmbrosia += CollectAmbrosia;
         DeepPockets.AddCoins += CollectCoins;
         KeyInteractable.InteractedKeys += CollectKeys;
         Weapons.WeaponPurchase += UseKeys;
         WeaponPrompt.CheckEnoughCredits += CheckKeys;
         MenuElementManager.CheckIfCanBuyMirrorAbility += CheckCoins;
+        ManageDialogueBox.checkEnoughAmbrosia += CheckAmbrosia;
+        ManageDialogueBox.giftDialogueTriggered += UseAmbrosia;
+        DialogueTrigger.NoDialogueLeft += RestoreAmbrosia;
         MirrorInteractable.MirrorUsed += DisplayEverything;
     }
 
@@ -36,9 +43,10 @@ public class ResourceManager : MonoBehaviour
     {
         if (Input.GetKeyDown("o"))
         {
-            Debug.Log("Debug feature to add keys and coins");
+            Debug.Log("Debug feature to add keys, coins and ambrosia");
             CollectKeys(10);
             CollectCoins(100);
+            CollectAmbrosia(10);
         }
     }
 
@@ -52,6 +60,11 @@ public class ResourceManager : MonoBehaviour
         DisplayEverything();
     }
 
+    private void CollectAmbrosia(int amountCollected) {
+        amountOfAmbrosia += amountCollected;
+        DisplayEverything();
+    }
+
     private void UseKeys(int amountUsed) {
         amountOfKeys -= amountUsed;
         DisplayEverything();
@@ -62,10 +75,15 @@ public class ResourceManager : MonoBehaviour
         DisplayEverything();
     }
 
+    private void UseAmbrosia() {
+        amountOfAmbrosia -= 1;
+        DisplayEverything();
+    }
+
     private void DisplayEverything()
     {
         if (DisplayResources != null) {
-            DisplayResources(amountOfKeys, amountOfCoins);
+            DisplayResources(amountOfKeys, amountOfCoins, amountOfAmbrosia);
         }
     }
 
@@ -95,5 +113,26 @@ public class ResourceManager : MonoBehaviour
         else {
             CheckCoinsResult(false);
         }
+    }
+
+    private void CheckAmbrosia() {
+        if (1 <= amountOfAmbrosia)
+        {
+            if (CheckAmbrosiaResult != null) {
+                CheckAmbrosiaResult(true);
+            }
+        }
+        else
+        {
+            if (CheckAmbrosiaResult != null)
+            {
+                CheckAmbrosiaResult(false);
+            }
+        }
+    }
+
+    private void RestoreAmbrosia() {
+        amountOfAmbrosia += 1;
+        DisplayEverything();
     }
 }

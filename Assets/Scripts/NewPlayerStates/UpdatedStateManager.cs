@@ -15,7 +15,7 @@ public class UpdatedStateManager : MonoBehaviour
     private InteractorScript interactHandler;
 
     private Vector2 currentDirection;
-    private bool movement, run, interact, attack, dash, menu, special;
+    private bool movement, run, interact, gift, attack, dash, menu, special, codex;
     private bool toDialogue, toArena, toAttack, toMenu, toLobby, toPrevious, toDead;
 
     private void Awake()
@@ -55,10 +55,12 @@ public class UpdatedStateManager : MonoBehaviour
         };
         input.CharacterControls.Run.performed += ctx => run = ctx.ReadValueAsButton();
         input.CharacterControls.Use.performed += ctx => interact = ctx.ReadValueAsButton();
+        input.CharacterControls.Gift.performed += ctx => gift = ctx.ReadValueAsButton();
         input.CharacterControls.Shoot.performed += ctx => attack = ctx.ReadValueAsButton();
         input.CharacterControls.Dash.performed += ctx => dash = ctx.ReadValueAsButton();
         input.CharacterControls.AbilityMenu.performed += ctx => menu = ctx.ReadValueAsButton();
         input.CharacterControls.Special.performed += ctx => special = ctx.ReadValueAsButton();
+        input.CharacterControls.Codex.performed += ctx => codex = ctx.ReadValueAsButton();
     }
 
     private void ObtainComponents() {
@@ -69,6 +71,8 @@ public class UpdatedStateManager : MonoBehaviour
 
     private void SubscribeToEvents() {
         ManageDialogueBox.dialogueTriggered += TransitionToDialogue;
+        ManageDialogueBox.giftDialogueTriggered += TransitionToDialogue;
+        DialogueTrigger.NoDialogueLeft += TransitionToLobby;
         DialogueManager.dialogueEnded += TransitionToPrevious;
         Combat.PlayerDead += TransitionToDead;
         ReturnToLobby.BackToLobby += TransitionToLobby;
@@ -93,7 +97,7 @@ public class UpdatedStateManager : MonoBehaviour
     }
 
     public void SendInteractionData() {
-        interactHandler.ReceiveInteractButtonStatus(interact);
+        interactHandler.ReceiveInteractButtonStatus(interact, gift);
     }
 
     public void SendAttackData() {
@@ -208,7 +212,7 @@ public class UpdatedStateManager : MonoBehaviour
 
         if (nextState != currentState)
         {
-            //Debug.Log("Switching to" + nextState);
+            Debug.Log("Switching to" + nextState);
             currentState.ExitState();
             previousState = currentState;
             currentState = nextState;

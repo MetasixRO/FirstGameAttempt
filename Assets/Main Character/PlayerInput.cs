@@ -89,6 +89,24 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Gift"",
+                    ""type"": ""Button"",
+                    ""id"": ""ebb540ee-f3e1-4e25-aeaa-f71f2b934447"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Codex"",
+                    ""type"": ""Button"",
+                    ""id"": ""658bbe10-ffde-442c-8ced-f05465ad94a1"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -256,6 +274,28 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""action"": ""Special"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""96f64c3d-fb38-4661-8c28-72a727d3ceba"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": ""Press(behavior=2)"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Gift"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""424238a8-e799-4591-84d7-d29af5b6263b"",
+                    ""path"": ""<Keyboard>/b"",
+                    ""interactions"": ""Press(behavior=2)"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Codex"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -380,6 +420,8 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_CharacterControls_Dash = m_CharacterControls.FindAction("Dash", throwIfNotFound: true);
         m_CharacterControls_AbilityMenu = m_CharacterControls.FindAction("Ability Menu", throwIfNotFound: true);
         m_CharacterControls_Special = m_CharacterControls.FindAction("Special", throwIfNotFound: true);
+        m_CharacterControls_Gift = m_CharacterControls.FindAction("Gift", throwIfNotFound: true);
+        m_CharacterControls_Codex = m_CharacterControls.FindAction("Codex", throwIfNotFound: true);
         // KeyboardCharacterControls
         m_KeyboardCharacterControls = asset.FindActionMap("KeyboardCharacterControls", throwIfNotFound: true);
         m_KeyboardCharacterControls_KeyboardMovement = m_KeyboardCharacterControls.FindAction("KeyboardMovement", throwIfNotFound: true);
@@ -452,6 +494,8 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_CharacterControls_Dash;
     private readonly InputAction m_CharacterControls_AbilityMenu;
     private readonly InputAction m_CharacterControls_Special;
+    private readonly InputAction m_CharacterControls_Gift;
+    private readonly InputAction m_CharacterControls_Codex;
     public struct CharacterControlsActions
     {
         private @PlayerInput m_Wrapper;
@@ -463,6 +507,8 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         public InputAction @Dash => m_Wrapper.m_CharacterControls_Dash;
         public InputAction @AbilityMenu => m_Wrapper.m_CharacterControls_AbilityMenu;
         public InputAction @Special => m_Wrapper.m_CharacterControls_Special;
+        public InputAction @Gift => m_Wrapper.m_CharacterControls_Gift;
+        public InputAction @Codex => m_Wrapper.m_CharacterControls_Codex;
         public InputActionMap Get() { return m_Wrapper.m_CharacterControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -493,6 +539,12 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Special.started += instance.OnSpecial;
             @Special.performed += instance.OnSpecial;
             @Special.canceled += instance.OnSpecial;
+            @Gift.started += instance.OnGift;
+            @Gift.performed += instance.OnGift;
+            @Gift.canceled += instance.OnGift;
+            @Codex.started += instance.OnCodex;
+            @Codex.performed += instance.OnCodex;
+            @Codex.canceled += instance.OnCodex;
         }
 
         private void UnregisterCallbacks(ICharacterControlsActions instance)
@@ -518,6 +570,12 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Special.started -= instance.OnSpecial;
             @Special.performed -= instance.OnSpecial;
             @Special.canceled -= instance.OnSpecial;
+            @Gift.started -= instance.OnGift;
+            @Gift.performed -= instance.OnGift;
+            @Gift.canceled -= instance.OnGift;
+            @Codex.started -= instance.OnCodex;
+            @Codex.performed -= instance.OnCodex;
+            @Codex.canceled -= instance.OnCodex;
         }
 
         public void RemoveCallbacks(ICharacterControlsActions instance)
@@ -607,6 +665,8 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         void OnDash(InputAction.CallbackContext context);
         void OnAbilityMenu(InputAction.CallbackContext context);
         void OnSpecial(InputAction.CallbackContext context);
+        void OnGift(InputAction.CallbackContext context);
+        void OnCodex(InputAction.CallbackContext context);
     }
     public interface IKeyboardCharacterControlsActions
     {

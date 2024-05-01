@@ -8,6 +8,8 @@ interface IInteractable
     public void Interact();
 
     public string InteractionPrompt();
+
+    public void Gift() { }
 }
 
 public class InteractorScript : MonoBehaviour
@@ -30,6 +32,7 @@ public class InteractorScript : MonoBehaviour
     private int numFound;
 
     bool interactPressed;
+    bool giftPressed;
 
     private IInteractable interactable;
 
@@ -52,6 +55,12 @@ public class InteractorScript : MonoBehaviour
                 Manage(true, interactable.InteractionPrompt());
             }
 
+            if (interactable != null && giftPressed && canInteract && colliders[0].CompareTag("FriendlyNPC")) {
+                interactable.Gift();
+                canInteract = false;
+                StartCoroutine(Delay(1.0f));
+            }
+
             if (interactable != null && interactPressed && canInteract)
             {
                 interactable.Interact();
@@ -66,8 +75,9 @@ public class InteractorScript : MonoBehaviour
         }
     }
 
-    public void ReceiveInteractButtonStatus(bool receivedInteractPressed) { 
+    public void ReceiveInteractButtonStatus(bool receivedInteractPressed, bool receivedGiftPressed) { 
         interactPressed = receivedInteractPressed;
+        giftPressed = receivedGiftPressed;
     }
 
     private IEnumerator Delay(float timeToDelay) {

@@ -7,6 +7,16 @@ public class ManageDialogueBox : MonoBehaviour,IInteractable
 {
     public delegate void DialogueEvent();
     public static event DialogueEvent dialogueTriggered;
+    public static event DialogueEvent giftDialogueTriggered;
+    public static event DialogueEvent checkEnoughAmbrosia;
+
+    private bool canGift;
+
+    private void Start()
+    {
+        canGift = false;
+        ResourceManager.CheckAmbrosiaResult += SetCanGift;
+    }
 
     public void Interact()
     {
@@ -19,6 +29,34 @@ public class ManageDialogueBox : MonoBehaviour,IInteractable
 
     public string InteractionPrompt()
     {
-        return "Talk";
+        if (checkEnoughAmbrosia != null)
+        {
+            checkEnoughAmbrosia();
+        }
+
+        if (canGift)
+        {
+            return "(E) Talk | (F) Gift";
+        }
+        else
+        {
+            return "(E) Talk";
+        }
+    }
+
+    public void Gift() {
+        if (canGift)
+        {
+            if (giftDialogueTriggered != null)
+            {
+                giftDialogueTriggered();
+            }
+            GetComponent<DialogueTrigger>().BeginGiftDialogue();
+            canGift = false;
+        }
+    }
+
+    private void SetCanGift(bool value) {
+        canGift = value;
     }
 }
