@@ -22,4 +22,6 @@ public abstract class newBaseState
     public abstract void HandleDash();
 
     public abstract void ExitState();
+
+    public virtual void SetMenu(bool value) { }
 }

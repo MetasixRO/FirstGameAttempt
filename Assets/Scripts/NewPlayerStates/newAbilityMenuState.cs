@@ -5,6 +5,7 @@ using UnityEngine;
 public class newAbilityMenuState : newBaseState
 {
     private bool canExit = false;
+    private bool isCodex;
 
     private float startTime;
     private float delay = 0.5f;
@@ -13,6 +14,7 @@ public class newAbilityMenuState : newBaseState
     private UpdatedStateManager stateManager;
 
     public static event BaseStateEvent CloseMenu;
+    public static event BaseStateEvent CloseCodex;
 
     private static newAbilityMenuState instance;
 
@@ -32,6 +34,7 @@ public class newAbilityMenuState : newBaseState
 
     public override void EnterState(UpdatedStateManager manager)
     {
+        isCodex = false;
         startTime = Time.time;
         stateManager = manager;
     }
@@ -56,8 +59,13 @@ public class newAbilityMenuState : newBaseState
 
     public override void HandleMenu()
     {
-        if (CloseMenu != null && canExit && stateManager.GetMenuData()) {
+        Debug.Log("Is Codex: " + isCodex);
+        if (CloseMenu != null && !isCodex && canExit && stateManager.GetMenuData()) {
             CloseMenu();
+        }
+
+        if (CloseCodex != null && isCodex && canExit && stateManager.GetCodexData()) {
+            CloseCodex();
         }
     }
 
@@ -85,5 +93,14 @@ public class newAbilityMenuState : newBaseState
     private IEnumerator DelayExit(float delay)
     {
         yield return new WaitForSeconds(delay);
+    }
+
+    public override void SetMenu(bool value) {
+        isCodex = value;
+    }
+
+    public void SetCodex() {
+        Debug.Log("Received isCodex");
+        isCodex = true;
     }
 }

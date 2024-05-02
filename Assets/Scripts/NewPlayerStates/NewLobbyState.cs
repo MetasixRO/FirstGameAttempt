@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class NewLobbyState : newBaseState
 {
+    public delegate void ManageCodex();
+    public static event ManageCodex OpenCodex;
+
     private UpdatedStateManager stateManager;
 
     private static NewLobbyState instance;
@@ -29,6 +32,8 @@ public class NewLobbyState : newBaseState
 
     public override void HandleAttack()
     {
+
+
     }
 
     public override void HandleMenu()
@@ -48,6 +53,7 @@ public class NewLobbyState : newBaseState
     {
         HandleMovement();
         HandleInteract();
+        HandleCodex();
     }
 
     public override void HandleDash()
@@ -62,5 +68,15 @@ public class NewLobbyState : newBaseState
     public override void ExitState() { 
         
     }
+
+    private void HandleCodex() {
+        if (OpenCodex != null && stateManager.GetCodexData()) {
+            Debug.Log("Sending event");
+            OpenCodex();
+        }
+
+        stateManager.SetCodex();
+    }
+
 
 }

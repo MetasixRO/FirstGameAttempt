@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class UpdatedStateManager : MonoBehaviour
 {
+
     private newBaseState currentState;
     private newBaseState previousState;
     private newBaseState nextState;
@@ -17,6 +18,8 @@ public class UpdatedStateManager : MonoBehaviour
     private Vector2 currentDirection;
     private bool movement, run, interact, gift, attack, dash, menu, special, codex;
     private bool toDialogue, toArena, toAttack, toMenu, toLobby, toPrevious, toDead;
+
+    private bool isCodex;
 
     private void Awake()
     {
@@ -33,6 +36,8 @@ public class UpdatedStateManager : MonoBehaviour
         previousState = null;
 
         currentState.EnterState(this);
+
+        isCodex = false;
     }
 
     private void Update() {
@@ -82,6 +87,8 @@ public class UpdatedStateManager : MonoBehaviour
         newDeadState.RespawnPlayer += TransitionToLobby;
         BoonMenuManager.Activated += TransitionToMenu;
         BoonMenuManager.Deactivated += TransitionToPrevious;
+        CodexManager.OpenCodexEvent += TransitionToMenu;
+        CodexManager.CloseCodexEvent += TransitionToLobby;
     }
 
     public void SendMovementData(bool autoRun = false)
@@ -112,9 +119,18 @@ public class UpdatedStateManager : MonoBehaviour
         return menu;
     }
 
+    public bool GetCodexData() {
+        return codex;
+    }
+
     public void SendDashData() {
         movementHandler.ReceiveDashStatus(dash);
     }
+
+    public void SetCodex() {
+        isCodex = true;
+    }
+
 
     private void OnEnable()
     {
@@ -217,6 +233,11 @@ public class UpdatedStateManager : MonoBehaviour
             previousState = currentState;
             currentState = nextState;
             currentState.EnterState(this);
+        }
+
+        if (isCodex) {
+            currentState.SetMenu(true);
+            isCodex = false;
         }
     }
 }
