@@ -49,7 +49,6 @@ public class CodexManager : MonoBehaviour
             if (RequestInfoById != null) {
                 RequestInfoById(i);
             }
-            break;
         }
 
         if (OpenCodexEvent != null) {

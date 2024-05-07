@@ -71,7 +71,6 @@ public class NewLobbyState : newBaseState
 
     private void HandleCodex() {
         if (OpenCodex != null && stateManager.GetCodexData()) {
-            Debug.Log("Sending event");
             OpenCodex();
         }
 

@@ -126,12 +126,19 @@ public class CharacterMovement : MonoBehaviour
         switch (weaponID)
         {
             case 0:
+                animator.SetBool("isSpear", false);
                 animator.SetBool("isKnife", false);
                 animator.SetBool("isGreatSword", true);
                 break;
             case 1:
+                animator.SetBool("isSpear", false);
                 animator.SetBool("isGreatSword", false);
                 animator.SetBool("isKnife", true);
+                break;
+            case 2:
+                animator.SetBool("isGreatSword", false);
+                animator.SetBool("isKnife", false);
+                animator.SetBool("isSpear", true);
                 break;
         }
 

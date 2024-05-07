@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ce2860803e648bb428fb9d3df07663c7, type: 3}
-  m_Name: Gift#5
+  m_Name: Gift#1
   m_EditorClassIdentifier: 
-  characterName: Bot#1
+  characterName: Shadow
   sentences:
-  - ALRIGHT!
-  - Here you go friend, from now you can find a *shocking* ability
+  - Is this... Ambrosia?!
+  - Oh wow, thanks a lot!

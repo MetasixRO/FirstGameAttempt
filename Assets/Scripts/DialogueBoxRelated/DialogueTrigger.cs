@@ -9,6 +9,8 @@ public class DialogueTrigger : MonoBehaviour
 
     public delegate void DialogueErrorEvent();
     public static event DialogueErrorEvent NoDialogueLeft;
+    public static event DialogueErrorEvent NoGiftDialogueLeft;
+
 
     public delegate void SendDialogueStatus(int npcID, string npcName, int currentRank);
     public static event SendDialogueStatus DialogueStatus;
@@ -21,8 +23,9 @@ public class DialogueTrigger : MonoBehaviour
 
     private static int nextID = 1;
     private int npcID;
-    int counter = 0;
-    int giftCounter = 0;
+    private int counter = 0;
+    private int giftCounter = 0;
+    private bool shouldAdvance;
 
     private void Awake()
     {
@@ -32,25 +35,21 @@ public class DialogueTrigger : MonoBehaviour
 
     private void Start()
     {
+        shouldAdvance = true;
+        Combat.PlayerDead += AdvanceDialogue;
         if (DialogueStatus != null)
         {
-            Debug.Log("DialogueTrigger send the event");
             DialogueStatus(npcID, dialogues[0].characterName, giftCounter);
         }
     }
 
     public void BeginDialogue() {
-        if (startDialogue != null && !alreadyStarted && counter < dialogues.Length)
+        if (startDialogue != null && !alreadyStarted && counter < dialogues.Length && shouldAdvance)
         {
             startDialogue(dialogues[counter]);
             alreadyStarted = true;
             StartCoroutine(DelayAnotherDialogue(delayTimer));
-            counter++;
-            if (counter == dialogues.Length) {
-                counter = dialogues.Length - 1;
-            }
-            
-
+            shouldAdvance = false;
         }
         else { 
             if(NoDialogueLeft != null) {
@@ -88,5 +87,14 @@ public class DialogueTrigger : MonoBehaviour
     private IEnumerator DelayAnotherDialogue(float delay) {
         yield return new WaitForSeconds(delay);
         alreadyStarted = false;
+    }
+
+    private void AdvanceDialogue() {
+        counter++;
+        shouldAdvance = true;
+        if (counter == dialogues.Length)
+        {
+            counter = dialogues.Length - 1;
+        }
     }
 }

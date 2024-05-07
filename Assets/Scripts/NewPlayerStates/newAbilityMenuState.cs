@@ -59,7 +59,6 @@ public class newAbilityMenuState : newBaseState
 
     public override void HandleMenu()
     {
-        Debug.Log("Is Codex: " + isCodex);
         if (CloseMenu != null && !isCodex && canExit && stateManager.GetMenuData()) {
             CloseMenu();
         }

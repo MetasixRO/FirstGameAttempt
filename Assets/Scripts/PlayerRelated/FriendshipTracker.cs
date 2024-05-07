@@ -17,7 +17,6 @@ public class FriendshipTracker : MonoBehaviour
     }
 
     private void ModifyFriendshipStatus(int npcID,string npcName, int currentStatus) {
-        Debug.Log("FriendshipTracker received the event");
         if (friendshipStatus.ContainsKey(npcID))
         {
             friendshipStatus[npcID] = currentStatus;
@@ -38,7 +37,7 @@ public class FriendshipTracker : MonoBehaviour
     }
 
     private void SendInfoById(int id) {
-            if (ResponseWithInfo != null) {
+            if (ResponseWithInfo != null && npcNames.ContainsKey(id+1)) {
             ResponseWithInfo(id, npcNames[id+1], friendshipStatus[id+1]);
         }
     }

@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ce2860803e648bb428fb9d3df07663c7, type: 3}
-  m_Name: Gift#1
+  m_Name: Dialogue3
   m_EditorClassIdentifier: 
-  characterName: Bot#1
+  characterName: Myriad
   sentences:
-  - Is this... Ambrosia?!
-  - Oh wow, thanks a lot!
+  - I guess you're more resilient than you look.
+  - That's good. Keep going.

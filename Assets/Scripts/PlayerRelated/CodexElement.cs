@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class CodexElement : MonoBehaviour
 {
-    public TextMeshProUGUI npcName;
+    private TextMeshProUGUI npcName;
     private TextMeshProUGUI currentRank;
     private TextMeshProUGUI maxRank;
 

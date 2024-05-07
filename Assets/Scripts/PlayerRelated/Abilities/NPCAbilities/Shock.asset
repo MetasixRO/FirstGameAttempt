@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Shock
   m_EditorClassIdentifier: 
   name: Shock
-  cooldown: 10
+  cooldown: 20
   activeTime: 0
   description: Shocks all enemies,dealing damage and freezing them for a short period
     of time

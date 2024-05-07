@@ -10165,6 +10165,7 @@ GameObject:
   - component: {fileID: 1392369912685027668}
   - component: {fileID: 4932380658915261255}
   - component: {fileID: 719082239668974550}
+  - component: {fileID: -8408899988675404510}
   m_Layer: 7
   m_Name: DashAgent
   m_TagString: Enemy
@@ -10390,6 +10391,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 56802e041e46c9840adec3c13c91cd37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-8408899988675404510
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8637066901286453414}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9689514bd170ea44b9db38b7cb883c00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &182667233670196397

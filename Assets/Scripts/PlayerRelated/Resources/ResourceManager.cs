@@ -17,8 +17,11 @@ public class ResourceManager : MonoBehaviour
     [SerializeField] private int amountOfKeys;
     [SerializeField] private int amountOfAmbrosia;
 
+    private bool ambrosiaUsed;
+
     private void Start()
     {
+        ambrosiaUsed = false;
 
         amountOfCoins = 0;
         amountOfKeys = 0;
@@ -35,7 +38,7 @@ public class ResourceManager : MonoBehaviour
         MenuElementManager.CheckIfCanBuyMirrorAbility += CheckCoins;
         ManageDialogueBox.checkEnoughAmbrosia += CheckAmbrosia;
         ManageDialogueBox.giftDialogueTriggered += UseAmbrosia;
-        DialogueTrigger.NoDialogueLeft += RestoreAmbrosia;
+        DialogueTrigger.NoGiftDialogueLeft += RestoreAmbrosia;
         MirrorInteractable.MirrorUsed += DisplayEverything;
     }
 
@@ -78,6 +81,7 @@ public class ResourceManager : MonoBehaviour
     private void UseAmbrosia() {
         amountOfAmbrosia -= 1;
         DisplayEverything();
+        ambrosiaUsed = true;
     }
 
     private void DisplayEverything()
@@ -132,7 +136,11 @@ public class ResourceManager : MonoBehaviour
     }
 
     private void RestoreAmbrosia() {
-        amountOfAmbrosia += 1;
-        DisplayEverything();
+        if (ambrosiaUsed)
+        {
+            amountOfAmbrosia += 1;
+            DisplayEverything();
+            ambrosiaUsed = false;
+        }
     }
 }

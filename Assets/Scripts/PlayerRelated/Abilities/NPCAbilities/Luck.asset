@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1813c1dddb828a647910e7636b2d32fc, type: 3}
+  m_Name: Luck
+  m_EditorClassIdentifier: 
+  name: Luck
+  cooldown: 30
+  activeTime: 0
+  description: Insta kills 2 to 3 enemies with a chance of 75%
+  abilityType: 4
+  isActive: 0

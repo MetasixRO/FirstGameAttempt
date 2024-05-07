@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce2860803e648bb428fb9d3df07663c7, type: 3}
   m_Name: Gift#4
   m_EditorClassIdentifier: 
-  characterName: Bot#1
+  characterName: Myriad
   sentences:
-  - Alright, alright...
-  - If you can give me one more bottle I promise I'll give you something
+  - Hey, thanks...
+  - Look, I managed to secure something that looks important
+  - If you bring me one more bottle I'll give it to you.

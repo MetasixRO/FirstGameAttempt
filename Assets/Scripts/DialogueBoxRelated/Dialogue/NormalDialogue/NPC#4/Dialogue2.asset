@@ -10,10 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ce2860803e648bb428fb9d3df07663c7, type: 3}
-  m_Name: Gift#2
+  m_Name: Dialogue2
   m_EditorClassIdentifier: 
-  characterName: Bot#1
+  characterName: Exus
   sentences:
-  - Oh wow, even more Ambrosia?!
-  - I'm beginning to think you're trying to bribe me
-  - Oh well, it's not like I care
+  - Like I told you... No one can escape
