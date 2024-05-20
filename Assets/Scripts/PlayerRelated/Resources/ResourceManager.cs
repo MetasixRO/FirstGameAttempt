@@ -12,16 +12,21 @@ public class ResourceManager : MonoBehaviour
     public static event CheckResourcesResult CheckCoinsResult;
     public static event CheckResourcesResult CheckAmbrosiaResult;
 
+    public delegate void CheckDoubleRewards();
+    public static event CheckDoubleRewards VerifyDoubleRewards;
+
 
     [SerializeField] private int amountOfCoins;
     [SerializeField] private int amountOfKeys;
     [SerializeField] private int amountOfAmbrosia;
 
     private bool ambrosiaUsed;
+    private bool doubledRewards;
 
     private void Start()
     {
         ambrosiaUsed = false;
+        doubledRewards = false;
 
         amountOfCoins = 0;
         amountOfKeys = 0;
@@ -40,6 +45,15 @@ public class ResourceManager : MonoBehaviour
         ManageDialogueBox.giftDialogueTriggered += UseAmbrosia;
         DialogueTrigger.NoGiftDialogueLeft += RestoreAmbrosia;
         MirrorInteractable.MirrorUsed += DisplayEverything;
+        DoubleRewards.DoubleCurrentReward += Double;
+
+        Treasure.Coins += CollectCoins;
+        Treasure.Keys += CollectKeys;
+        Treasure.Ambrosia += CollectAmbrosia;
+
+        Tradeoff.Coins += CollectCoins;
+        Tradeoff.Keys += CollectKeys;
+        Tradeoff.Ambrosia += CollectAmbrosia;
     }
 
     private void Update()
@@ -53,18 +67,38 @@ public class ResourceManager : MonoBehaviour
         }
     }
 
+    private void Double() {
+        doubledRewards = true;
+    }
+
+    private void CollectResource(int resourceType, int amount) {
+        doubledRewards = false;
+        VerifyDoubleRewards?.Invoke();
+
+        if (doubledRewards) {
+            switch (resourceType) {
+                case 1: amountOfKeys += amount; break;
+                case 2: amountOfCoins += amount; break;
+                case 3: amountOfAmbrosia += amount; break;
+            }
+        }
+    }
+
     private void CollectKeys(int amountCollected) {
         amountOfKeys += amountCollected;
+        CollectResource(1,amountCollected);
         DisplayEverything();
     }
 
     private void CollectCoins(int amountCollected) {
         amountOfCoins += amountCollected;
+        CollectResource(2, amountCollected);
         DisplayEverything();
     }
 
     private void CollectAmbrosia(int amountCollected) {
         amountOfAmbrosia += amountCollected;
+        CollectResource(3, amountCollected);
         DisplayEverything();
     }
 

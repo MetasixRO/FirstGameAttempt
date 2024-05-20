@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class UpdatedStateManager : MonoBehaviour
 {
+    public delegate void CallSpecialEvent();
+    public static event CallSpecialEvent CallSpecial;
 
     private newBaseState currentState;
     private newBaseState previousState;
@@ -16,10 +18,11 @@ public class UpdatedStateManager : MonoBehaviour
     private InteractorScript interactHandler;
 
     private Vector2 currentDirection;
-    private bool movement, run, interact, gift, attack, dash, menu, special, codex;
+    private bool movement, run, interact, gift, attack, dash, menu, special, codex, call;
     private bool toDialogue, toArena, toAttack, toMenu, toLobby, toPrevious, toDead;
 
     private bool isCodex;
+    private bool canCall;
 
     private void Awake()
     {
@@ -38,6 +41,7 @@ public class UpdatedStateManager : MonoBehaviour
         currentState.EnterState(this);
 
         isCodex = false;
+        canCall = true;
     }
 
     private void Update() {
@@ -66,6 +70,8 @@ public class UpdatedStateManager : MonoBehaviour
         input.CharacterControls.AbilityMenu.performed += ctx => menu = ctx.ReadValueAsButton();
         input.CharacterControls.Special.performed += ctx => special = ctx.ReadValueAsButton();
         input.CharacterControls.Codex.performed += ctx => codex = ctx.ReadValueAsButton();
+        input.CharacterControls.Call.performed += ctx => call = ctx.ReadValueAsButton();
+
     }
 
     private void ObtainComponents() {
@@ -109,6 +115,21 @@ public class UpdatedStateManager : MonoBehaviour
 
     public void SendAttackData() {
         attackHandler.ReceiveAttackButtonStatus(attack, special);
+    }
+
+    public void SendNPCSpecialData() {
+
+        if (call && canCall) {
+            //EVENT
+            CallSpecial?.Invoke();
+            canCall = false;
+            StartCoroutine(ResetCallDelay(1.0f));
+        }
+    }
+
+    private IEnumerator ResetCallDelay(float delay) { 
+        yield return new WaitForSeconds(delay);
+        canCall = true;
     }
 
     public bool GetInteractData() {
@@ -228,7 +249,7 @@ public class UpdatedStateManager : MonoBehaviour
 
         if (nextState != currentState)
         {
-            Debug.Log("Switching to" + nextState);
+            //Debug.Log("Switching to" + nextState);
             currentState.ExitState();
             previousState = currentState;
             currentState = nextState;

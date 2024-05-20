@@ -43,6 +43,14 @@ public class DialogueTrigger : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown("o")) {
+            giftCounter = 4;
+            Debug.Log("level 4 Friendship");
+        }
+    }
+
     public void BeginDialogue() {
         if (startDialogue != null && !alreadyStarted && counter < dialogues.Length && shouldAdvance)
         {

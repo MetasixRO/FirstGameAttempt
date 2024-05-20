@@ -36,6 +36,7 @@ public class newArenaState : newBaseState
     public override void HandleAttack()
     {
         stateManager.SendAttackData();
+        stateManager.SendNPCSpecialData();
     }
 
     public override void HandleDash()

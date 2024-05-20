@@ -12,17 +12,13 @@ public class EnemyCombat : MonoBehaviour
 
     private AgentAnimations animations;
     public float maxHealth;
-    float currentHealth;
-    private EnemyHealthBar healthBar;
+    protected float currentHealth;
+    protected EnemyHealthBar healthBar;
     private ParticleSystem particles;
     private Knockback knockbackObject;
 
     private void Start()
     {
-        EnemyStats stats = GetComponent<EnemyStats>();
-
-        maxHealth = stats.GetHealth();
-
         healthBar = GetComponentInChildren<EnemyHealthBar>();
 
         particles = GetComponentInChildren<ParticleSystem>();
@@ -30,6 +26,15 @@ public class EnemyCombat : MonoBehaviour
         knockbackObject = GetComponent<Knockback>();
 
         animations = GetComponent<AgentAnimations>();
+
+        EnemyStart();
+    }
+
+    public virtual void EnemyStart() {
+        EnemyStats stats = GetComponent<EnemyStats>();
+
+        maxHealth = stats.GetHealth();
+
         animations.SetDelay(stats.GetDelay());
 
         currentHealth = maxHealth;

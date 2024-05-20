@@ -42,6 +42,13 @@ public class ManageMenuText : MonoBehaviour
             {
                 buttonsText[counter].text = names[counter];
             }
+
+            if (names.Count == 0) {
+                for (int counter = 0; counter < 3; counter++) {
+                    buttonsText[counter].text = "None";
+                }
+                description.text = "No ability";
+            }
         }
     }
 

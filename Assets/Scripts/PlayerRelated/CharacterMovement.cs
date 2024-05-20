@@ -147,6 +147,7 @@ public class CharacterMovement : MonoBehaviour
     private void ResetStance() {
         animator.SetBool("isGreatSword", false);
         animator.SetBool("isKnife", false);
+        animator.SetBool("isSpear", false);
     }
 
     private void DisableRootMotion() {

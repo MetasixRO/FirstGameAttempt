@@ -52,6 +52,7 @@ public class EnemiesClearedEvent : MonoBehaviour
         {
             rewardNumber = Random.Range(1, 6);
         }
+        rewardNumber = 2;
         switch (rewardNumber) {
             case 1: 
                 if (SpawnAbilityBoon != null) {
@@ -75,6 +76,7 @@ public class EnemiesClearedEvent : MonoBehaviour
             case 4:
                 if (SpawnAmbrosia != null) {
                     SpawnAmbrosia();
+                    EnemiesCleared();
                 }
                 break;
             case 5:

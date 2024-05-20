@@ -14,7 +14,7 @@ public class AmbrosiaInteractable : BaseInteractable, IInteractable
     {
         coinsGenerated = 1;
         gameObject.SetActive(false);
-        EnemiesClearedEvent.SpawnCoins += Spawn;
+        EnemiesClearedEvent.SpawnAmbrosia += Spawn;
     }
 
     protected void Spawn()

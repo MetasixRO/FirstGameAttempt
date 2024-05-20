@@ -107,6 +107,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Call"",
+                    ""type"": ""Button"",
+                    ""id"": ""f0614c63-ffce-4dd1-90c3-a0b1079c3362"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -296,6 +305,17 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""action"": ""Codex"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6482a7bc-0915-40ea-a949-5583a6531374"",
+                    ""path"": ""<Mouse>/middleButton"",
+                    ""interactions"": ""Press(behavior=2)"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Call"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -422,6 +442,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_CharacterControls_Special = m_CharacterControls.FindAction("Special", throwIfNotFound: true);
         m_CharacterControls_Gift = m_CharacterControls.FindAction("Gift", throwIfNotFound: true);
         m_CharacterControls_Codex = m_CharacterControls.FindAction("Codex", throwIfNotFound: true);
+        m_CharacterControls_Call = m_CharacterControls.FindAction("Call", throwIfNotFound: true);
         // KeyboardCharacterControls
         m_KeyboardCharacterControls = asset.FindActionMap("KeyboardCharacterControls", throwIfNotFound: true);
         m_KeyboardCharacterControls_KeyboardMovement = m_KeyboardCharacterControls.FindAction("KeyboardMovement", throwIfNotFound: true);
@@ -496,6 +517,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_CharacterControls_Special;
     private readonly InputAction m_CharacterControls_Gift;
     private readonly InputAction m_CharacterControls_Codex;
+    private readonly InputAction m_CharacterControls_Call;
     public struct CharacterControlsActions
     {
         private @PlayerInput m_Wrapper;
@@ -509,6 +531,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         public InputAction @Special => m_Wrapper.m_CharacterControls_Special;
         public InputAction @Gift => m_Wrapper.m_CharacterControls_Gift;
         public InputAction @Codex => m_Wrapper.m_CharacterControls_Codex;
+        public InputAction @Call => m_Wrapper.m_CharacterControls_Call;
         public InputActionMap Get() { return m_Wrapper.m_CharacterControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -545,6 +568,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Codex.started += instance.OnCodex;
             @Codex.performed += instance.OnCodex;
             @Codex.canceled += instance.OnCodex;
+            @Call.started += instance.OnCall;
+            @Call.performed += instance.OnCall;
+            @Call.canceled += instance.OnCall;
         }
 
         private void UnregisterCallbacks(ICharacterControlsActions instance)
@@ -576,6 +602,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Codex.started -= instance.OnCodex;
             @Codex.performed -= instance.OnCodex;
             @Codex.canceled -= instance.OnCodex;
+            @Call.started -= instance.OnCall;
+            @Call.performed -= instance.OnCall;
+            @Call.canceled -= instance.OnCall;
         }
 
         public void RemoveCallbacks(ICharacterControlsActions instance)
@@ -667,6 +696,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         void OnSpecial(InputAction.CallbackContext context);
         void OnGift(InputAction.CallbackContext context);
         void OnCodex(InputAction.CallbackContext context);
+        void OnCall(InputAction.CallbackContext context);
     }
     public interface IKeyboardCharacterControlsActions
     {

@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Luck
   m_EditorClassIdentifier: 
   name: Luck
-  cooldown: 30
+  cooldown: 150
   activeTime: 0
-  description: Insta kills 2 to 3 enemies with a chance of 75%
-  abilityType: 4
+  description: Insta kills 1 to 2 enemies
+  abilityType: 5
   isActive: 0

@@ -9,13 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4fd74bfb103d8284ea3639f251703835, type: 3}
-  m_Name: Shock
+  m_Script: {fileID: 11500000, guid: 413785bca3176bf42b7ab729f37bf247, type: 3}
+  m_Name: Treasure
   m_EditorClassIdentifier: 
-  name: Shock
-  cooldown: 20
+  name: Treasure
+  cooldown: 0
   activeTime: 0
-  description: Shocks all enemies,dealing damage and freezing them for a short period
-    of time
-  abilityType: 4
+  description: Immediately gain a random amout of Coins, Keys or Ambrosia
+  abilityType: 7
   isActive: 0

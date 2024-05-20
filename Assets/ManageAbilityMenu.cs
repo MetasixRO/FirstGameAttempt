@@ -28,7 +28,7 @@ public class ManageAbilityMenu : MonoBehaviour
         }
     }
 
-    private void CloseMenu() {
+    public void CloseMenu() {
         animator.SetTrigger("Close");
         gameObject.SetActive(false);
         if (Ended != null)

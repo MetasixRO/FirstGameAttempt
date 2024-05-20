@@ -7,6 +7,9 @@ using UnityEngine.UI;
 public class HealthBar : MonoBehaviour
 {
 
+    public delegate void HealthBarEvent(bool value);
+    public static event HealthBarEvent ManageVignette;
+
     private Slider slider;
     private TextMeshProUGUI text;
 
@@ -27,6 +30,13 @@ public class HealthBar : MonoBehaviour
         if (health != 0)
         {
             text.text = health.ToString();
+            if (health < 0.25 * slider.maxValue)
+            {
+                ManageVignette?.Invoke(true);
+            }
+            else {
+                ManageVignette?.Invoke(false);
+            }
         }
         else
         {

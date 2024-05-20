@@ -17,5 +17,5 @@ MonoBehaviour:
   activeTime: 7.5
   description: Adds bleeding effects to all the enemies, reducing their vitality
     over time
-  abilityType: 4
+  abilityType: 5
   isActive: 0

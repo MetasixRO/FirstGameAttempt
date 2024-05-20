@@ -18,8 +18,9 @@ public class Combat : MonoBehaviour
     public static event HealthRelatedEvent PlayerDefiedDeath;
     public static event HealthRelatedEvent PlayerLowerThanPercentage;
     public static event HealthRelatedEvent PlayerHigherThanPercentage;
+    public static event HealthRelatedEvent CheckReduceReceivedDamage;
 
-
+    [SerializeField] private float originalMaxHealth = 100;
     [SerializeField] private float maxHealth = 100;
     private float currentHealth;
 
@@ -32,6 +33,8 @@ public class Combat : MonoBehaviour
     int isAttackingHash;
 
     private int timesCanDefyDeath = 0;
+    private bool reduceReceivedDamage = false;
+    private bool invulnerable = false;
 
 
     private void Awake()
@@ -46,7 +49,7 @@ public class Combat : MonoBehaviour
         DeathDefianceAbility.DefyDeath += SetDeathDefiance;
         ThickSkinAbility.IncreaseMaxHealth += IncreaseMaxHealth;
 
-
+        PermanentTradeoff.RestoreMaxHealth += RestoreMaxHealth;
         newDeadState.RespawnPlayer += FillHealth;
         HealthRestorer.MedpackHeal += RestoreHealth;
         RegenerateAbility.AddVitality += RestoreHealth;
@@ -61,6 +64,13 @@ public class Combat : MonoBehaviour
 
         KnifeSpecial.BoostStats += ModifyMaxHealth;
         KnifeSpecial.ResetStats += ResetMaxHealth;
+
+        LowHPDamage.ReduceDamage += ReduceReceivedDamage;
+        Tradeoff.ReduceCurrentHealth += ReduceToPercentage;
+        PermanentTradeoff.ReduceMaxHealth += ReduceMaxHealth;
+
+        InvulnerabilityNPCAbility.MakeInvulnerable += Invulnerable;
+        InvulnerabilityNPCAbility.MakeVulnerable += Vulnerable;
 
         animator = GetComponent<Animator>();
         isAttackingHash = Animator.StringToHash("isAttacking");
@@ -146,39 +156,82 @@ public class Combat : MonoBehaviour
         canSpecial = true;
     }
 
+    private void ReduceReceivedDamage() {
+        reduceReceivedDamage = true;
+    }
+
+    private void ReduceToPercentage(int percentage) {
+        currentHealth = (percentage / 100.0f) * currentHealth;
+
+
+        SetHealth?.Invoke(currentHealth);
+    }
+
+    private void ReduceMaxHealth(int amount) {
+        originalMaxHealth = maxHealth;
+        maxHealth = maxHealth / amount;
+        currentHealth = currentHealth / amount;
+
+        SetMaxHealth?.Invoke(maxHealth);
+        SetHealth?.Invoke(currentHealth);
+    }
+
+    private void RestoreMaxHealth(int amount) {
+        maxHealth = maxHealth * amount;
+        currentHealth = maxHealth;
+
+
+        SetMaxHealth?.Invoke(maxHealth);
+        SetHealth?.Invoke(currentHealth);
+    }
 
     public void TakeDamage(float damage)
     {
-        
-        if (currentHealth - damage < 0)
+        if (!invulnerable)
         {
-            currentHealth = 0;
-        }
-        else {
-            currentHealth -= damage;
-        }
-
-        if (SetHealth != null)
-        {
-            SetHealth(currentHealth);
-        }
-
-        CheckPercentage();
-
-        if (currentHealth <= 0)
-        {
-            if (timesCanDefyDeath > 0)
+            if (currentHealth <= 0.25 * maxHealth)
             {
-                timesCanDefyDeath--;
-                RestoreHealth(50);
-                if (PlayerDefiedDeath != null) {
-                    PlayerDefiedDeath();
-                }
-                //Debug.Log(timesCanDefyDeath);
+                CheckReduceReceivedDamage?.Invoke();
+            }
+
+            if (reduceReceivedDamage)
+            {
+                damage /= 2;
+                reduceReceivedDamage = false;
+            }
+
+            if (currentHealth - damage < 0)
+            {
+                currentHealth = 0;
             }
             else
             {
-                Die();
+                currentHealth -= damage;
+            }
+
+            if (SetHealth != null)
+            {
+                SetHealth(currentHealth);
+            }
+
+            CheckPercentage();
+
+            if (currentHealth <= 0)
+            {
+                if (timesCanDefyDeath > 0)
+                {
+                    timesCanDefyDeath--;
+                    RestoreHealth(50);
+                    if (PlayerDefiedDeath != null)
+                    {
+                        PlayerDefiedDeath();
+                    }
+                    //Debug.Log(timesCanDefyDeath);
+                }
+                else
+                {
+                    Die();
+                }
             }
         }
     }
@@ -272,5 +325,13 @@ public class Combat : MonoBehaviour
                 PlayerHigherThanPercentage();
             }
         }
+    }
+
+    private void Invulnerable() {
+        invulnerable = true;
+    }
+
+    private void Vulnerable() {
+        invulnerable = false;
     }
 }

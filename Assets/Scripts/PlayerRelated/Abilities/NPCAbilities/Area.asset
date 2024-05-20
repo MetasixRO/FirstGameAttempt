@@ -17,5 +17,5 @@ MonoBehaviour:
   activeTime: 10
   description: Each time the player hit an enemy, all the surrounding enemies will
     receive half of the dealt damae
-  abilityType: 4
+  abilityType: 5
   isActive: 0
