@@ -37,7 +37,9 @@ public class AgentController : Controller
     }
 
     public override void Freeze() {
+        agent.ResetPath();
         agent.isStopped = true;
+        agent.velocity = Vector3.zero;
     }
 
     public override void Movement() {

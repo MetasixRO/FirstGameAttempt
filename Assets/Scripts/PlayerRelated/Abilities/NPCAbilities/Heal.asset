@@ -9,12 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e8f8220a451ce74ab4c9ed1199cd2b2, type: 3}
-  m_Name: Area
+  m_Script: {fileID: 11500000, guid: 657e5578961547c4f86ed06fba443f56, type: 3}
+  m_Name: Heal
   m_EditorClassIdentifier: 
-  name: Area Damage
+  name: Heal
   cooldown: 0
-  activeTime: 10
-  description: You create an area that deals damage to enemies passing through it
+  activeTime: 0
+  description: Immediately receive 25 health
   abilityType: 5
   isActive: 0

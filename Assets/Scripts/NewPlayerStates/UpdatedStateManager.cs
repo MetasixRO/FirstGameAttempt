@@ -84,6 +84,7 @@ public class UpdatedStateManager : MonoBehaviour
         ManageDialogueBox.dialogueTriggered += TransitionToDialogue;
         ManageDialogueBox.giftDialogueTriggered += TransitionToDialogue;
         DialogueTrigger.NoDialogueLeft += TransitionToLobby;
+        DialogueTrigger.NoGiftDialogueLeft += TransitionToLobby;
         DialogueManager.dialogueEnded += TransitionToPrevious;
         Combat.PlayerDead += TransitionToDead;
         ReturnToLobby.BackToLobby += TransitionToLobby;
@@ -249,7 +250,7 @@ public class UpdatedStateManager : MonoBehaviour
 
         if (nextState != currentState)
         {
-            //Debug.Log("Switching to" + nextState);
+            Debug.Log("Switching to" + nextState);
             currentState.ExitState();
             previousState = currentState;
             currentState = nextState;

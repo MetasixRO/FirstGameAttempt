@@ -5,26 +5,24 @@ using UnityEngine.AI;
 
 public class BossController : Controller
 {
-    public delegate void BossMovementChecks();
-    public static event BossMovementChecks CheckApproach;
-    public static event BossMovementChecks CheckRun;
-    public static event BossMovementChecks CheckReach;
+    private int layerMask;
+    private LayerMask firstLayerToIgnore;
+    private LayerMask secondLayerToIgnore;
 
-    private bool shouldRun, shouldApproach, shouldReach;
-    private bool canRun, canApproach;
 
-    private bool isRunning, isApproaching;
+    private bool shouldApproach, shouldReach;
+    private bool decisionMade;
 
     private NavMeshAgent agent;
 
     private void Start()
     {
-        canRun = false;
-        canApproach = false;
+        firstLayerToIgnore = LayerMask.GetMask("Enemy");
+        secondLayerToIgnore = LayerMask.GetMask("Boss");
+        layerMask = Physics.DefaultRaycastLayers & ~firstLayerToIgnore.value & ~secondLayerToIgnore.value;
 
-        isRunning = false;
-        isApproaching = false;
-        shouldRun = false;
+        decisionMade = false;
+
         shouldReach = false;
         shouldApproach = false;
 
@@ -36,59 +34,73 @@ public class BossController : Controller
     {
         agent.ResetPath();
         agent.isStopped = true;
+        agent.velocity = Vector3.zero;
     }
 
     public override void Movement()
     {
-        
+        bool shouldMove = false;
+        float threshold = 0f;
+        bool checkVisibility = false;
 
         if (gameObject.activeSelf && PlayerTracker.instance.player != null) {
             float distance = Vector3.Distance(transform.position, PlayerTracker.instance.player.transform.position);
-            CheckMovement(distance);
-
-            if (shouldRun)
+            if (!decisionMade)
             {
-                agent.isStopped = false;
+                CheckMovement(distance);
+            }
 
-                Vector3 dirToPlayer = transform.position - PlayerTracker.instance.player.transform.position;
-
-                Vector3 newPosition = transform.position + dirToPlayer;
-
-                agent.SetDestination(newPosition);
-
-                isRunning = true;
+            if (shouldReach)
+            {
+                shouldMove = true;
+                threshold = 1.2f;
             }
             else if (shouldApproach)
             {
+                shouldMove = true;
+                threshold = 5.0f;
+                checkVisibility = true;
+            }
+            else {
+                shouldMove = !CheckCanSeePlayer(distance);
+                checkVisibility = true;
+            }
+
+            if (shouldMove && (distance > threshold || (checkVisibility && !CheckCanSeePlayer(distance))))
+            {
                 agent.isStopped = false;
-
                 agent.SetDestination(PlayerTracker.instance.player.transform.position);
-
-                isApproaching = true;
             }
             else {
                 agent.ResetPath();
                 agent.isStopped = true;
-
-                if (isRunning) {
-                    isRunning = false;
-                    shouldRun = false;
-                    //StartCoroutine(DelayRunning());
-                }
-
-                if (isApproaching) {
-                    isApproaching = false;
-                    shouldApproach = false;
-                    //StartCoroutine(DelayApproaching());
-                }
             }
         }
     }
 
     private void CheckMovement(float distance) {
-        if (distance < 5.0f && canRun) {
-            shouldRun = true;
-            canRun = false;
+        int nextMove = Random.Range(1, 4);
+        // 1 : Melee
+        // 2 : Area
+        // 3 : Range
+        Debug.Log("Decision made : " + nextMove);
+        switch (nextMove)
+        {
+            case 1:
+                shouldReach = true;
+                shouldApproach = false;
+                decisionMade = true;
+                break;
+            case 2:
+                shouldApproach = true;
+                shouldReach = false;
+                decisionMade = true;
+                break;
+            case 3:
+                shouldReach = false;
+                shouldApproach = false;
+                decisionMade = true;
+                break;
         }
     }
 
@@ -105,5 +117,32 @@ public class BossController : Controller
         {
             //Debug.Log("yes");
         }
+    }
+
+    private bool CheckCanSeePlayer(float maxDistance)
+    {
+        Vector3 direction = (PlayerTracker.instance.player.transform.position - gameObject.transform.position).normalized;
+
+        Ray ray = new Ray(gameObject.transform.position, direction);
+
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit, maxDistance, layerMask))
+        {
+            if (hit.collider.gameObject == PlayerTracker.instance.player)
+            {
+                return true;
+            }
+        }
+        else
+        {
+            return true;
+        }
+        return false;
+    }
+
+    private void AttackDone() {
+        shouldApproach = false;
+        shouldReach = false;
+        decisionMade = false;
     }
 }

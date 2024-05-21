@@ -46,6 +46,7 @@ public class DashController : Controller
     {
         agent.ResetPath();
         agent.isStopped = true;
+        agent.velocity = Vector3.zero;
     }
 
     public override void Movement()

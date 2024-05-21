@@ -85,7 +85,7 @@ public class EnemyCombat : MonoBehaviour
         }
     }
 
-    void Die()
+    public void Die()
     {
         if (animations != null) {
             animations.HandleDeath();

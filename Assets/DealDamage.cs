@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class DealDamage : MonoBehaviour
 {
+
+    public delegate void DealtDamageEvent();
+    public static event DealtDamageEvent EnemyHit;
+
     private bool canDealDamage;
     private bool isDashing;
     private float attackDamage;
@@ -76,7 +80,8 @@ public class DealDamage : MonoBehaviour
                 combatComponent.TakeDamage(attackDamage * firstHitBoostPercentage);
             }
             combatComponent.TakeDamage(attackDamage);
-            
+
+            EnemyHit?.Invoke();
         }
     }
 

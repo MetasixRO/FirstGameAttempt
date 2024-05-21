@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8e6292b2c06870d4495f009f912b9600, type: 3}
-  m_Name: Post Processing Profile
+  m_Name: Post Processing Profile 2
   m_EditorClassIdentifier: 
   settings:
-  - {fileID: 6482496151194605009}
---- !u!114 &6482496151194605009
+  - {fileID: 4270072919675804074}
+--- !u!114 &4270072919675804074
 MonoBehaviour:
   m_ObjectHideFlags: 3
   m_CorrespondingSourceObject: {fileID: 0}
@@ -31,20 +31,20 @@ MonoBehaviour:
     overrideState: 1
     value: 0
   mode:
-    overrideState: 1
+    overrideState: 0
     value: 0
   color:
     overrideState: 1
-    value: {r: 1, g: 0, b: 0, a: 1}
+    value: {r: 0.95869803, g: 1, b: 0, a: 1}
   center:
     overrideState: 0
     value: {x: 0.5, y: 0.5}
   intensity:
     overrideState: 1
-    value: 0.5
+    value: 1
   smoothness:
     overrideState: 0
-    value: 0.47
+    value: 0.2
   roundness:
     overrideState: 0
     value: 1

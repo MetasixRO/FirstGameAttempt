@@ -11,7 +11,7 @@ public class PostProcessingManager : MonoBehaviour
     void Start()
     {
         HealthBar.ManageVignette += ManageVignette;
-        postProcessVolume = FindObjectOfType<PostProcessVolume>();
+        postProcessVolume = GetComponent<PostProcessVolume>();
         if (postProcessVolume.profile.TryGetSettings(out vignette))
         {
             vignette.intensity.value = 0.5f;

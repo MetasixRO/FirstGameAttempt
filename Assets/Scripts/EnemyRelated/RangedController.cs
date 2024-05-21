@@ -83,5 +83,6 @@ public class RangedController : Controller
     {
         agent.ResetPath();
         agent.isStopped = true;
+        agent.velocity = Vector3.zero;
     }
 }

@@ -19,6 +19,7 @@ public class Combat : MonoBehaviour
     public static event HealthRelatedEvent PlayerLowerThanPercentage;
     public static event HealthRelatedEvent PlayerHigherThanPercentage;
     public static event HealthRelatedEvent CheckReduceReceivedDamage;
+    public static event HealthRelatedEvent ReceivedDamage;
 
     [SerializeField] private float originalMaxHealth = 100;
     [SerializeField] private float maxHealth = 100;
@@ -71,6 +72,8 @@ public class Combat : MonoBehaviour
 
         InvulnerabilityNPCAbility.MakeInvulnerable += Invulnerable;
         InvulnerabilityNPCAbility.MakeVulnerable += Vulnerable;
+
+        HealNPCAbility.AddHealth += RestoreHealth;
 
         animator = GetComponent<Animator>();
         isAttackingHash = Animator.StringToHash("isAttacking");
@@ -208,6 +211,8 @@ public class Combat : MonoBehaviour
             {
                 currentHealth -= damage;
             }
+
+            ReceivedDamage?.Invoke();
 
             if (SetHealth != null)
             {

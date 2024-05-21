@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Luck
   m_EditorClassIdentifier: 
   name: Luck
-  cooldown: 150
+  cooldown: 0
   activeTime: 0
-  description: Insta kills 1 to 2 enemies
+  description: Insta kills 1 to 2 enemies (doesn't work on bosses)
   abilityType: 5
   isActive: 0

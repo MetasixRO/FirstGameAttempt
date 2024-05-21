@@ -15,6 +15,7 @@ public class ActivateKnockbackArea : MonoBehaviour
     }
 
     private void Activate() {
+        Debug.Log("ON");
         sphereCollider.enabled = true;
     }
 

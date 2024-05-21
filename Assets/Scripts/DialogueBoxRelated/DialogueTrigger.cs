@@ -85,10 +85,7 @@ public class DialogueTrigger : MonoBehaviour
         }
         else
         {
-            if (NoDialogueLeft != null)
-            {
-                NoDialogueLeft();
-            }
+            NoGiftDialogueLeft?.Invoke();
         }
     }
 

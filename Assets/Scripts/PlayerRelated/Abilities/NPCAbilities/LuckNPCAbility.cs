@@ -5,13 +5,26 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Luck", menuName = "Ability/Luck")]
 public class LuckNPCAbility : AbilityScriptableObject
 {
+    public delegate void LuckNPCAbilityEvent(int counter);
+    public static event LuckNPCAbilityEvent SendKillSignal;
+
+    private bool enabled = false;
     public override void Activate()
     {
-        Debug.Log("Yep, this NPC ability should insta kill some of the enemies");
+        if (!enabled) {
+            int counter = Random.Range(1, 3);
+            SendKillSignal?.Invoke(counter);
+            Debug.Log("Insta kill");
+            enabled = true;
+        }
     }
 
     public override void Disable()
     {
-        Debug.Log("It's over");
+        if (enabled)
+        {
+            Debug.Log("It's over");
+            enabled = false;
+        }
     }
 }
