@@ -39,50 +39,54 @@ public class EnemiesClearedEvent : MonoBehaviour
 
     private void SetTotalEnemies(int counter)
     {
-        Debug.Log(counter);
+        //Debug.Log(counter);
         aliveEnemiesCounter += counter;
     }
 
     private void ClearTotalEnemies() {
         aliveEnemiesCounter = 0;
+        chooseRandomly = true;
     }
 
     private void ChoseReward() {
         if (chooseRandomly)
         {
-            rewardNumber = Random.Range(1, 6);
+            Debug.Log("Dudette?");
+            rewardNumber = Random.Range(0, 5);
         }
-        rewardNumber = 2;
+        Debug.Log("AND NOW, FOR THE FINAL TIME : " + rewardNumber);
         switch (rewardNumber) {
-            case 1: 
+            case 0: 
                 if (SpawnAbilityBoon != null) {
                     SpawnAbilityBoon();
                     EnemiesCleared();
                 }
                 break;
-            case 2:
+            case 1:
                 if (SpawnCoins != null) {
                     SpawnCoins();
                     EnemiesCleared();
                 }
                 break;
-            case 3:
+            case 2:
                 if (SpawnKeys != null)
                 {
                     SpawnKeys();
                     EnemiesCleared();
                 }
                 break;
-            case 4:
-                if (SpawnAmbrosia != null) {
-                    SpawnAmbrosia();
-                    EnemiesCleared();
-                }
-                break;
-            case 5:
+            
+            case 3:
                 if (SpawnHeal != null)
                 {
                     SpawnHeal();
+                    EnemiesCleared();
+                }
+                break;
+            case 4:
+                if (SpawnAmbrosia != null)
+                {
+                    SpawnAmbrosia();
                     EnemiesCleared();
                 }
                 break;
@@ -92,6 +96,7 @@ public class EnemiesClearedEvent : MonoBehaviour
 
     public void SetNextReward(int number) {
         rewardNumber = number;
+        Debug.Log("Finally the next reward will be : " + rewardNumber);
         chooseRandomly = false;
     }
 }

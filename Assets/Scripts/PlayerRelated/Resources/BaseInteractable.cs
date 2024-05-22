@@ -5,11 +5,13 @@ using UnityEngine;
 public class BaseInteractable : MonoBehaviour
 {
     [SerializeField] private float closeAreaRadius = 5f;
+    LayerMask arenaFloorMask;
 
     protected Vector3 CalculateSpawnPosition()
     {
         Vector3 randomPosition;
         GameObject player = PlayerTracker.instance.player;
+        arenaFloorMask = LayerMask.GetMask("ArenaFloor");
         while (true)
         {
             randomPosition = player.transform.position + Random.insideUnitSphere * closeAreaRadius;
@@ -18,7 +20,7 @@ public class BaseInteractable : MonoBehaviour
 
             RaycastHit hit;
             Vector3 direction = (player.transform.position - randomPosition).normalized;
-            if (Physics.Raycast(randomPosition, direction, out hit, closeAreaRadius))
+            if (Physics.Raycast(randomPosition, direction, out hit, closeAreaRadius, arenaFloorMask))
             {
                 if (hit.point.y < randomPosition.y)
                 {

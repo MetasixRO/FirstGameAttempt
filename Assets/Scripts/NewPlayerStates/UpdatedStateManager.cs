@@ -250,7 +250,7 @@ public class UpdatedStateManager : MonoBehaviour
 
         if (nextState != currentState)
         {
-            Debug.Log("Switching to" + nextState);
+            //Debug.Log("Switching to" + nextState);
             currentState.ExitState();
             previousState = currentState;
             currentState = nextState;

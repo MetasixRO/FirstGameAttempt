@@ -7,81 +7,103 @@ public class LevelManager : MonoBehaviour
 {
     public delegate void LevelManagerEvent(int rewardNumber);
     public static event LevelManagerEvent SelectNextReward;
+    public static event LevelManagerEvent EnterNextArena;
+    public static event LevelManagerEvent ActivateNextSpawner;
+    public static event LevelManagerEvent ObtainCurrentDoors;
 
     private int currentChamber;
     private int nextReward;
+
+    private bool firstCheck = true;
+
+    private List<int> everyArenaID = new List<int>();
+    private List<int> availableArenas = new List<int>();
+
     //DEBUG ONLY
     private int numberOfDoors;
-    public GameObject[] chamber1Doors;
-    public GameObject[] chamber2Doors;
-    public GameObject[] chamber3Doors;
     public GameObject[] chamberSpawners;
     public Sprite[] rewards;
+    private List<UnlockableDoor> currentDoors = new List<UnlockableDoor>();
     //DEBUG ONLY
 
     private void Start()
     {
-        ClearAllImages();
-        EnemiesClearedEvent.EnemiesCleared += PrepareNextRewards;
+        EnemiesClearedEvent.EnemiesCleared += PrepareNextChambers;
         currentChamber = -1;
         nextReward = -1;
-        //DEBUG ONLY VALUE
-        numberOfDoors = 2;
         Debug.Log("The number of doors for each chamber is now set to 2. JUST FOR DEBUG");
 
         CloseArenaDoor.CloseDoor += ActivateSpawner;
         ReachedChamber.ReachedNewChamber += ActivateSpawner;
+
+        DoorOpener.GoToChamber += TeleportToArenaBasedOnID;
+
+        UnlockableDoor.ReturnReference += SetCurrentDoors;
+
+        UnlockableDoor.AdvanceChambers += AdvanceChamberAndSetReward;
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown("1")) {
+            EnterNextArena?.Invoke(1);
+            ActivateNextSpawner?.Invoke(1);
+        }
+        if (Input.GetKeyDown("2"))
+        {
+            EnterNextArena?.Invoke(2);
+            ActivateNextSpawner?.Invoke(2);
+        }
+        if (Input.GetKeyDown("3"))
+        {
+            EnterNextArena?.Invoke(3);
+            ActivateNextSpawner?.Invoke(3);
+        }
+    }
+
+    private void TeleportToArenaBasedOnID(int arenaID) {
+        EnterNextArena?.Invoke(arenaID);
+        ActivateNextSpawner?.Invoke(arenaID);
+        currentChamber = arenaID;
+        if (firstCheck) {
+            for (int i = 1; i < ArenaTeleporter.GetGeneralID(); i++) { 
+                everyArenaID.Add(i);
+            }
+            firstCheck = false;
+        }
+    }
+
+    //PROBABLY DELETE THIS
     private void ActivateSpawner() {
         currentChamber++;
         chamberSpawners[currentChamber].GetComponent<EnemySpawner>().ActivateSpawner();
     }
 
-    private bool GetIfShopOpen() {
-        return Random.value < 0.5f;
-    }
+    private void PrepareNextChambers() {
+        currentDoors.Clear();
+        ObtainCurrentDoors?.Invoke(currentChamber);
 
-    private void PrepareNextRewards() {
-        nextReward = Random.Range(1, 6);
-        if (SelectNextReward != null) {
-            SelectNextReward(nextReward);
-        }
-
-        bool isShopOpen = GetIfShopOpen();
-        switch (currentChamber) {
-            case 0:
-                chamber1Doors[0].GetComponentInChildren<Image>().enabled = true;
-                chamber1Doors[0].GetComponentInChildren<Image>().sprite = rewards[nextReward];
-                if (isShopOpen)
-                {
-                    chamber1Doors[1].GetComponentInChildren<Image>().enabled = true;
-                    chamber1Doors[1].GetComponentInChildren<Image>().sprite = rewards[nextReward];
-                }
-                break;
-            case 1:
-                chamber2Doors[0].GetComponentInChildren<Image>().enabled = true;
-                chamber2Doors[0].GetComponentInChildren<Image>().sprite = rewards[nextReward];
-                if (isShopOpen)
-                {
-                    chamber2Doors[1].GetComponentInChildren<Image>().enabled = true;
-                    chamber2Doors[1].GetComponentInChildren<Image>().sprite = rewards[nextReward];
-                }
-                break;
-            case 2:
-                if (isShopOpen) {
-                    chamber3Doors[0].GetComponentInChildren<Image>().enabled = true;
-                    chamber3Doors[0].GetComponentInChildren<Image>().sprite = rewards[nextReward];
-                }
-                break;
+        foreach(var door in currentDoors) {
+            int reward = Random.Range(0, 5);
+            door.EnableInteractable();
+            door.EnableRewardImage(rewards[reward], reward);
         }
     }
 
-    private void ClearAllImages() {
-        chamber1Doors[0].GetComponentInChildren<Image>().enabled = false;
-        chamber1Doors[1].GetComponentInChildren<Image>().enabled = false;
-        chamber2Doors[0].GetComponentInChildren<Image>().enabled = false;
-        chamber2Doors[1].GetComponentInChildren<Image>().enabled = false;
-        chamber3Doors[0].GetComponentInChildren<Image>().enabled = false;
+    private void SetCurrentDoors(int doorID, UnlockableDoor doorObject) {
+        currentDoors.Add(doorObject);
+    }
+
+    private void AdvanceChamberAndSetReward(int arenaID, int rewardID) {
+        nextReward = rewardID;
+        Debug.Log("NextReward : " + nextReward);
+        SelectNextReward?.Invoke(nextReward);
+        availableArenas.Clear();
+        availableArenas = everyArenaID.FindAll(element => !element.Equals(arenaID));
+        if (availableArenas.Count != 0) {
+            int newArenaIndex = Random.Range(0, availableArenas.Count);
+            Debug.Log("Next arena is : " + newArenaIndex + " And the reward will be " + rewards[nextReward]);
+            TeleportToArenaBasedOnID(availableArenas[newArenaIndex]);
+        }
     }
 }

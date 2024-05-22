@@ -4,11 +4,20 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
+    private static int generalSpawnerID = 1;
+    [SerializeField] int instanceID;
+
     public delegate void EnemySpawnerEvent(int counter);
     public static event EnemySpawnerEvent EnemyCounter;
 
     public List<GameObject> enemies = new List<GameObject>();
     [SerializeField] private float delayBetweenSpawns = 2f;
+
+    private void Start()
+    {
+        instanceID = generalSpawnerID++;
+        LevelManager.EnterNextArena += ActivateSpawnerBasedOnID;
+    }
 
     public void ActivateSpawner() {
         int numberOfEnemies = Random.Range(2, 5);
@@ -17,6 +26,18 @@ public class EnemySpawner : MonoBehaviour
         }
         StartCoroutine(SpawnEnemies(numberOfEnemies,delayBetweenSpawns));
     }
+
+    private void ActivateSpawnerBasedOnID(int id) {
+        if (instanceID == id) {
+            int numberOfEnemies = Random.Range(2, 5);
+            if (EnemyCounter != null)
+            {
+                EnemyCounter(numberOfEnemies);
+            }
+            StartCoroutine(SpawnEnemies(numberOfEnemies, delayBetweenSpawns));
+        }
+    }
+
 
     private IEnumerator SpawnEnemies(int numberOfEnemies, float delayBetweenSpawns) {
         for (int i = 0; i < numberOfEnemies; i++) {

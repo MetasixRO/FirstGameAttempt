@@ -4,25 +4,28 @@ using UnityEngine;
 
 public class DoorOpener : MonoBehaviour, IInteractable
 {
-    public delegate void DoorOpenerCallback();
-    public static event DoorOpenerCallback OpenDoor;
+    //public delegate void DoorOpenerCallback();
+    //public static event DoorOpenerCallback OpenDoor;
+
+    public delegate void WeaponSelectorDoorEvent(int chamber);
+    public static event WeaponSelectorDoorEvent GoToChamber;
 
     private bool usable;
 
     public string prompt;
-    private Animator animator;
+    //private Animator animator;
 
     private void Start()
     {
-        animator = GetComponent<Animator>();
+        //animator = GetComponent<Animator>();
 
         usable = false;
 
-        CloseArenaDoor.CloseDoor += CloseDoor;
+        //CloseArenaDoor.CloseDoor += CloseDoor;
 
         WeaponPrompt.ChangeWeapon += ActivateDoor;
 
-        ReturnToLobby.BackToLobby += DeactivateDoor;
+        //ReturnToLobby.BackToLobby += DeactivateDoor;
 
         newDeadState.RespawnPlayer += ResetDoor;
     }
@@ -31,14 +34,18 @@ public class DoorOpener : MonoBehaviour, IInteractable
     {
         if (usable)
         {
-            if (OpenDoor != null)
-            {
-                OpenDoor();
-            }
-            animator.SetTrigger("Open");
+            int firstArenaID;
+            firstArenaID = Random.Range(1, ArenaTeleporter.GetGeneralID());
+            GoToChamber?.Invoke(1);
+
+            //if (OpenDoor != null)
+           // {
+           //     OpenDoor();
+           // }
+            //animator.SetTrigger("Open");
             //Parametru utilizat doar pentru verificare
             //Nu e utilizat nicaieri in animatorController
-            animator.SetBool("isOpen", true);
+            //animator.SetBool("isOpen", true);
         }
     }
 
@@ -51,7 +58,7 @@ public class DoorOpener : MonoBehaviour, IInteractable
         else
             return "DefaultText";
     }
-
+    /*
     private void CloseDoor() {
         animator.SetTrigger("Close");
         DeactivateDoor();
@@ -64,12 +71,12 @@ public class DoorOpener : MonoBehaviour, IInteractable
         }
         usable = false;
     }
-
+    */
     private void ResetDoor() {
-        usable = true;
+        usable = false;
     }
 
     private void ActivateDoor(int weaponID) {
-        ResetDoor();
+        usable = true;
     }
 }

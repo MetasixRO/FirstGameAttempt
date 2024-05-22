@@ -4,25 +4,24 @@ using UnityEngine;
 
 public class NextChamberDoor : MonoBehaviour, IInteractable
 {
-    public delegate void NewChamberEvent();
+    public delegate void NewChamberEvent(NextChamberDoor instance);
     public static event NewChamberEvent NewChamber;
 
     private Animator animator;
 
+    private bool isInteractable;
+
     private void Start()
     {
-        animator = GetComponent<Animator>();
-        ReachedChamber.ReachedNewChamber += RespawnDoor;
+        isInteractable = false;
     }
 
     public void Interact()
     {
-        if (NewChamber != null) {
-            NewChamber();
+        if (isInteractable)
+        {
+            NewChamber?.Invoke(this);
         }
-
-        gameObject.SetActive(false);
-
     }
 
     public string InteractionPrompt()
@@ -30,7 +29,7 @@ public class NextChamberDoor : MonoBehaviour, IInteractable
         return "Advance to next chamber";
     }
 
-    private void RespawnDoor() {
-        gameObject.SetActive(true);
+    public void SetInteractable(bool value) {
+        isInteractable = value;
     }
 }
