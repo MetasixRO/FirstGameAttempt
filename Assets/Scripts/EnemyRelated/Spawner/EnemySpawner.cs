@@ -10,11 +10,6 @@ public class EnemySpawner : MonoBehaviour
     public List<GameObject> enemies = new List<GameObject>();
     [SerializeField] private float delayBetweenSpawns = 2f;
 
-    private void Start()
-    {
-        
-    }
-
     public void ActivateSpawner() {
         int numberOfEnemies = Random.Range(2, 5);
         if (EnemyCounter != null) {

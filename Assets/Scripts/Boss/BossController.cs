@@ -5,10 +5,12 @@ using UnityEngine.AI;
 
 public class BossController : Controller
 {
+    public delegate void BossControllerEvent(int choice);
+    public static event BossControllerEvent AttackChoice;
+
     private int layerMask;
     private LayerMask firstLayerToIgnore;
     private LayerMask secondLayerToIgnore;
-
 
     private bool shouldApproach, shouldReach;
     private bool decisionMade;
@@ -28,6 +30,7 @@ public class BossController : Controller
 
         agent = GetComponent<NavMeshAgent>();
         newDeadState.RespawnPlayer += DestroyEnemy;
+        BossAnimations.AttackDone += AttackDone;
     }
 
     public override void Freeze()
@@ -47,13 +50,13 @@ public class BossController : Controller
             float distance = Vector3.Distance(transform.position, PlayerTracker.instance.player.transform.position);
             if (!decisionMade)
             {
-                CheckMovement(distance);
+                AttackChoice?.Invoke(CheckMovement(distance));
             }
 
             if (shouldReach)
             {
                 shouldMove = true;
-                threshold = 1.2f;
+                threshold = 1.4f;
             }
             else if (shouldApproach)
             {
@@ -78,7 +81,7 @@ public class BossController : Controller
         }
     }
 
-    private void CheckMovement(float distance) {
+    private int CheckMovement(float distance) {
         int nextMove = Random.Range(1, 4);
         // 1 : Melee
         // 2 : Area
@@ -102,6 +105,7 @@ public class BossController : Controller
                 decisionMade = true;
                 break;
         }
+        return nextMove;
     }
 
     private void DestroyEnemy()

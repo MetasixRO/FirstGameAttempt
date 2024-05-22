@@ -22,9 +22,13 @@ public class Bullet : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             //Debug.Log("Hit with " + damage);
-            if (Hit != null)
+            if (damage != 0.0)
             {
-                Hit(5.0f);
+                Hit?.Invoke(damage);
+            }
+            else
+            {
+                Hit?.Invoke(5.0f);
             }
         }
         Destroy(gameObject);

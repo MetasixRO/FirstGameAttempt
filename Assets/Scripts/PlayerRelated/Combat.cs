@@ -75,6 +75,9 @@ public class Combat : MonoBehaviour
 
         HealNPCAbility.AddHealth += RestoreHealth;
 
+        BossMeleeDamage.BossDamage += TakeDamage;
+        BossAreaDamage.BossDamage += TakeDamage;
+
         animator = GetComponent<Animator>();
         isAttackingHash = Animator.StringToHash("isAttacking");
 
