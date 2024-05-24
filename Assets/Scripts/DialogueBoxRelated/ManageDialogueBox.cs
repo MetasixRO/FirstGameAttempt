@@ -11,20 +11,27 @@ public class ManageDialogueBox : MonoBehaviour,IInteractable
     public static event DialogueEvent checkEnoughAmbrosia;
 
     private bool canGift;
+    private bool canInteract;
 
     private void Start()
     {
         canGift = false;
+        canInteract = true;
         ResourceManager.CheckAmbrosiaResult += SetCanGift;
     }
 
     public void Interact()
     {
-        if (dialogueTriggered != null)
+        if (canInteract)
         {
-            dialogueTriggered();
+            canInteract = false;
+            if (dialogueTriggered != null)
+            {
+                dialogueTriggered();
+            }
+            GetComponent<DialogueTrigger>().BeginDialogue();
+            StartCoroutine(ResetCanInteract());
         }
-        GetComponent<DialogueTrigger>().BeginDialogue();
     }
 
     public string InteractionPrompt()
@@ -58,5 +65,10 @@ public class ManageDialogueBox : MonoBehaviour,IInteractable
 
     private void SetCanGift(bool value) {
         canGift = value;
+    }
+
+    private IEnumerator ResetCanInteract() {
+        yield return new WaitForSeconds(1.2f);
+        canInteract = true;
     }
 }

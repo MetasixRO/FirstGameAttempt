@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class Controller : MonoBehaviour
 {
-    public abstract void Freeze();
+    public virtual void Freeze() { Debug.Log("This one is called"); }
 
     public abstract void Movement();
 

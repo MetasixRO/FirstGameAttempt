@@ -252,7 +252,8 @@ public class Combat : MonoBehaviour
         animator.SetTrigger("isDead");
 
 
-        GetComponent<Collider>().enabled = false;
+        GetComponent<CapsuleCollider>().enabled = false;
+        GetComponent<CharacterController>().enabled = false;
     }
 
     public void RestoreHealth(int amount)

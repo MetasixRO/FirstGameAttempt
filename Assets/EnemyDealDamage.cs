@@ -8,12 +8,17 @@ public class EnemyDealDamage : MonoBehaviour
     public static event EnemyDealDamageEvent PlayerReceiveDamage;
 
     private float attackDamage;
-    private bool canDealDamage;
+
+    private BoxCollider currentCollider;
 
     private void Start()
     {
         attackDamage = 0;
-        canDealDamage = false;
+        gameObject.TryGetComponent<BoxCollider>(out currentCollider);
+        if (currentCollider != null)
+        {
+            currentCollider.enabled = false;
+        }
     }
 
     public virtual void SetDamage(float damage) {
@@ -26,22 +31,31 @@ public class EnemyDealDamage : MonoBehaviour
 
         if (activate)
         {
-            canDealDamage = true;
+            if (currentCollider != null)
+            {
+                currentCollider.enabled = true;
+            }
         }
         else
         {
-            canDealDamage = false;
+            if (currentCollider != null)
+            {
+                currentCollider.enabled = false;
+            }
         }
     }
 
     public virtual void DisableWeapon() {
-        gameObject.GetComponent<Collider>().enabled = false;
+        if (currentCollider != null)
+        {
+            currentCollider.enabled = false;
+        }
     }
 
 
     private void OnTriggerEnter(Collider other)
     {
-        if (canDealDamage && other.CompareTag("Player")) {
+        if (other.CompareTag("Player") || other.CompareTag("PlayerWeapon")) {
             if (PlayerReceiveDamage != null) {
                 PlayerReceiveDamage(attackDamage);
             }

@@ -9012,7 +9012,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -16090,7 +16090,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -17769,7 +17769,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -18384,7 +18384,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -34538,6 +34538,7 @@ GameObject:
   - component: {fileID: 2039124720}
   - component: {fileID: 2039124719}
   - component: {fileID: 2039124721}
+  - component: {fileID: 2039124722}
   m_Layer: 0
   m_Name: LevelManagerObject
   m_TagString: Untagged
@@ -34592,6 +34593,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c8b6f564c7b5022448c0e6a53d7dcc85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2039124722
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2039124718}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa858b2599cbdf64293e750378ba8366, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &2046078911
@@ -35764,7 +35777,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -36120,6 +36133,18 @@ PrefabInstance:
     - target: {fileID: 3233945788499162539, guid: 7e46527505a544b478e3b09575e91ca5, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3961946997263069297, guid: 7e46527505a544b478e3b09575e91ca5, type: 3}
+      propertyPath: m_Size.x
+      value: 0.44
+      objectReference: {fileID: 0}
+    - target: {fileID: 3961946997263069297, guid: 7e46527505a544b478e3b09575e91ca5, type: 3}
+      propertyPath: m_Size.y
+      value: 0.44
+      objectReference: {fileID: 0}
+    - target: {fileID: 3961946997263069297, guid: 7e46527505a544b478e3b09575e91ca5, type: 3}
+      propertyPath: m_Size.z
+      value: 0.88
       objectReference: {fileID: 0}
     - target: {fileID: 7748051353678760158, guid: 7e46527505a544b478e3b09575e91ca5, type: 3}
       propertyPath: cam

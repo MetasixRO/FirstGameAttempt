@@ -26,6 +26,7 @@ public class AttackIndicator : MonoBehaviour
 
     public void Reset()
     {
+        Debug.Log("called");
         alreadyTransitioning = false;
         materialManager.Reset();
     }

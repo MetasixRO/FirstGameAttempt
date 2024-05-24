@@ -26,6 +26,7 @@ public class DialogueTrigger : MonoBehaviour
     private int counter = 0;
     private int giftCounter = 0;
     private bool shouldAdvance;
+    private bool shouldCheck;
 
     private void Awake()
     {
@@ -35,6 +36,7 @@ public class DialogueTrigger : MonoBehaviour
 
     private void Start()
     {
+        shouldCheck = true;
         shouldAdvance = true;
         Combat.PlayerDead += AdvanceDialogue;
         if (DialogueStatus != null)
@@ -52,16 +54,23 @@ public class DialogueTrigger : MonoBehaviour
     }
 
     public void BeginDialogue() {
-        if (startDialogue != null && !alreadyStarted && counter < dialogues.Length && shouldAdvance)
+        if (shouldCheck)
         {
-            startDialogue(dialogues[counter]);
-            alreadyStarted = true;
-            StartCoroutine(DelayAnotherDialogue(delayTimer));
-            shouldAdvance = false;
-        }
-        else { 
-            if(NoDialogueLeft != null) {
-                NoDialogueLeft();
+            shouldCheck = false;
+            StartCoroutine(DelayCheckingDialogueBeginning(delayTimer));
+            if (startDialogue != null && !alreadyStarted && counter < dialogues.Length && shouldAdvance)
+            {
+                startDialogue?.Invoke(dialogues[counter]);
+                alreadyStarted = true;
+                shouldAdvance = false;
+                StartCoroutine(DelayAnotherDialogue(delayTimer));
+            }
+            else
+            {
+                if (NoDialogueLeft != null)
+                {
+                    NoDialogueLeft();
+                }
             }
         }
     }
@@ -94,12 +103,21 @@ public class DialogueTrigger : MonoBehaviour
         alreadyStarted = false;
     }
 
+    private IEnumerator DelayCheckingDialogueBeginning(float delay) {
+        yield return new WaitForSeconds(2.0f);
+        shouldCheck = true;
+    }
+
     private void AdvanceDialogue() {
-        counter++;
-        shouldAdvance = true;
-        if (counter == dialogues.Length)
+        if (!shouldAdvance)
         {
-            counter = dialogues.Length - 1;
+            Debug.Log("Advancing here:");
+            counter++;
+            shouldAdvance = true;
+            if (counter == dialogues.Length)
+            {
+                counter = dialogues.Length - 1;
+            }
         }
     }
 }

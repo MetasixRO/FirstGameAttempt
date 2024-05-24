@@ -19,10 +19,13 @@ public class DialogueManager : MonoBehaviour
 
     public Animator animator;
 
+    private bool readyToAdvance;
+
     private void Start()
     {
         sentences = new Queue<string>();
         continueButton.enabled = false;
+        readyToAdvance = true;
         StartCoroutine(ShowContinueButton(1.0f));
         DialogueTrigger.startDialogue += StartDialogue;
         DialogueState.AdvanceDialogue += DisplayNextSentence;
@@ -45,15 +48,20 @@ public class DialogueManager : MonoBehaviour
     }
 
     public void DisplayNextSentence() {
-        if (sentences.Count == 0) {
-            EndDialogue();
-            return;
+        if (readyToAdvance)
+        {
+            if (sentences.Count == 0)
+            {
+                sentences.Clear();
+                EndDialogue();
+                return;
+            }
+            continueButton.enabled = false;
+            readyToAdvance = false;
+            string sentence = sentences.Dequeue();
+            dialogueText.text = sentence;
+            StartCoroutine(ShowContinueButton(1.0f));
         }
-        continueButton.enabled = false;
-
-        string sentence = sentences.Dequeue();
-        dialogueText.text = sentence;
-        StartCoroutine(ShowContinueButton(1.0f));
     }
 
     private void EndDialogue() {
@@ -67,6 +75,7 @@ public class DialogueManager : MonoBehaviour
     {
         yield return new WaitForSeconds(timer);
         continueButton.enabled = true;
+        readyToAdvance = true;
         if (ContinueDialogue != null) {
             ContinueDialogue();
         }

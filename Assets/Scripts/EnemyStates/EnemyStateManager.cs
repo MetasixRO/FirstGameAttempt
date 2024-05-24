@@ -75,6 +75,7 @@ public class EnemyStateManager : MonoBehaviour
     }
 
     public void TransitionToDead() {
+        InitializeTransitions();
         toDead = true;
         StartCoroutine(DelayTransition(0.0f));
     }
@@ -101,12 +102,14 @@ public class EnemyStateManager : MonoBehaviour
         }
         if (toDead) {
             toDead = false;
+            animations.enabled = false;
+            controller.Freeze();
             controller.enabled = false;
             nextState = allStates["Dead"];
         }
 
         if (nextState != currentState) {
-            //Debug.Log("Enemy Entering: " + nextState);
+            Debug.Log("Enemy Entering: " + nextState);
             indicator.Reset();
             previousState = currentState;
             currentState = nextState;

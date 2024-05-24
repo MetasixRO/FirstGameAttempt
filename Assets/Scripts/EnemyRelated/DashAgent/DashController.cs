@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class DashController : Controller
 {
-    [SerializeField] private float totalDistance = 7.5f;
+    [SerializeField] private float totalDistance;
     private NavMeshAgent agent;
 
     private LayerMask layerToIgnore;
@@ -13,7 +13,7 @@ public class DashController : Controller
 
     private void Start()
     {
-
+        totalDistance = 7.5f;
         layerToIgnore = LayerMask.GetMask("Enemy");
         layerMask = Physics.DefaultRaycastLayers & ~layerToIgnore.value;
         //gameObject.SetActive(false);
@@ -53,7 +53,6 @@ public class DashController : Controller
     {
         if (gameObject.activeSelf && PlayerTracker.instance.player != null) {
             float distance = Vector3.Distance(transform.position, PlayerTracker.instance.player.transform.position);
-
             if (distance > totalDistance || !CheckCanSeePlayer(distance))
             {
                 agent.isStopped = false;

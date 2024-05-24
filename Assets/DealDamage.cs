@@ -16,8 +16,13 @@ public class DealDamage : MonoBehaviour
     private float percentageToIncreaseBy;
     private float firstHitBoostPercentage = 0.0f;
 
+    private BoxCollider currentCollider;
+
     private void Start()
     {
+        currentCollider = GetComponent<BoxCollider>();
+        currentCollider.enabled = false;
+
         shouldIncrease = false;
         attackDamage = 0;
         canDealDamage = false;
@@ -59,11 +64,13 @@ public class DealDamage : MonoBehaviour
             {
                 if (!isDashing)
                 {
+                    currentCollider.enabled = true;
                     canDealDamage = true;
                 }
             }
             else
             {
+                currentCollider.enabled = false;
                 canDealDamage = false;
             }
         }
@@ -88,6 +95,7 @@ public class DealDamage : MonoBehaviour
     private void SetIsDashing()
     {
         isDashing = true;
+        currentCollider.enabled = false;
         canDealDamage = false;
     }
 
