@@ -19,7 +19,7 @@ public class Bullet : MonoBehaviour
     {
         //Debug.Log(other.tag);
         //Debug.Log(other.gameObject);
-        if (other.CompareTag("Player") || other.CompareTag("PlayerWeapon"))
+        if (other.CompareTag("Player"))
         {
             //Debug.Log("Hit with " + damage);
             if (damage != 0.0)

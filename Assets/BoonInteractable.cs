@@ -14,17 +14,11 @@ public class BoonInteractable : BaseInteractable, IInteractable
         gameObject.SetActive(false);
         container = GetComponent<BoonAbilitiesContainer>();
         EnemiesClearedEvent.SpawnAbilityBoon += Spawn;
-        LevelManager.ClearRewards += Despawn;
-        newDeadState.RespawnPlayer += Despawn;
     }
 
     protected void Spawn() {
         gameObject.SetActive(true);
         gameObject.transform.position = base.CalculateSpawnPosition();
-    }
-
-    private void Despawn() {
-        gameObject.SetActive(false);
     }
 
     public void Interact()
@@ -40,5 +34,6 @@ public class BoonInteractable : BaseInteractable, IInteractable
     {
         return "Interact";
     }
+
   
 }

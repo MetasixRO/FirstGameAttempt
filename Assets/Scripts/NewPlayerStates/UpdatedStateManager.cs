@@ -23,7 +23,6 @@ public class UpdatedStateManager : MonoBehaviour
 
     private bool isCodex;
     private bool canCall;
-    private bool goingToState;
 
     private void Awake()
     {
@@ -43,7 +42,6 @@ public class UpdatedStateManager : MonoBehaviour
 
         isCodex = false;
         canCall = true;
-        goingToState = false;
     }
 
     private void Update() {
@@ -85,7 +83,7 @@ public class UpdatedStateManager : MonoBehaviour
     private void SubscribeToEvents() {
         ManageDialogueBox.dialogueTriggered += TransitionToDialogue;
         ManageDialogueBox.giftDialogueTriggered += TransitionToDialogue;
-        DialogueTrigger.NoDialogueLeft += PreTransitionToLobby;
+        DialogueTrigger.NoDialogueLeft += TransitionToLobby;
         DialogueTrigger.NoGiftDialogueLeft += TransitionToLobby;
         DialogueManager.dialogueEnded += TransitionToPrevious;
         Combat.PlayerDead += TransitionToDead;
@@ -128,11 +126,6 @@ public class UpdatedStateManager : MonoBehaviour
             canCall = false;
             StartCoroutine(ResetCallDelay(1.0f));
         }
-    }
-
-    private void PreTransitionToLobby() {
-        Debug.Log("Pretransitioning");
-        TransitionToLobby();
     }
 
     private IEnumerator ResetCallDelay(float delay) { 
@@ -181,29 +174,18 @@ public class UpdatedStateManager : MonoBehaviour
     }
 
     private void TransitionToDialogue() {
-        if (!toDialogue && !goingToState)
-        {
-            toDialogue = true;
-            goingToState = true;
-            StartCoroutine(DelayTransition(0.2f));
-        }
+        toDialogue = true;
+        StartCoroutine(DelayTransition(0.2f));
     }
 
     private void TransitionToPrevious() {
-        if (!toPrevious && !goingToState)
-        {
-            toPrevious = true;
-            goingToState = true;
-            StartCoroutine(DelayTransition(0.2f));
-        }
+        toPrevious = true;
+        StartCoroutine(DelayTransition(0.2f));
     }
 
     private void TransitionToLobby() {
-        if (!toLobby && !goingToState)
-        {
-            toLobby = true;
-            StartCoroutine(DelayTransition(0.2f));
-        }
+        toLobby = true;
+        StartCoroutine(DelayTransition(0.2f));
     }
 
     private void TransitionToDead() {
@@ -232,7 +214,6 @@ public class UpdatedStateManager : MonoBehaviour
     }
 
     private IEnumerator DelayTransition(float delay) {
-        StartCoroutine(ResetGoingToState());
         yield return new WaitForSeconds(delay);
 
         if (toDialogue)
@@ -280,10 +261,5 @@ public class UpdatedStateManager : MonoBehaviour
             currentState.SetMenu(true);
             isCodex = false;
         }
-    }
-
-    private IEnumerator ResetGoingToState() {
-        yield return new WaitForSeconds(1.0f);
-        goingToState = false;
     }
 }

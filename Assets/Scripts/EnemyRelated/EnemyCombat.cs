@@ -5,12 +5,10 @@ using UnityEngine.AI;
 
 public class EnemyCombat : MonoBehaviour
 {
+
+
     public delegate void EnemyEvent();
     public static event EnemyEvent EnemyDead;
-
-    public delegate void EnemyEventForCleaning(GameObject enemy);
-    public static event EnemyEventForCleaning EnemyForCleaning;
-
 
     private AgentAnimations animations;
     public float maxHealth;
@@ -19,12 +17,8 @@ public class EnemyCombat : MonoBehaviour
     private ParticleSystem particles;
     private Knockback knockbackObject;
 
-    private bool canReceiveDamage;
-
     private void Start()
     {
-
-        canReceiveDamage = true;
         healthBar = GetComponentInChildren<EnemyHealthBar>();
 
         particles = GetComponentInChildren<ParticleSystem>();
@@ -65,36 +59,29 @@ public class EnemyCombat : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        if (canReceiveDamage)
+        currentHealth -= damage;
+
+        if (particles != null) {
+            particles.Play();
+        }
+
+        if (healthBar != null)
         {
-            canReceiveDamage = false;
-            StartCoroutine(ResetCanReceiveDamage());
-            currentHealth -= damage;
+            healthBar.SetHealth(currentHealth);
+        }
 
-            if (particles != null)
-            {
-                particles.Play();
-            }
+        if(knockbackObject != null)
+        {
+            knockbackObject.ApplyKnockback();
+        }
 
-            if (healthBar != null)
-            {
-                healthBar.SetHealth(currentHealth);
-            }
+        if (animations != null) {
+            animations.HandlePunched();
+        }
 
-            if (knockbackObject != null)
-            {
-                knockbackObject.ApplyKnockback();
-            }
-
-            if (animations != null)
-            {
-                animations.HandlePunched();
-            }
-
-            if (currentHealth <= 0)
-            {
-                Die();
-            }
+        if (currentHealth <= 0)
+        {
+            Die();
         }
     }
 
@@ -104,7 +91,7 @@ public class EnemyCombat : MonoBehaviour
             animations.HandleDeath();
         }
 
-        GetComponent<BoxCollider>().enabled = false;
+        GetComponent<Collider>().enabled = false;
         GetComponent<CharacterController>().enabled = false;
 
         if (EnemyDead != null) {
@@ -120,15 +107,9 @@ public class EnemyCombat : MonoBehaviour
     {
         yield return new WaitForSeconds(5);
         gameObject.SetActive(false);
-        EnemyForCleaning?.Invoke(gameObject);
     }
 
     public bool IsUntouched() {
         return (currentHealth == maxHealth);
-    }
-
-    private IEnumerator ResetCanReceiveDamage() {
-        yield return new WaitForSeconds(0.5f);
-        canReceiveDamage = true;
     }
 }

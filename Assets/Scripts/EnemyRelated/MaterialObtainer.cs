@@ -38,8 +38,9 @@ public class MaterialObtainer : MonoBehaviour
 
     public void Reset()
     {
-        material.color = originalColor;
-        Debug.Log("Original " + originalColor);
-        Debug.Log("Material " + material.color);
+        if (material.color != originalColor)
+        {
+            material.color = originalColor;
+        }
     }
 }

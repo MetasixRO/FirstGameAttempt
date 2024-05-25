@@ -15,8 +15,6 @@ public class CoinsInteractable : BaseInteractable, IInteractable
         
         gameObject.SetActive(false);
         EnemiesClearedEvent.SpawnCoins += Spawn;
-        LevelManager.ClearRewards += Despawn;
-        newDeadState.RespawnPlayer += Despawn;
     }
 
     protected  void Spawn() {
@@ -24,11 +22,6 @@ public class CoinsInteractable : BaseInteractable, IInteractable
 
         gameObject.SetActive(true);
         gameObject.transform.position = base.CalculateSpawnPosition();
-    }
-
-    private void Despawn()
-    {
-        gameObject.SetActive(false);
     }
 
     public  string InteractionPrompt()

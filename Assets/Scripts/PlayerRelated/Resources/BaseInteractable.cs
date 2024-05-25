@@ -16,7 +16,7 @@ public class BaseInteractable : MonoBehaviour
         {
             randomPosition = player.transform.position + Random.insideUnitSphere * closeAreaRadius;
 
-            randomPosition.y = player.transform.position.y;
+            randomPosition.y = Mathf.Max(randomPosition.y, 0);
 
             RaycastHit hit;
             Vector3 direction = (player.transform.position - randomPosition).normalized;

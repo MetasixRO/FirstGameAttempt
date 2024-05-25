@@ -73,7 +73,6 @@ public class newDeadState : newBaseState
         elapsedTime = Time.time - startTime;
         if (elapsedTime >= delay && RespawnPlayer != null) {
             RespawnPlayer();
-            PlayerTracker.instance.player.GetComponent<CapsuleCollider>().enabled = true;
         }
     }
 }
