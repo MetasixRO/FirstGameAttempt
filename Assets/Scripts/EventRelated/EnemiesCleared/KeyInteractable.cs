@@ -15,6 +15,9 @@ public class KeyInteractable : BaseInteractable, IInteractable
         keysGenerated = 1;
         gameObject.SetActive(false);
         EnemiesClearedEvent.SpawnKeys += Spawn;
+
+        LevelManager.ClearRewards += Despawn;
+        newDeadState.RespawnPlayer += Despawn;
     }
 
     protected void Spawn()
@@ -37,5 +40,10 @@ public class KeyInteractable : BaseInteractable, IInteractable
             InteractedKeys(keysGenerated);
         }
 
+    }
+
+    private void Despawn()
+    {
+        gameObject.SetActive(false);
     }
 }

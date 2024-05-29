@@ -36,7 +36,7 @@ public class DoorOpener : MonoBehaviour, IInteractable
         {
             int firstArenaID;
             firstArenaID = Random.Range(1, ArenaTeleporter.GetGeneralID());
-            GoToChamber?.Invoke(1);
+            GoToChamber?.Invoke(firstArenaID);
 
             //if (OpenDoor != null)
            // {

@@ -11,6 +11,9 @@ public class LevelManager : MonoBehaviour
     public static event LevelManagerEvent ActivateNextSpawner;
     public static event LevelManagerEvent ObtainCurrentDoors;
 
+    public delegate void ClearActiveRewards();
+    public static event ClearActiveRewards ClearRewards;
+
     private int currentChamber;
     private int nextReward;
 
@@ -31,7 +34,6 @@ public class LevelManager : MonoBehaviour
         EnemiesClearedEvent.EnemiesCleared += PrepareNextChambers;
         currentChamber = -1;
         nextReward = -1;
-        Debug.Log("The number of doors for each chamber is now set to 2. JUST FOR DEBUG");
 
         CloseArenaDoor.CloseDoor += ActivateSpawner;
         ReachedChamber.ReachedNewChamber += ActivateSpawner;
@@ -62,6 +64,7 @@ public class LevelManager : MonoBehaviour
     }
 
     private void TeleportToArenaBasedOnID(int arenaID) {
+        ClearRewards?.Invoke();
         EnterNextArena?.Invoke(arenaID);
         ActivateNextSpawner?.Invoke(arenaID);
         currentChamber = arenaID;

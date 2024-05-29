@@ -108,37 +108,27 @@ public class AgentAnimations : MonoBehaviour
     public void Rotate() {
         if (agent.velocity.magnitude == 0.0)
         {
-            Vector3 rayDirection = transform.forward;
-            Ray ray = new Ray(transform.position, rayDirection);
-            RaycastHit hit;
+            Vector3 directionToPlayer = (player.transform.position - transform.position).normalized;
 
-            if (Physics.Raycast(ray, out hit))
+            Vector3 forward = transform.forward;
+
+            float dotProduct = Vector3.Dot(forward, directionToPlayer);
+
+            if (dotProduct > 0.8f)
             {
-                if (hit.collider == null)
-                {
-                    return;
-                }
-
-                //Debug.Log(hit.collider.gameObject);
-               // Debug.Log("Player: " + player);
-
-                if (hit.collider.gameObject == player)
-                {
-                    SetLookingAtPlayer(true);
-                }
-                else
-                {
-                    SetLookingAtPlayer(false);
-
-                    Vector3 directionToPlayer = (player.transform.position - transform.position).normalized;
-
-                    directionToPlayer.y = 0;
-
-                    Quaternion lookLocation = Quaternion.LookRotation(directionToPlayer);
-
-                    transform.rotation = Quaternion.Lerp(transform.rotation, lookLocation, 2.5f * Time.deltaTime);
-                }
+                SetLookingAtPlayer(true);
             }
+            else
+            {
+                SetLookingAtPlayer(false);
+
+                directionToPlayer.y = 0;
+
+                Quaternion lookLocation = Quaternion.LookRotation(directionToPlayer);
+
+                transform.rotation = Quaternion.Lerp(transform.rotation, lookLocation, 2.5f * Time.deltaTime);
+            }
+
         }
     }
 

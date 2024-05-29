@@ -16,6 +16,8 @@ public class DealDamage : MonoBehaviour
     private float percentageToIncreaseBy;
     private float firstHitBoostPercentage = 0.0f;
 
+    private BoxCollider currentCollider;
+
     private void Start()
     {
         shouldIncrease = false;
@@ -36,6 +38,9 @@ public class DealDamage : MonoBehaviour
 
         KnifeSpecial.BoostStats += DoubleCurrentDamage;
         KnifeSpecial.ResetStats += ResetCurrentDamage;
+
+        currentCollider = GetComponent<BoxCollider>();
+        currentCollider.enabled = false;
     }
 
     private void ManageWeaponDamageDealing(float damage) {
@@ -59,11 +64,13 @@ public class DealDamage : MonoBehaviour
             {
                 if (!isDashing)
                 {
+                    currentCollider.enabled = true;
                     canDealDamage = true;
                 }
             }
             else
             {
+                currentCollider.enabled = false;
                 canDealDamage = false;
             }
         }
@@ -88,6 +95,7 @@ public class DealDamage : MonoBehaviour
     private void SetIsDashing()
     {
         isDashing = true;
+        currentCollider.enabled = false;
         canDealDamage = false;
     }
 

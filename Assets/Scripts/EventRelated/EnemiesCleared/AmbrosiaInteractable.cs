@@ -15,6 +15,9 @@ public class AmbrosiaInteractable : BaseInteractable, IInteractable
         coinsGenerated = 1;
         gameObject.SetActive(false);
         EnemiesClearedEvent.SpawnAmbrosia += Spawn;
+
+        LevelManager.ClearRewards += Despawn;
+        newDeadState.RespawnPlayer += Despawn;
     }
 
     protected void Spawn()
@@ -37,5 +40,10 @@ public class AmbrosiaInteractable : BaseInteractable, IInteractable
             InteractedAmbrosia(coinsGenerated);
         }
 
+    }
+
+    private void Despawn()
+    {
+        gameObject.SetActive(false);
     }
 }

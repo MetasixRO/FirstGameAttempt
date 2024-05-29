@@ -49,7 +49,7 @@ public class UnlockableDoor : MonoBehaviour
 
     public void EnableRewardImage(Sprite rewardSprite, int rewardNumber) {
         rewardImage.enabled = true;
-        Debug.Log("(" + doorID + ") This door has " + rewardSprite + "(" + rewardNumber + ")");
+        //Debug.Log("(" + doorID + ") This door has " + rewardSprite + "(" + rewardNumber + ")");
         rewardImage.sprite = rewardSprite;
         this.rewardNumber = rewardNumber;
     }

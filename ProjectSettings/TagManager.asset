@@ -9,6 +9,7 @@ TagManager:
   - EnemyWeapon
   - FriendlyNPC
   - WorldLimit
+  - EasterEgg
   layers:
   - Default
   - TransparentFX

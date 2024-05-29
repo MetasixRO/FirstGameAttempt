@@ -15,6 +15,9 @@ public class HealInteractable : BaseInteractable, IInteractable
     {
         gameObject.SetActive(false);
         EnemiesClearedEvent.SpawnHeal += Spawn;
+
+        LevelManager.ClearRewards += Despawn;
+        newDeadState.RespawnPlayer += Despawn;
     }
 
     protected  void Spawn()
@@ -45,4 +48,10 @@ public class HealInteractable : BaseInteractable, IInteractable
         }
 
     }
+
+    private void Despawn()
+    {
+        gameObject.SetActive(false);
+    }
+
 }

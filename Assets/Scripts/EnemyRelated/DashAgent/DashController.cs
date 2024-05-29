@@ -13,7 +13,7 @@ public class DashController : Controller
 
     private void Start()
     {
-
+        totalDistance = 7.5f;
         layerToIgnore = LayerMask.GetMask("Enemy");
         layerMask = Physics.DefaultRaycastLayers & ~layerToIgnore.value;
         //gameObject.SetActive(false);

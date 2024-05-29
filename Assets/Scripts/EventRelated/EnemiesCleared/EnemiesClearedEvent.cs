@@ -51,10 +51,8 @@ public class EnemiesClearedEvent : MonoBehaviour
     private void ChoseReward() {
         if (chooseRandomly)
         {
-            Debug.Log("Dudette?");
             rewardNumber = Random.Range(0, 5);
         }
-        Debug.Log("AND NOW, FOR THE FINAL TIME : " + rewardNumber);
         switch (rewardNumber) {
             case 0: 
                 if (SpawnAbilityBoon != null) {

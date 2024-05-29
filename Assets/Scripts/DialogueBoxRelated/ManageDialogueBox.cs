@@ -34,13 +34,23 @@ public class ManageDialogueBox : MonoBehaviour,IInteractable
             checkEnoughAmbrosia();
         }
 
-        if (canGift)
+        if (gameObject.CompareTag("EasterEgg"))
         {
-            return "(E) Talk | (F) Gift";
+            canGift = false;
+            return ("(E) Crowbar");
+            
         }
         else
         {
-            return "(E) Talk";
+
+            if (canGift)
+            {
+                return "(E) Talk | (F) Gift";
+            }
+            else
+            {
+                return "(E) Talk";
+            }
         }
     }
 

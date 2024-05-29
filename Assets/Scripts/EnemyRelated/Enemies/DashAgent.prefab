@@ -10246,7 +10246,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a42fa0f91658df458229e0a69e22f0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  totalDistance: 10
+  totalDistance: 7.5
 --- !u!114 &4066622073115192197
 MonoBehaviour:
   m_ObjectHideFlags: 0
