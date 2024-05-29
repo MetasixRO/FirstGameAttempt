@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce2860803e648bb428fb9d3df07663c7, type: 3}
   m_Name: Dialogue2
   m_EditorClassIdentifier: 
-  characterName: Little Smoke
+  characterName: Nyxion
   sentences:
-  - All you had to do was kill all them enemies
+  - All you had to do was kill all them enemies.
+  - Hehe..
+  - Just a small reference.

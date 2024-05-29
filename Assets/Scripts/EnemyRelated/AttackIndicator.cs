@@ -26,8 +26,11 @@ public class AttackIndicator : MonoBehaviour
 
     public void Reset()
     {
-        alreadyTransitioning = false;
-        materialManager.Reset();
+        if (alreadyTransitioning)
+        {
+            alreadyTransitioning = false;
+            materialManager.Reset();
+        }
     }
 
 }

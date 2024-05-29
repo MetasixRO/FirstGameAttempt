@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce2860803e648bb428fb9d3df07663c7, type: 3}
   m_Name: Dialogue3
   m_EditorClassIdentifier: 
-  characterName: Little Smoke
+  characterName: Nyxion
   sentences:
-  - Dog, you gotta keep going, keep fighting
+  - Every second that passes, I feel more intrigued by these... things.

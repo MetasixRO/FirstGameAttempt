@@ -61,9 +61,9 @@ public class ResourceManager : MonoBehaviour
         if (Input.GetKeyDown("o"))
         {
             Debug.Log("Debug feature to add keys, coins and ambrosia");
-            CollectKeys(10);
-            CollectCoins(100);
-            CollectAmbrosia(10);
+            CollectKeys(1000);
+            CollectCoins(10000);
+            CollectAmbrosia(1000);
         }
     }
 

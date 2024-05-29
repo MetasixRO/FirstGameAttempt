@@ -18,19 +18,23 @@ public class MaterialObtainer : MonoBehaviour
         StartCoroutine(ChangeOverTime(Color.white));
     }
 
-    private IEnumerator ChangeOverTime(Color color) {
+    private IEnumerator ChangeOverTime(Color color, bool reset = false) {
         float elapsedTime = 0f;
 
-        while (elapsedTime < transitionDuration) {
-            float timer = elapsedTime / transitionDuration;
+        if (!reset)
+        {
+            while (elapsedTime < transitionDuration)
+            {
+                float timer = elapsedTime / transitionDuration;
 
-            Color newColor = Color.Lerp(originalColor, color, timer);
+                Color newColor = Color.Lerp(originalColor, color, timer);
 
-            material.color = newColor;
+                material.color = newColor;
 
-            elapsedTime += Time.deltaTime;
+                elapsedTime += Time.deltaTime;
 
-            yield return null;
+                yield return null;
+            }
         }
 
         material.color = color;
@@ -38,8 +42,13 @@ public class MaterialObtainer : MonoBehaviour
 
     public void Reset()
     {
+        StopCoroutine(ChangeOverTime(originalColor));
+        StopCoroutine("ChangeOverTime");
+        ChangeOverTime(originalColor, true);
+        //Debug.Log("Current:" + material.color + " and the original is : " + originalColor);
         if (material.color != originalColor)
         {
+            //Debug.Log("Reseting");
             material.color = originalColor;
         }
     }

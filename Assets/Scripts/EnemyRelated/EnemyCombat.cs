@@ -62,6 +62,18 @@ public class EnemyCombat : MonoBehaviour
         }
     }
 
+    public void TakeSecondaryDamage(float damage) {
+        currentHealth -= damage;
+        if (healthBar != null)
+        {
+            healthBar.SetHealth(currentHealth);
+        }
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
+    }
+
     public void TakeDamage(float damage)
     {
         if (canReceiveDamage)
@@ -130,5 +142,9 @@ public class EnemyCombat : MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f);
         canReceiveDamage = true;
+    }
+
+    public bool isAlive() {
+        return currentHealth > 0;
     }
 }

@@ -18,6 +18,7 @@ public class DeathDefianceAbility : MirrorAbilityBase
             DefyDeath(currentBonus);
         }
         WeaponSelectorDoor.EnteredArmory += ResendAmountOfTimes;
+        WeaponPrompt.WeaponSelected += ResendAmountOfTimes;
     }
 
     public override void IncreaseRank()
@@ -26,6 +27,9 @@ public class DeathDefianceAbility : MirrorAbilityBase
         if (currentRank == 1)
         {
             Enable();
+        }
+        else {
+            DefyDeath?.Invoke(currentBonus);
         }
     }
 

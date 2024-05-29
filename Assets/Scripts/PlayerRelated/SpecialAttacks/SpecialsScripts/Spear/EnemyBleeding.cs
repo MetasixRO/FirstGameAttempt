@@ -21,6 +21,7 @@ public class EnemyBleeding : MonoBehaviour
             StartCoroutine(Bleeding());
             isBleeding = true;
         }
+        StartCoroutine(DelayStopBleeding());
     }
 
     public void DisableBleeding() {
@@ -32,9 +33,17 @@ public class EnemyBleeding : MonoBehaviour
         if (shouldBleed)
         {
             yield return new WaitForSeconds(1.0f);
-            combatComponent.TakeDamage(damageReceived);
-            StartCoroutine(Bleeding());
+            if (combatComponent.isAlive())
+            {
+                combatComponent.TakeDamage(damageReceived);
+                StartCoroutine(Bleeding());
+            }
         }
+    }
+
+    private IEnumerator DelayStopBleeding() {
+        yield return new WaitForSeconds(5.0f);
+        DisableBleeding();
     }
 
 

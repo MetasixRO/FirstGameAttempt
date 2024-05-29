@@ -17,6 +17,7 @@ public class EnemyAttackState : EnemyBaseState
 
     public override void ExitState()
     {
+        stateManager.ResetIndicate();
     }
 
     public override void HandleAttack()

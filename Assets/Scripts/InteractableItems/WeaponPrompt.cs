@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class WeaponPrompt : MonoBehaviour, IInteractable
 {
+    public delegate void SelectedWeapon();
+    public static event SelectedWeapon WeaponSelected;
 
     public delegate void SelectWeapon(int weaponID);
     public static event SelectWeapon ChangeWeapon;
@@ -91,6 +93,7 @@ public class WeaponPrompt : MonoBehaviour, IInteractable
 
             if (ChangeWeapon != null && ChangeWeaponStats != null && SpecialAttackInside != null)
             {
+                WeaponSelected?.Invoke();
                 ChangeWeapon(weaponNumber);
                 ChangeWeaponStats(weaponStatsComponent.GetWeaponDamage(), weaponStatsComponent.GetWeaponCooldown(), weaponStatsComponent.GetWeaponSpecialDamage(), weaponStatsComponent.GetWeaponSpecialCooldown());
                 SpecialAttackInside(weaponStatsComponent.GetSpecialAttack());

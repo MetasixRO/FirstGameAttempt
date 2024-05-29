@@ -50,9 +50,9 @@ public class MenuElementManager : MonoBehaviour
 
         if (ability.GetRank() < ability.maxRank && canPurchase)
         {
-            ability.IncreaseRank();
             ability.IncreaseCurrentBonus();
             ability.IncreasePrice();
+            ability.IncreaseRank();
 
             canPurchase = false;
 

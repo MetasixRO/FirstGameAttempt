@@ -226,6 +226,7 @@ public class Combat : MonoBehaviour
 
             if (currentHealth <= 0)
             {
+                Debug.Log("Dying + " + timesCanDefyDeath);
                 if (timesCanDefyDeath > 0)
                 {
                     timesCanDefyDeath--;

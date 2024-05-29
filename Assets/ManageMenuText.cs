@@ -37,15 +37,21 @@ public class ManageMenuText : MonoBehaviour
         if(player!= null)
         {
             List<string> names = player.GetAllNames();
+            int counter;
 
-            for(int counter = 0; counter < names.Count; counter++)
+            for(counter = 0; counter < names.Count; counter++)
             {
                 buttonsText[counter].text = names[counter];
             }
 
+            while (counter < 3) {
+                buttonsText[counter].text = "None";
+                counter++;
+            }
+
             if (names.Count == 0) {
-                for (int counter = 0; counter < 3; counter++) {
-                    buttonsText[counter].text = "None";
+                for (int newCcounter = 0; newCcounter < 3; newCcounter++) {
+                    buttonsText[newCcounter].text = "None";
                 }
                 description.text = "No ability";
             }

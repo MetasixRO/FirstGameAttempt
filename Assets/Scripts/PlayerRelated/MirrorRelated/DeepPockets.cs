@@ -15,6 +15,7 @@ public class DeepPockets : MirrorAbilityBase
     public override void Enable()
     {
         CloseArenaDoor.CloseDoor += GenerateCoins;
+        LevelManager.ReachingNewArena += GenerateCoins;
     }
 
     public override void IncreaseRank()

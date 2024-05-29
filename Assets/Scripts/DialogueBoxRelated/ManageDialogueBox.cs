@@ -25,6 +25,11 @@ public class ManageDialogueBox : MonoBehaviour,IInteractable
             dialogueTriggered();
         }
         GetComponent<DialogueTrigger>().BeginDialogue();
+
+        if (gameObject.CompareTag("EasterEgg"))
+        {
+            gameObject.SetActive(false);
+        }
     }
 
     public string InteractionPrompt()
@@ -38,7 +43,11 @@ public class ManageDialogueBox : MonoBehaviour,IInteractable
         {
             canGift = false;
             return ("(E) Crowbar");
-            
+
+        }
+        else if (gameObject.CompareTag("Remember")) {
+            canGift = false;
+            return ("(E) Remember");
         }
         else
         {

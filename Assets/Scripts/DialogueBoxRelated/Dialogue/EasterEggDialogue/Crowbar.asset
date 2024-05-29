@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce2860803e648bb428fb9d3df07663c7, type: 3}
   m_Name: Crowbar
   m_EditorClassIdentifier: 
-  characterName: Player
+  characterName: 
   sentences:
-  - Is this... a crowbar?
+  - '**You try to grab the crowbar but it disappears.**'
+  - '**Suddenly, you feel a surge of confidence.**'
+  - '**Maybe this is your ''Half-Life'' moment!**'

@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterName: Exus
   sentences:
-  - What's up? You new around here?
-  - Hm..? You actually are?
-  - Well then... Get used to this place, you're gonna be here a while
+  - 'What''s up? '
+  - Don't listen to that pacifist over there, he's full of nonsense.
+  - Well then... Get used to this place, you're gonna be here a while.

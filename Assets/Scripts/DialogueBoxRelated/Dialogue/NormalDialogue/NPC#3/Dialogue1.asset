@@ -12,8 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce2860803e648bb428fb9d3df07663c7, type: 3}
   m_Name: Dialogue1
   m_EditorClassIdentifier: 
-  characterName: Little Smoke
+  characterName: Nyxion
   sentences:
-  - Player...? Aaaooooww my dog! Whassup? Ha ha ha ha!
-  - Hey baby, you okay, man?
-  - Hey, I don't know why this had to happen, but I promise you, I'll help you escape
+  - Wassup? What do you think of these beauties?
+  - I have no idea what they are but they're interesting

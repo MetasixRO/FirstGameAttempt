@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce2860803e648bb428fb9d3df07663c7, type: 3}
   m_Name: Gift#3
   m_EditorClassIdentifier: 
-  characterName: Little Smoke
+  characterName: Nyxion
   sentences:
   - Yep... I'm still here.
   - You got some more Ambrosia?

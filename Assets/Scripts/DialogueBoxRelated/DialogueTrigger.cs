@@ -29,8 +29,14 @@ public class DialogueTrigger : MonoBehaviour
 
     private void Awake()
     {
-        npcID = nextID;
-        nextID++;
+        if (CompareTag("FriendlyNPC"))
+        {
+            npcID = nextID;
+            nextID++;
+        }
+        else {
+            npcID = -2;
+        }
     }
 
     private void Start()

@@ -146,4 +146,8 @@ public class EnemyStateManager : MonoBehaviour
     public void Indicate() {
         indicator.Indicate();
     }
+
+    public void ResetIndicate() {
+        indicator.Reset();
+    }
 }

@@ -14,8 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterName: Shadow
   sentences:
-  - Here I am
-  - Sitting
-  - Randomly waiting
-  - For no reason
-  - Yeah...
+  - 'Still at it, huh? '
+  - Get used to it.
+  - There's no escape.

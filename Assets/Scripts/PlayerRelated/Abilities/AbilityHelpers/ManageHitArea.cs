@@ -36,7 +36,7 @@ public class ManageHitArea : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Enemy")) {
-            other.GetComponent<EnemyCombat>().TakeDamage(5);
+            other.GetComponent<EnemyCombat>().TakeDamage(15);
         }
     }
 }

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce2860803e648bb428fb9d3df07663c7, type: 3}
   m_Name: Gift#2
   m_EditorClassIdentifier: 
-  characterName: Little Smoke
+  characterName: Nyxion
   sentences:
-  - Like it says in the book... We are both blessed and cursed.
-  - Same things make us laugh, make us cry.
+  - These things really love this drink
+  - Thanks

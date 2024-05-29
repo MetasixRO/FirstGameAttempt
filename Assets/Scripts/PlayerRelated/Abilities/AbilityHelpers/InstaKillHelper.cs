@@ -13,6 +13,15 @@ public class InstaKillHelper : MonoBehaviour
     }
 
     private void Signup(int counter) {
-        SignupThisEnemy?.Invoke(GetComponent<EnemyCombat>());
+        if (gameObject.activeSelf && isActiveAndEnabled)
+        {
+            Debug.Log("Singing up");
+            SignupThisEnemy?.Invoke(GetComponent<EnemyCombat>());
+        }
+    }
+
+    private void OnDestroy()
+    {
+        LuckNPCAbility.SendKillSignal -= Signup;
     }
 }

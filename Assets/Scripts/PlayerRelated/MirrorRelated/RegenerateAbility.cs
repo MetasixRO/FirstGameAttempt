@@ -62,6 +62,11 @@ public class RegenerateAbility : MirrorAbilityBase
 
     private void SubscribeToDoorEvent() {
         CloseArenaDoor.CloseDoor += RegenerateVitality;
+        LevelManager.ReachingNewArena += RegenerateVitality;
+    }
+
+    private void Regenerate(int arenaID) {
+        RegenerateVitality();
     }
 
     private void RegenerateVitality() {

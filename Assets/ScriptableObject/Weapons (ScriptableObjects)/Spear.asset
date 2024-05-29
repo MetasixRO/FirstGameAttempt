@@ -16,6 +16,6 @@ MonoBehaviour:
   ID: 2
   cooldown: 0.6
   damage: 20
-  specialDamage: 30
+  specialDamage: 5
   specialCooldown: 2.5
   special: {fileID: 11400000, guid: c8d567b673896ed4993ac2f56344a1d3, type: 2}

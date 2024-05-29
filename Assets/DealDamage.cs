@@ -58,8 +58,6 @@ public class DealDamage : MonoBehaviour
                // Debug.Log(attackDamage + " " + shouldIncrease);
             }
 
-            //Debug.Log(attackDamage);
-
             if (!canDealDamage)
             {
                 if (!isDashing)
@@ -81,10 +79,12 @@ public class DealDamage : MonoBehaviour
         if (canDealDamage && other.CompareTag("Enemy") && gameObject.activeSelf) {
             EnemyCombat combatComponent = other.GetComponent<EnemyCombat>();
 
+            //Debug.Log(attackDamage);
+            //Debug.Log(firstHitBoostPercentage + " Salut " + combatComponent.IsUntouched());
             if (firstHitBoostPercentage != 0.0 && combatComponent.IsUntouched())
             {
-                Debug.Log(attackDamage * firstHitBoostPercentage);
-                combatComponent.TakeDamage(attackDamage * firstHitBoostPercentage);
+                //Debug.Log(attackDamage * firstHitBoostPercentage);
+                combatComponent.TakeSecondaryDamage(attackDamage * firstHitBoostPercentage);
             }
             combatComponent.TakeDamage(attackDamage);
 

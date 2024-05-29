@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce2860803e648bb428fb9d3df07663c7, type: 3}
   m_Name: Gift#1
   m_EditorClassIdentifier: 
-  characterName: Little Smoke
+  characterName: Nyxion
   sentences:
-  - I'll have two more, one extra large, one with extra flavour and a large one.
+  - 'Wow... '
+  - 'I didn''t expect this... '
+  - Bring more if you got

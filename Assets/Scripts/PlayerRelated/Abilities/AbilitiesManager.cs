@@ -10,7 +10,7 @@ public class AbilitiesManager : MonoBehaviour
     public delegate void AbilityNumberEvent(AbilityScriptableObject ability, List<AbilityScriptableObject> abilities);
     public static event AbilityNumberEvent TooManyAbilities;
 
-    private List<AbilityScriptableObject> abilities = new List<AbilityScriptableObject>();
+    [SerializeField] private List<AbilityScriptableObject> abilities = new List<AbilityScriptableObject>();
 
     private void Start()
     {

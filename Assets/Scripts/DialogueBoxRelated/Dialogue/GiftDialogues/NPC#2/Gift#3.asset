@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterName: Myriad
   sentences:
-  - Thanks...
-  - I see that you're having more success than i do
-  - I can barely make it past the first chamber
+  - Thank you once again.
+  - I see that you're having more success than i do.
+  - I can barely make it past the first chamber.

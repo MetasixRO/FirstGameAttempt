@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce2860803e648bb428fb9d3df07663c7, type: 3}
   m_Name: Gift#5
   m_EditorClassIdentifier: 
-  characterName: Little Smoke
+  characterName: Nyxion
   sentences:
-  - You're a success, you can't be touched!
+  - I tasted the Ambrosia.
+  - Yeah, I don't think I'll pour it to these things anymore.
+  - Imma keep it for myself.
   - (Area Damage Special can now be found in any ability boon.)

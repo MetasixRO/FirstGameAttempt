@@ -12,10 +12,16 @@ public class FieryPresence : MirrorAbilityBase
     private int currentBonus;
     private int currentCost;
 
+    public override void Enable() {
+        LevelManager.ReachingNewArena += ResendSignal;
+    }
+
     public override void IncreaseRank()
     {
         currentRank += 1;
+        Enable();
     }
+
 
     public override void IncreaseCurrentBonus()
     {
@@ -50,5 +56,9 @@ public class FieryPresence : MirrorAbilityBase
         currentRank = base.rank;
         currentBonus = base.bonus;
         currentCost = base.cost;
+    }
+
+    private void ResendSignal() {
+        IncreaseFirstHitDamage?.Invoke(currentBonus);
     }
 }
