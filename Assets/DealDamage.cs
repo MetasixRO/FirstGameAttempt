@@ -7,6 +7,7 @@ public class DealDamage : MonoBehaviour
 
     public delegate void DealtDamageEvent();
     public static event DealtDamageEvent EnemyHit;
+    public static event DealtDamageEvent NoEnemyHit;
 
     private bool canDealDamage;
     private bool isDashing;
@@ -64,6 +65,7 @@ public class DealDamage : MonoBehaviour
                 {
                     currentCollider.enabled = true;
                     canDealDamage = true;
+                    NoEnemyHit?.Invoke();
                 }
             }
             else

@@ -13,18 +13,38 @@ public class EnemySpawner : MonoBehaviour
     public List<GameObject> enemies = new List<GameObject>();
     [SerializeField] private float delayBetweenSpawns = 2f;
 
+    [SerializeField] private int spawnerCounter;
+
+    public GameObject boss;
+
     private void Start()
     {
+        spawnerCounter = 0;
         instanceID = generalSpawnerID++;
         LevelManager.EnterNextArena += ActivateSpawnerBasedOnID;
     }
 
     public void ActivateSpawner() {
-        int numberOfEnemies = Random.Range(2, 5);
-        if (EnemyCounter != null) {
-            EnemyCounter(numberOfEnemies);
+        Debug.Log(spawnerCounter);
+        spawnerCounter++;
+        if (spawnerCounter == 4)
+        {
+            Debug.Log("?");
+            EnemyCounter?.Invoke(1);
+            Instantiate(boss, gameObject.transform.position, Quaternion.identity);
+            boss.GetComponent<Controller>().ManageAgent();
+            spawnerCounter = 0;
         }
-        StartCoroutine(SpawnEnemies(numberOfEnemies,delayBetweenSpawns));
+        else
+        {
+
+            int numberOfEnemies = Random.Range(2, 5);
+            if (EnemyCounter != null)
+            {
+                EnemyCounter(numberOfEnemies);
+            }
+            StartCoroutine(SpawnEnemies(numberOfEnemies, delayBetweenSpawns));
+        }
     }
 
     private void ActivateSpawnerBasedOnID(int id) {

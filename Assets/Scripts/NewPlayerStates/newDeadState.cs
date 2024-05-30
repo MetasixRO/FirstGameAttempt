@@ -11,6 +11,7 @@ public class newDeadState : newBaseState
     private UpdatedStateManager stateManager;
 
     public static event BaseStateEvent RespawnPlayer;
+    public static event BaseStateEvent ReachedZeroHealth;
 
     private static newDeadState instance;
 
@@ -32,6 +33,7 @@ public class newDeadState : newBaseState
     {
         startTime = Time.time;
         stateManager = manager;
+        ReachedZeroHealth?.Invoke();
     }
 
     public override void ExitState()

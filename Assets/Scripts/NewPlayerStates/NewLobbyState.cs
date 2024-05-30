@@ -11,6 +11,8 @@ public class NewLobbyState : newBaseState
 
     private static NewLobbyState instance;
 
+    public static event BaseStateEvent ReachedLobby;
+
     private NewLobbyState() { }
 
     public static NewLobbyState Instance
@@ -27,6 +29,7 @@ public class NewLobbyState : newBaseState
 
     public override void EnterState(UpdatedStateManager manager)
     {
+        ReachedLobby?.Invoke();
         stateManager = manager;
     }
 
