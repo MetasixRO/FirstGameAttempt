@@ -10,7 +10,6 @@ public class EnemyFreezeState : EnemyBaseState
     {
         stateManager = manager;
         stateManager.OutOfFreeze(2.5f);
-        //Debug.Log("Im frozen");
     }
 
     public override void UpdateState()
@@ -20,7 +19,6 @@ public class EnemyFreezeState : EnemyBaseState
 
     public override void ExitState()
     {
-        //Debug.Log("Not frozen anymore");
     }
 
     public override void HandleDash()

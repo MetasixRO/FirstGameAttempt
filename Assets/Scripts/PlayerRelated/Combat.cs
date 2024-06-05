@@ -21,8 +21,9 @@ public class Combat : MonoBehaviour
     public static event HealthRelatedEvent CheckReduceReceivedDamage;
     public static event HealthRelatedEvent ReceivedDamage;
 
-    [SerializeField] private float originalMaxHealth = 100;
-    [SerializeField] private float maxHealth = 100;
+
+    [SerializeField] private float maxHealth;
+    private PlayerStatsObtainer stats;
     private float currentHealth;
 
     private float attackDamage, specialAttackDamage;
@@ -81,6 +82,9 @@ public class Combat : MonoBehaviour
         animator = GetComponent<Animator>();
         isAttackingHash = Animator.StringToHash("isAttacking");
 
+        stats = GetComponent<PlayerStatsObtainer>();
+        maxHealth = stats.ObtainCurrentMaxHealth();
+
         currentHealth = maxHealth;
         if (SetHealth != null)
         {
@@ -106,8 +110,7 @@ public class Combat : MonoBehaviour
         }
 
         if (Input.GetKeyDown("i")) {
-            //maxHealth = 9999;
-            //currentHealth = 9999;
+            DebugFillHealth();
             Debug.Log("I have removed godmode from this debug key.");
         }
         //DEBUG***************************
@@ -174,8 +177,9 @@ public class Combat : MonoBehaviour
     }
 
     private void ReduceMaxHealth(int amount) {
-        originalMaxHealth = maxHealth;
-        maxHealth = maxHealth / amount;
+        //For PermanentTradeoff
+        stats.SetTemporaryMaxHealth(stats.ObtainTemporaryMaxHealth() / amount);
+        maxHealth = stats.ObtainTemporaryMaxHealth();
         currentHealth = currentHealth / amount;
 
         SetMaxHealth?.Invoke(maxHealth);
@@ -183,7 +187,9 @@ public class Combat : MonoBehaviour
     }
 
     private void RestoreMaxHealth(int amount) {
-        maxHealth = maxHealth * amount;
+        //For PermanentTradeoff
+        maxHealth = stats.ObtainCurrentMaxHealth();
+        stats.SetTemporaryMaxHealth(stats.ObtainCurrentMaxHealth());
         currentHealth = maxHealth;
 
 
@@ -203,6 +209,7 @@ public class Combat : MonoBehaviour
             if (reduceReceivedDamage)
             {
                 damage /= 2;
+                damage = (int)damage;
                 reduceReceivedDamage = false;
             }
 
@@ -226,7 +233,6 @@ public class Combat : MonoBehaviour
 
             if (currentHealth <= 0)
             {
-                Debug.Log("Dying + " + timesCanDefyDeath);
                 if (timesCanDefyDeath > 0)
                 {
                     timesCanDefyDeath--;
@@ -235,7 +241,6 @@ public class Combat : MonoBehaviour
                     {
                         PlayerDefiedDeath();
                     }
-                    //Debug.Log(timesCanDefyDeath);
                 }
                 else
                 {
@@ -281,8 +286,12 @@ public class Combat : MonoBehaviour
     }
 
     private void IncreaseMaxHealth(int amount) {
-        maxHealth = maxHealth - (amount - 5);
-        maxHealth += amount;
+        //For ability ThickSkin
+        stats.SetCurrentMaxHealth(stats.ObtainCurrentMaxHealth() - (amount - 5));
+        stats.SetCurrentMaxHealth(stats.ObtainCurrentMaxHealth() + amount);
+
+        maxHealth = stats.ObtainCurrentMaxHealth();
+        stats.SetTemporaryMaxHealth(stats.ObtainCurrentMaxHealth());
         currentHealth = maxHealth;
 
         if (SetMaxHealth != null)
@@ -297,7 +306,9 @@ public class Combat : MonoBehaviour
     }
 
     private void ModifyMaxHealth() {
-        maxHealth *= 2;
+        //For Knife Special and DoubleHP
+        stats.SetTemporaryMaxHealth(stats.ObtainTemporaryMaxHealth() * 2);
+        maxHealth = stats.ObtainTemporaryMaxHealth();
         if (SetMaxHealth != null) { 
             SetMaxHealth(maxHealth);
         }
@@ -305,16 +316,32 @@ public class Combat : MonoBehaviour
     }
 
     private void ResetMaxHealth() {
-        maxHealth /= 2;
+        stats.SetTemporaryMaxHealth(stats.ObtainTemporaryMaxHealth() / 2);
+        maxHealth = stats.ObtainTemporaryMaxHealth();
         if (SetMaxHealth != null)
         {
             SetMaxHealth(maxHealth);
         }
-        TakeDamage(currentHealth / 2);
+
+        currentHealth = currentHealth / 2;
+        if (SetHealth != null)
+        {
+            SetHealth(currentHealth);
+        }
     }
 
     private void FillHealth() {
-        RestoreHealth((int)(maxHealth - currentHealth));
+        maxHealth = stats.ObtainCurrentMaxHealth();
+        SetMaxHealth?.Invoke(maxHealth);
+        currentHealth = maxHealth; 
+        SetHealth?.Invoke(currentHealth);
+        CheckPercentage();
+    }
+
+    void DebugFillHealth() {
+        currentHealth = maxHealth;
+        SetHealth?.Invoke(currentHealth);
+        CheckPercentage();
     }
 
     private void SetDeathDefiance(int numberOfTimes) {
@@ -323,6 +350,7 @@ public class Combat : MonoBehaviour
     }
 
     private void CheckPercentage() {
+        Debug.Log("Current " + currentHealth + " percentage " + 0.8f * maxHealth + " max : " + maxHealth);
         if (currentHealth < 0.8f * maxHealth)
         {
             if (PlayerLowerThanPercentage != null)

@@ -10,6 +10,8 @@ public class CharacterMovement : MonoBehaviour
     public static event InitiateDash Dash;
     public static event InitiateDash Walking;
     public static event InitiateDash NotWalking;
+    public static event InitiateDash Running;
+    public static event InitiateDash NotRunning;
 
     private bool canDash;
     private bool canRotate;
@@ -93,14 +95,17 @@ public class CharacterMovement : MonoBehaviour
 
         if (movementPressed && runPressed && !isRunning) {
             animator.SetBool(isRunningHash, true);
+            Running?.Invoke();
         }
 
         if ((!movementPressed || !runPressed) && isRunning) {
             animator.SetBool(isRunningHash, false);
+            NotRunning?.Invoke();
         }
 
         if (!runPressed && isRunning) {
             animator.SetBool(isRunningHash, false);
+            NotRunning?.Invoke();
         }
     }
 

@@ -48,6 +48,9 @@ public class SpecialAttackHandler : MonoBehaviour
             Debug.Log("Special Deactivation Encountered a problem");
         }
     }
+    private void DeactivateSpecial() {
+        special.Deactivate();
+    }
 
 
 }

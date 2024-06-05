@@ -10,19 +10,27 @@ public class KnifeSpecial : SpecialAttack
     public static event KnifeSpecialEvent ResetStats;
 
     [SerializeField] private float activeTimer = 5.0f;
+    private bool notReset;
 
     public override void Activate(float damage)
     {
         if (BoostStats != null) {
             BoostStats();
         }
+        notReset = false;
+        newDeadState.ReachedZeroHealth += SetNotReset;
     }
 
     public override void Deactivate()
     {
-        if (ResetStats != null) {
-            ResetStats();
+        if (!notReset)
+        {
+            if (ResetStats != null)
+            {
+                ResetStats();
+            }
         }
+        newDeadState.RespawnPlayer += SetNotReset;
     }
 
     public override bool IsTimed() {
@@ -31,5 +39,9 @@ public class KnifeSpecial : SpecialAttack
 
     public override float GetTimer() {
         return activeTimer;
+    }
+
+    private void SetNotReset() {
+        notReset = true;
     }
 }

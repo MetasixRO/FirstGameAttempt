@@ -21,6 +21,8 @@ public class HighConfidence : MirrorAbilityBase
         alreadyBuffed = false;
         alreadyDebuffed = false;
         Combat.PlayerLowerThanPercentage += RemoveBuff;
+        newDeadState.RespawnPlayer += RemoveBuff;
+        DoorOpener.AnnounceStart += AddBuff;
         Combat.PlayerHigherThanPercentage += AddBuff;
     }
 
@@ -36,15 +38,9 @@ public class HighConfidence : MirrorAbilityBase
 
     public override void IncreaseCurrentBonus()
     {
-        if (alreadyBuffed && ReduceDamage != null) {
-            ReduceDamage(currentBonus);
-        }
-        currentBonus += 5;
-        if (IncreaseDamage != null)
-        {
-            IncreaseDamage(currentBonus);
-            alreadyBuffed = true;
-        }
+        currentBonus += 2;
+        //IncreaseDamage?.Invoke(currentBonus);
+        //alreadyBuffed = true;
     }
 
     public override void IncreasePrice()
@@ -75,16 +71,21 @@ public class HighConfidence : MirrorAbilityBase
     }
 
     private void RemoveBuff() {
-        if (!alreadyDebuffed) {
-            ReduceDamage(currentBonus);
+        if (!alreadyDebuffed)
+        {
+            ReduceDamage?.Invoke(currentBonus);
+            Debug.Log("Called removed buff");
             alreadyDebuffed = true;
             alreadyBuffed = false;
         }
     }
 
     private void AddBuff() {
-        if (!alreadyBuffed) {
-            IncreaseDamage(currentBonus);
+        Debug.Log(alreadyBuffed);
+        if (!alreadyBuffed)
+        {
+            IncreaseDamage?.Invoke(currentBonus);
+            Debug.Log("Called Added buff");
             alreadyBuffed = true;
             alreadyDebuffed = false;
         }

@@ -14,7 +14,8 @@ public class DealDamage : MonoBehaviour
     private float attackDamage;
 
     private bool shouldIncrease;
-    private float percentageToIncreaseBy;
+    private bool isDoubled, knifeDoubled;
+    private float hitPointsToIncreaseBy;
     private float firstHitBoostPercentage = 0.0f;
 
     private BoxCollider currentCollider;
@@ -25,6 +26,8 @@ public class DealDamage : MonoBehaviour
         attackDamage = 0;
         canDealDamage = false;
         isDashing = false;
+        isDoubled = false;
+        knifeDoubled = false;
         Combat.ManageWeapon += ManageWeaponDamageDealing;
         CharacterMovement.Dash += SetIsDashing;
         NewDash.DashDone += ResetIsDashing;
@@ -37,8 +40,10 @@ public class DealDamage : MonoBehaviour
         DoubleDamage.DamageDouble += DoubleCurrentDamage;
         DoubleDamage.DamageReset += ResetCurrentDamage;
 
-        KnifeSpecial.BoostStats += DoubleCurrentDamage;
-        KnifeSpecial.ResetStats += ResetCurrentDamage;
+        KnifeSpecial.BoostStats += KnifeDoubleCurrentDamage;
+        KnifeSpecial.ResetStats += KnifeResetCurrentDamage;
+
+        NewLobbyState.ReachedLobby += ResetDamage;
 
         currentCollider = GetComponent<BoxCollider>();
         currentCollider.enabled = false;
@@ -54,7 +59,13 @@ public class DealDamage : MonoBehaviour
             }
 
             if (shouldIncrease) {
-                attackDamage *= percentageToIncreaseBy;
+                attackDamage += hitPointsToIncreaseBy;
+                if (isDoubled) {
+                    attackDamage += hitPointsToIncreaseBy;
+                }
+                if (knifeDoubled) {
+                    attackDamage += hitPointsToIncreaseBy;
+                }
                 shouldIncrease = false;
                // Debug.Log(attackDamage + " " + shouldIncrease);
             }
@@ -105,29 +116,48 @@ public class DealDamage : MonoBehaviour
         isDashing = false;
     }
 
-    private void ModifyDamage(int percentage) {
+    private void ModifyDamage(int hitPoints) {
         shouldIncrease = true;
-        switch (percentage) {
-            case 5: percentageToIncreaseBy = 1.05f; break;
-            case 10: percentageToIncreaseBy = 1.10f; break;
-            case 15: percentageToIncreaseBy = 1.15f; break;
-            case 20: percentageToIncreaseBy = 1.20f; break;
-            case 25: percentageToIncreaseBy = 1.25f; break;
-        }
+        hitPointsToIncreaseBy = hitPoints;
     }
 
-    private void ResetDamage(int percentage) {
+    private void ResetDamage(int hitPoints) {
         shouldIncrease = false;
-        attackDamage /= percentageToIncreaseBy;
+        attackDamage -= hitPointsToIncreaseBy;
+        if (isDoubled) {
+            attackDamage -= hitPointsToIncreaseBy;
+        }
+        if (knifeDoubled) {
+            attackDamage -= hitPointsToIncreaseBy * 2;
+        }
+    }
+    private void KnifeDoubleCurrentDamage() {
+        knifeDoubled = true;
+        DoubleCurrentDamage();
+    }
+
+    private void KnifeResetCurrentDamage() { 
+        ResetCurrentDamage();
     }
 
 
     private void DoubleCurrentDamage() {
         attackDamage *= 2;
+        if (!knifeDoubled)
+        {
+            isDoubled = true;
+        }
         //Debug.Log("" + attackDamage);
     }
 
-    private void ResetCurrentDamage() { 
+    private void ResetCurrentDamage() {
+        if (!knifeDoubled)
+        {
+            isDoubled = false;
+        }
+        else {
+            knifeDoubled = false;
+        }
         attackDamage /= 2;
     }
     
@@ -139,6 +169,10 @@ public class DealDamage : MonoBehaviour
             case 60: firstHitBoostPercentage = 0.60f; break;
             case 75: firstHitBoostPercentage = 0.75f; break;
         }
+    }
+
+    private void ResetDamage() {
+        attackDamage = 0;
     }
     
 

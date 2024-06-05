@@ -7,6 +7,10 @@ public class AbilitiesManager : MonoBehaviour
     public delegate void AbilityTypeAnswer(bool answer);
     public static event AbilityTypeAnswer CheckAnswer;
 
+    public delegate void IndicateSpecial();
+    public static event IndicateSpecial ActivateIndicator;
+    public static event IndicateSpecial DeactivateIndicator;
+
     public delegate void AbilityNumberEvent(AbilityScriptableObject ability, List<AbilityScriptableObject> abilities);
     public static event AbilityNumberEvent TooManyAbilities;
 
@@ -52,7 +56,7 @@ public class AbilitiesManager : MonoBehaviour
             else if (newAbility.abilityType == AbilityType.NPCSpecial)
             {
                 abilities.Add(newAbility);
-                
+                ActivateIndicator?.Invoke();
             }
             else {
                 abilities.Add(newAbility);
@@ -78,6 +82,9 @@ public class AbilitiesManager : MonoBehaviour
         if (newAbility.abilityType != AbilityType.NPCSpecial)
         {
             newAbility.Activate();
+        }
+        else {
+            ActivateIndicator?.Invoke();
         }
     }
 
@@ -157,6 +164,7 @@ public class AbilitiesManager : MonoBehaviour
             if (ability.abilityType == AbilityType.NPCSpecial) {
                 Debug.Log("Found a Special");
                 ability.Activate();
+                DeactivateIndicator?.Invoke();
                 StartCoroutine(DisableAfterDelay(ability));
             }
         }

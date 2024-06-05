@@ -11,12 +11,12 @@ public class PermanentTradeoff : Tradeoff
     public override void ReduceHealth()
     {
         ReduceMaxHealth?.Invoke(2);
-        Combat.PlayerDead += Disable;
+        //Combat.PlayerDead += Disable;
     }
 
     public override void Disable()
     {
         RestoreMaxHealth.Invoke(2);
-        Combat.PlayerDead += Disable;
+        //Combat.PlayerDead += Disable;
     }
 }
