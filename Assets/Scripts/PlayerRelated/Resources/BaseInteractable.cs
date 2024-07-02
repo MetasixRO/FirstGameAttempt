@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BaseInteractable : MonoBehaviour
 {
-    [SerializeField] private float closeAreaRadius = 2.5f;
+    [SerializeField] private float closeAreaRadius = 1.0f;
     LayerMask arenaFloorMask;
 
     protected Vector3 CalculateSpawnPosition()

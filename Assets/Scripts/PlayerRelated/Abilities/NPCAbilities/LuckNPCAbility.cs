@@ -14,7 +14,6 @@ public class LuckNPCAbility : AbilityScriptableObject
         if (!enabled) {
             int counter = Random.Range(1, 3);
             SendKillSignal?.Invoke(counter);
-            Debug.Log("Insta kill");
             enabled = true;
         }
     }
@@ -23,7 +22,6 @@ public class LuckNPCAbility : AbilityScriptableObject
     {
         if (enabled)
         {
-            Debug.Log("It's over");
             enabled = false;
         }
     }

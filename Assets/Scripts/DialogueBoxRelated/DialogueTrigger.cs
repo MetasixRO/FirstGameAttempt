@@ -53,7 +53,7 @@ public class DialogueTrigger : MonoBehaviour
     {
         if (Input.GetKeyDown("o")) {
             giftCounter = 4;
-            Debug.Log("level 4 Friendship");
+            //Debug.Log("level 4 Friendship");
         }
     }
 

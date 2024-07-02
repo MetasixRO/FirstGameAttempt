@@ -14,7 +14,7 @@ public class HealNPCAbility : AbilityScriptableObject
     {
         if (!enabled) {
             AddHealth?.Invoke(25);
-            Debug.Log("Adding Health");
+           
             enabled = true;
         }
     }
@@ -22,7 +22,6 @@ public class HealNPCAbility : AbilityScriptableObject
     public override void Disable()
     {
         if (enabled) {
-            Debug.Log("it's over");
             enabled = false;
         }
     }

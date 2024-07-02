@@ -111,7 +111,7 @@ public class Combat : MonoBehaviour
 
         if (Input.GetKeyDown("i")) {
             DebugFillHealth();
-            Debug.Log("I have removed godmode from this debug key.");
+            //Debug.Log("I have removed godmode from this debug key.");
         }
         //DEBUG***************************
     }
@@ -350,7 +350,7 @@ public class Combat : MonoBehaviour
     }
 
     private void CheckPercentage() {
-        Debug.Log("Current " + currentHealth + " percentage " + 0.8f * maxHealth + " max : " + maxHealth);
+        //Debug.Log("Current " + currentHealth + " percentage " + 0.8f * maxHealth + " max : " + maxHealth);
         if (currentHealth < 0.8f * maxHealth)
         {
             if (PlayerLowerThanPercentage != null)

@@ -58,12 +58,12 @@ public class ResourceManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown("o"))
+        if (Input.GetKeyDown("y"))
         {
-            Debug.Log("Debug feature to add keys, coins and ambrosia");
-            CollectKeys(1000);
-            CollectCoins(10000);
-            CollectAmbrosia(1000);
+            //Debug.Log("Debug feature to add keys, coins and ambrosia");
+            CollectKeys(10);
+            CollectCoins(1000);
+            CollectAmbrosia(5);
         }
     }
 

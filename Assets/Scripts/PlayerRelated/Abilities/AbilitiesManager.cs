@@ -159,10 +159,8 @@ public class AbilitiesManager : MonoBehaviour
     }
 
     private void CheckAndCallSpecial() {
-        Debug.Log("Called Special");
         foreach (var ability in abilities) {
             if (ability.abilityType == AbilityType.NPCSpecial) {
-                Debug.Log("Found a Special");
                 ability.Activate();
                 DeactivateIndicator?.Invoke();
                 StartCoroutine(DisableAfterDelay(ability));

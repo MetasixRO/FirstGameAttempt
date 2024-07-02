@@ -109,7 +109,6 @@ public class EnemyStateManager : MonoBehaviour
         }
 
         if (nextState != currentState) {
-            Debug.Log("Enemy Entering: " + nextState);
             indicator.Reset();
             previousState = currentState;
             currentState = nextState;

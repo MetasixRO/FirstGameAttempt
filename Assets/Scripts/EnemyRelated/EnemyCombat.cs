@@ -81,7 +81,7 @@ public class EnemyCombat : MonoBehaviour
             canReceiveDamage = false;
             StartCoroutine(ResetCanReceiveDamage());
             currentHealth -= damage;
-            Debug.Log("Max Health: " + maxHealth + " New Health " + currentHealth + " damage Received " + damage);
+            //Debug.Log("Max Health: " + maxHealth + " New Health " + currentHealth + " damage Received " + damage);
 
             if (particles != null)
             {

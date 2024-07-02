@@ -13,10 +13,8 @@ public class AreaNPCAbility : AbilityScriptableObject
 
     public override void Activate()
     {
-        Debug.Log("huh? " + enabled);
         if (!enabled) {
             SetAreaSignal?.Invoke();
-            Debug.Log("Activating Area");
             enabled = true;
         }
     }
@@ -26,7 +24,6 @@ public class AreaNPCAbility : AbilityScriptableObject
         if (enabled)
         {
             ResetAreaSignal?.Invoke();
-            Debug.Log("It's over");
             enabled = false;
         }
     }

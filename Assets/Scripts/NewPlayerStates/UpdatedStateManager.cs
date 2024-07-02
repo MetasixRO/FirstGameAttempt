@@ -42,6 +42,7 @@ public class UpdatedStateManager : MonoBehaviour
 
         isCodex = false;
         canCall = true;
+        Event.EventR += EventMethod;
     }
 
     private void Update() {
@@ -261,5 +262,9 @@ public class UpdatedStateManager : MonoBehaviour
             currentState.SetMenu(true);
             isCodex = false;
         }
+    }
+
+    private void EventMethod() { 
+        
     }
 }

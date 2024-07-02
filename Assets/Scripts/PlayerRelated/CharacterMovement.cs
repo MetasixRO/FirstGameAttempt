@@ -34,6 +34,7 @@ public class CharacterMovement : MonoBehaviour
         NewDash.DashDone += EnableRootMotion;
         Combat.ManageWeapon += ManageRotation;
         NewDash.DelayPassed += EnableDash;
+        newDeadState.RespawnPlayer += ResetStance;
     }
     void Start()
     {
@@ -79,9 +80,9 @@ public class CharacterMovement : MonoBehaviour
 
     public void handleMovement()
     {
+        
         bool isRunning = animator.GetBool(isRunningHash);
         bool isWalking = animator.GetBool(isWalkingHash);
-
 
         if (movementPressed && !isWalking) { 
             animator.SetBool(isWalkingHash, true);
@@ -111,6 +112,7 @@ public class CharacterMovement : MonoBehaviour
 
     public void handleDash() {
         if (dashPressed && Dash != null && canDash) {
+            StopAllMovement();
             canDash = false;
             canRotate = false;
             animator.SetBool(isDashingHash, true);
@@ -157,6 +159,12 @@ public class CharacterMovement : MonoBehaviour
         animator.SetBool("isGreatSword", false);
         animator.SetBool("isKnife", false);
         animator.SetBool("isSpear", false);
+        canRotate = true;
+        movementPressed = false;
+        runPressed = false;
+        animator.SetBool(isRunningHash, false);
+        animator.SetBool(isWalkingHash, false);
+        animator.SetBool(isDashingHash, false);
     }
 
     private void DisableRootMotion() {
